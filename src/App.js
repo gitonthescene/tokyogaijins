@@ -1,8 +1,11 @@
 import React, {useCallback} from 'react';
+import { useImmer } from "use-immer";
+
+import Button from '@material-ui/core/Button';
+
 import EventSelect from './EventSelect';
 import EventOptions from './EventOptions';
 import ContactDetails, { contactDetails_def } from './ContactDetails';
-import { useImmer } from "use-immer";
 
 const event_default = {
   e_id: '',
@@ -35,7 +38,14 @@ function App() {
         eventType={event.event.type}
         eventinfo={event}
         updateEventOptions={updateEventOptions}
+        cnt={event.contact.count}
       />
+      <Button
+        name="display"
+        variant='contained'
+        onClick={ e=> console.log(JSON.stringify(event, undefined, 2))}>
+        click me
+      </Button>
     </div>
   );
 }

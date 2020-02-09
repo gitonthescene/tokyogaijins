@@ -5,7 +5,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { YesNo, roomOptsByEvent, mealOpts } from './constants';
+import { YesNo, roomOptsByEvent } from './constants';
+import Room, { room_def } from './Room';
 
 const Choice = ({nm, label, onChange, items, value, ...props}) => {
   const listitems = items.map( (tg) => (
@@ -28,62 +29,36 @@ const Choice = ({nm, label, onChange, items, value, ...props}) => {
   );
 };
 
-const CondDisplay = ({showif, children}) => {
-  return showif ? <>{children}</> : null;
-};
-
-export const campinginfo_def = () => {return {
-  tent: '',
-  tentpref: '',
-  mealpref: '',
-  mat: '',
-  sleepingbag: '',
-  bunkbed: '',
+export const campinginfo_def = () => {
+  const roominfo = room_def();
+  roominfo.room='No';
+  return {
+    mat: '',
+    sleepingbag: '',
+    bunkbed: '',
+    room: roominfo
 }};
-
-// Changes to the general state if one state changes
-export const getSideEffect = (nm, val) => {
-  if ( nm === 'tent' && val !== 'Yes' )
-    return { tentpref: '' };
-  
-  return {};
-};
 
 const Camping = ( {campinginfo, updateCampinginfo} ) => {
   if (campinginfo === undefined) return null;
+
+  const updateRoominfo = cb => {
+    updateCampinginfo( draft => { cb( draft.room ); } );
+  };
+
   const onChange = nm => e => {
     const val = e.target.value;
-    const sideEffect = getSideEffect( nm, e.target.value );
-    updateCampinginfo( draft => { Object.assign( draft, { [nm]: val }, sideEffect );  } );
+    updateCampinginfo( draft => { Object.assign( draft, { [nm]: val } );  } );
   };
 
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
-      <Choice
-        nm='mealpref'
-        items={mealOpts}
-        value={campinginfo.mealpref}
-        label="Meal preference"
-        onChange={onChange('mealpref')}
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+      <Room
+        roominfo={campinginfo.room}
+        updateRoominfo={updateRoominfo}
+        tentOrRoom='Tent'
+        roomOpts={roomOptsByEvent.C}
       />
-      <Choice
-        nm='tent'
-        items={YesNo}
-        value={campinginfo.tent}
-        label="Tent rental"
-        onChange={onChange('tent')}
-      />
-      <CondDisplay showif={campinginfo.tent === 'Yes'}>
-        <div  style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
-        <Choice
-          nm='tentpref'
-          items={roomOptsByEvent.C}
-          value={campinginfo.tentpref}
-          label="Tent preference"
-          onChange={onChange('tentpref')}
-        />
-        </div>
-      </CondDisplay>
       <Choice
         nm='mat'
         items={YesNo}

@@ -46,7 +46,7 @@ const Hotel = ( {hotelinfo, setHotelinfo} ) => {
     setHotelinfo( newval );
   };
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <div comment="FIXME This should probably be a radio"/>
       <Choice
         nm='happoike'

@@ -46,7 +46,7 @@ const Onjuku = ( {onjukuinfo, setOnjukuinfo} ) => {
     setOnjukuinfo( newval );
   };
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Choice
         nm='bus'
         items={YesNo}

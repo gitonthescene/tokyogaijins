@@ -46,7 +46,7 @@ const MtFuji = ( {myfujiinfo, setMyfujiinfo} ) => {
     setMyfujiinfo( newval );
   };
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Choice
         nm='guide'
         items={YesNo}

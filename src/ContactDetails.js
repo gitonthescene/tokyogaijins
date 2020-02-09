@@ -15,6 +15,7 @@ export const contactDetails_def = () => {return {
   nationality: '',
   cellphone: '',
   email: '',
+  count: 1,
 }};
 
 const Choice = ({nm, label, items, value, ...props}) => {
@@ -51,8 +52,6 @@ const Entry = ({label,value, ...props}) => {
 
 const ContactDetails = ( {contactinfo, updateContactinfo} ) => {
   const onChange = nm => e => {
-    //const newval = Object.assign( {}, contactinfo, { [nm]: e.target.value } );
-    // updateContactinfo( newval );
     const val = e.target.value;
     updateContactinfo( draft => {Object.assign( draft, { [nm]: val }); } );
   };
@@ -86,6 +85,13 @@ const ContactDetails = ( {contactinfo, updateContactinfo} ) => {
         value={contactinfo.email}
         label="Email"
         onChange={onChange('email')}
+      />
+      <Choice
+        nm='count'
+        items={[1,2,3,4,5,6,7,8,9,10]}
+        value={contactinfo.count}
+        label="Number of people"
+        onChange={onChange('count')}
       />
     </div>
   );

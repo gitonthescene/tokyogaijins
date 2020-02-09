@@ -13,7 +13,7 @@ const SkiSnowboarding = ( {skisnoinfo, updateSkiSnoinfo} ) => {
     updateSkiSnoinfo( draft => { cb( draft.rental ); } );
   };
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <RentalLessonInfo
         eventType='S'
         rentallessoninfo={skisnoinfo.rental}
