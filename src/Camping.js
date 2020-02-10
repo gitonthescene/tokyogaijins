@@ -36,15 +36,11 @@ export const campinginfo_def = () => {
     mat: '',
     sleepingbag: '',
     bunkbed: '',
-    room: roominfo
+    ...roominfo
 }};
 
 const Camping = ( {campinginfo, updateCampinginfo} ) => {
   if (campinginfo === undefined) return null;
-
-  const updateRoominfo = cb => {
-    updateCampinginfo( draft => { cb( draft.room ); } );
-  };
 
   const onChange = nm => e => {
     const val = e.target.value;
@@ -54,8 +50,8 @@ const Camping = ( {campinginfo, updateCampinginfo} ) => {
   return (
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Room
-        roominfo={campinginfo.room}
-        updateRoominfo={updateRoominfo}
+        roominfo={campinginfo}
+        updateRoominfo={updateCampinginfo}
         tentOrRoom='Tent'
         roomOpts={roomOptsByEvent.C}
       />

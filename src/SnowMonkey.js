@@ -9,12 +9,16 @@ import { YesNo, YesNoMaybe, roomOptsByEvent } from './constants';
 import RentalLessonInfo, { rentallessoninfo_def } from './RentalLessonInfo';
 import Room, { room_def } from './Room';
 
-export const snowmonkey_def = () => {return{
-  monkeyfest: 'No',
-  sundaylift: 'No',
-  rental: rentallessoninfo_def(),
-  room: room_def()
-}};
+export const snowmonkey_def = () => {
+  const room = room_def();
+  const rental = rentallessoninfo_def();
+  return {
+    monkeyfest: 'No',
+    sundaylift: 'No',
+    ...rental,
+    ...room
+  };
+};
 
 const Choice = ({nm, label, items, value, ...props}) => {
   const listitems = items.map( (tg) => (
@@ -40,14 +44,6 @@ const Choice = ({nm, label, items, value, ...props}) => {
 const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo}) => {
   if ( snowmonkeyinfo === undefined ) return null;
 
-  const updateRentallessoninfo = cb => {
-    updateSnowMonkeyinfo( draft => { cb( draft.rental ); } );
-  };
-
-  const updateRoominfo = cb => {
-    updateSnowMonkeyinfo( draft => { cb( draft.room ); } );
-  };
-
   const onChange = nm => e => {
     const val = e.target.value;
     updateSnowMonkeyinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
@@ -58,14 +54,14 @@ const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo}) => {
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <RentalLessonInfo
         eventType='S'
-        rentallessoninfo={snowmonkeyinfo.rental}
-        updateRentallessoninfo={updateRentallessoninfo}
+        rentallessoninfo={snowmonkeyinfo}
+        updateRentallessoninfo={updateSnowMonkeyinfo}
       />
     </div>
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Room
-        roominfo={snowmonkeyinfo.room}
-        updateRoominfo={updateRoominfo}
+        roominfo={snowmonkeyinfo}
+        updateRoominfo={updateSnowMonkeyinfo}
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.M}
       />

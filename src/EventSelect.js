@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {baseurl as BASEURL} from './config.json';
 
 const Choice = ({nm, label, items, value, ...props}) => {
-//  const listitems = items.filter( itm => itm.type === "C"  ).map( itm =>  (
+//  const listitems = items.filter( itm => itm.type === "M"  ).map( itm =>  (
   const listitems = items.map( itm =>  (
     <MenuItem value={itm.e_id} key={itm.e_id} {...props}>
       {itm.name} {itm.type}
