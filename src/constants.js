@@ -244,9 +244,9 @@ export const YesNoMaybe = [
 
 export const lessonOpts = [
   NOTNEEDED,
-  'Free beginners snowboarding lesson ',
-  'Free beginners skiing lesson',
-  'Intermediate snowboarding lesson (9,000yen/90mins)'
+  'Beginners snowboarding ',
+  'Beginners skiing',
+  'Intermediate snowboarding (90mins)'
 ];
 
 export const roomOpts = [
@@ -313,21 +313,6 @@ export const surfsupOpts = [
   'Beach Day & Pizza lunch only'
 
 ];
-
-export const fees = {
-  U: {
-    jacketpantsize: 2000,
-    goggles: 500,
-    glovesize: 500,
-    hikingboots: 1000,
-  },
-  I: {
-    trekking: 2500,
-    bike: 2000,
-    helmet: 500,
-  },
-};
-
 
 export const opts = {
   C: { camping: true, meals: true },

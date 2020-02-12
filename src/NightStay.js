@@ -3,22 +3,21 @@ import React from 'react';
 import { roomOptsByEvent } from './constants';
 import Room, { room_def } from './Room';
 
-export const nightstay_def = () => {return {
-  room: room_def()
-}};
+export const nightstay_def = () => {
+  const room = room_def();
+  return {
+    ...room
+  };
+};
 
 const NightStay = ( {nightstayinfo, updateNightStayinfo} ) => {
   if (nightstayinfo === undefined) return null;
 
-  const updateRoominfo = cb => {
-    updateNightStayinfo( draft => { cb( draft.room ); } );
-  };
-
   return (
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Room
-        roominfo={nightstayinfo.room}
-        updateRoominfo={updateRoominfo}
+        roominfo={nightstayinfo}
+        updateRoominfo={updateNightStayinfo}
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.N}
       />

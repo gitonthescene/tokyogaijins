@@ -12,7 +12,7 @@ const event_default = {
 };
 
 function App() {
-  const [event, updateEvent] = useImmer( {event: event_default, contact: contactDetails_def() } );
+  const [event, updateEvent] = useImmer( {event: event_default, contact: contactDetails_def(), fees: {} } );
 
   const updateSubField = useCallback(
     key => cb => { updateEvent( draft => { cb(draft[key]); } ); },
@@ -22,6 +22,7 @@ function App() {
   // Using immer and useCallback here because we want to set state in useEffect for setEventOptions
   const updateEventinfo = useCallback( updateSubField('event'), [updateSubField] );
   const updateContactinfo = useCallback( updateSubField('contact'), [updateSubField] );
+  const updateEventFees = useCallback( updateSubField('fees'), [updateSubField] );
 
   return (
     <div className="App">
@@ -37,6 +38,7 @@ function App() {
         eventType={event.event.type}
         eventinfo={event}
         updateEventOptions={updateEvent}
+        updateEventFees={updateEventFees}
         cnt={event.contact.count}
       />
       <Button

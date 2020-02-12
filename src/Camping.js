@@ -29,6 +29,7 @@ const Choice = ({nm, label, onChange, items, value, ...props}) => {
   );
 };
 
+
 export const campinginfo_def = () => {
   const roominfo = room_def();
   roominfo.room='No';

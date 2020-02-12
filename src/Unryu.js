@@ -6,7 +6,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { NOTNEEDED, equipmentOpts, bootsizeOpts, jacketpantsizeOpts, glovesizeOpts, neededOpts, lessonOpts } from './constants';
+import { NOTNEEDED, YesNo, bootsizeOpts, jacketpantsizeOpts, glovesizeOpts, neededOpts } from './constants';
 
 const Choice = ({nm, label, items, value, price, ...props}) => {
   const listitems = items.map( (tg) => (
@@ -55,6 +55,20 @@ const Choice = ({nm, label, items, value, price, ...props}) => {
   );
 };
 
+const genPrices = (opts, price) => {
+  return Object.fromEntries( opts.filter( k => k !== NOTNEEDED ).map( k => [k,price] ) );
+};
+
+// item: { value: price }
+// item must match the nm of the field
+// value must match the value in constants
+export const prices = {
+  hikingboots: { 'Yes': 1000 },
+  jacketpantsize: genPrices( jacketpantsizeOpts, 2000 ),
+  glovesize: genPrices( glovesizeOpts, 500 ),
+  goggles: { 'Yes': 500 },
+};
+
 const Entry = ({label,value, ...props}) => {
   return (
     <TextField
@@ -70,24 +84,21 @@ const CondDisplay = ({showif, children}) => {
   return showif ? <>{children}</> : null;
 };
 
-export const rentallessoninfo_def = () =>{return {
-  equipment: NOTNEEDED,
+export const unryu_def = () =>{return {
   height: '',
   bootsize: '',
   hikingboots: 'No',
   jacketpantsize: NOTNEEDED,
   glovesize: NOTNEEDED,
   goggles: NOTNEEDED,
-  helmet: NOTNEEDED,
-  lessons: NOTNEEDED,
-
 }};
 
-const RentalLessonInfo = ( {eventnm, rentallessoninfo, updateRentallessoninfo, prices, updateEventFees} ) => {
-  if ( rentallessoninfo === undefined ) return null;
+const UnryuInfo = ( {eventnm, unryuinfo, updateUnryuinfo, updateEventFees} ) => {
+  if ( unryuinfo === undefined ) return null;
+
   const onChange = nm => e => {
     const val = e.target.value;
-    updateRentallessoninfo( draft => { Object.assign( draft, { [nm]: val } ); } );
+    updateUnryuinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
 
     if ( prices[nm] && prices[nm][val] ) {
       updateEventFees( draft => { Object.assign( draft, { [nm]: prices[nm][val] } ); } );
@@ -101,23 +112,24 @@ const RentalLessonInfo = ( {eventnm, rentallessoninfo, updateRentallessoninfo, p
   return (
     <>
       <Choice
-        nm='equipment'
-        items={equipmentOpts}
-        value={rentallessoninfo.equipment}
-        label="Ski/snowboard equipment"
-        onChange={onChange('equipment')}
+        nm='hikingboots'
+        items={YesNo}
+        value={unryuinfo.hikingboots}
+        label="Waterproof (gortex) hiking boots"
+        onChange={onChange('hikingboots')}
+        price={prices.hikingboots}
       />
-      <CondDisplay showif={rentallessoninfo.equipment !== NOTNEEDED}>
+      <CondDisplay showif={unryuinfo.hikingboots !== 'No'}>
         <div  style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
           <Entry
             label="Your Height (in cm)"
-            value={rentallessoninfo.height}
+            value={unryuinfo.height}
             onChange={onChange('height')}
           />
           <Choice
             nm='bootsize'
             items={bootsizeOpts}
-            value={rentallessoninfo.bootsize}
+            value={unryuinfo.bootsize}
             label="Boot size (in Japanese)"
             onChange={onChange('bootsize')}
           />
@@ -126,41 +138,29 @@ const RentalLessonInfo = ( {eventnm, rentallessoninfo, updateRentallessoninfo, p
       <Choice
         nm='jacketpantsize'
         items={jacketpantsizeOpts}
-        value={rentallessoninfo.jacketpantsize}
+        value={unryuinfo.jacketpantsize}
         label="Jacket and pants"
         onChange={onChange('jacketpantsize')}
+        price={prices.jacketpantsize}
       />
       <Choice
         nm='glovesize'
         items={glovesizeOpts}
-        value={rentallessoninfo.glovesize}
+        value={unryuinfo.glovesize}
         label="Gloves"
         onChange={onChange('glovesize')}
+        price={prices.glovesize}
       />
       <Choice
         nm='goggles'
         items={neededOpts}
-        value={rentallessoninfo.goggles}
+        value={unryuinfo.goggles}
         label="Goggles"
         onChange={onChange('goggles')}
-      />
-      <Choice
-        nm='helmet'
-        items={neededOpts}
-        value={rentallessoninfo.helmet}
-        label="Helmet"
-        onChange={onChange('helmet')}
-      />
-      <Choice
-        nm='lessons'
-        items={lessonOpts}
-        value={rentallessoninfo.lessons}
-        label="Ski/snowboard lesson"
-        onChange={onChange('lessons')}
-        price={prices.lessons}
+        price={prices.goggles}
       />
     </>
   );
 };
 
-export default RentalLessonInfo;
+export default UnryuInfo;

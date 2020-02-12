@@ -20,6 +20,13 @@ export const snowmonkey_def = () => {
   };
 };
 
+// item: { value: price }
+// item must match the nm of the field
+// value must match the value in constants
+export const prices = {
+  lessons: { 'Intermediate snowboarding lesson (90mins)': 9000 }
+};
+
 const Choice = ({nm, label, items, value, ...props}) => {
   const listitems = items.map( (tg) => (
     <MenuItem value={tg} key={tg} {...props}>
@@ -41,7 +48,7 @@ const Choice = ({nm, label, items, value, ...props}) => {
   );
 };
 
-const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo}) => {
+const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees}) => {
   if ( snowmonkeyinfo === undefined ) return null;
 
   const onChange = nm => e => {
@@ -56,6 +63,8 @@ const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo}) => {
         eventType='S'
         rentallessoninfo={snowmonkeyinfo}
         updateRentallessoninfo={updateSnowMonkeyinfo}
+        prices={prices}
+        updateEventFees={updateEventFees}
       />
     </div>
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>

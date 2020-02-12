@@ -5,15 +5,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import { YesNo, roomOptsByEvent } from './constants';
+import { roomOptsByEvent, YesNo } from './constants';
 import Room, { room_def } from './Room';
-
-export const oshima_def = () => {
-  const room = room_def();
-  return {
-    ...room
-  };
-};
 
 const CondDisplay = ({showif, children}) => {
   return showif ? <>{children}</> : null;
@@ -35,7 +28,13 @@ const Choice = ({nm, label, items, value, price, ...props}) => {
     if ( prices.length === 1 ) {
       pricedisplay = `${price[prices[0]]} yen`;
     } else if ( prices.length > 1 ) {
-      pricedisplay = prices.map( k => `${k}: ${price[k]} yen` ).join( ", " );
+      var samePrice = true;
+      prices.forEach( p => { samePrice = samePrice && price[p] === price[prices[0]]; } );
+      if ( samePrice ) {
+        pricedisplay = `${price[prices[0]]} yen`;
+      } else {
+        pricedisplay = prices.map( k => `${k}: ${price[k]} yen` ).join( ", " );
+      };
     };
   };
 
@@ -60,18 +59,24 @@ const Choice = ({nm, label, items, value, price, ...props}) => {
   );
 };
 
-const prices = {
-  trekking: { 'Yes': 2500 },
-  bike: { 'Yes': 2000 },
-  helmet: { 'Yes': 500 },
+export const trekking_def = () => {
+  const room = room_def();
+  return {
+    Happoike: 'No',
+    Tsugaike: 'No',
+    Tateyama: 'No',
+    ...room
+  };
 };
 
-const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees} ) => {
-  if (oshimainfo === undefined) return null;
+const prices = {};
+
+const Trekking = ( {trekkinginfo, updateTrekkinginfo, updateEventFees} ) => {
+  if (trekkinginfo === undefined) return null;
 
   const onChange = nm => e => {
     const val = e.target.value;
-    updateOshimainfo( draft => { Object.assign( draft, { [nm]: val } ); } );
+    updateTrekkinginfo( draft => { Object.assign( draft, { [nm]: val } ); } );
 
     if ( prices[nm] && prices[nm][val] ) {
       updateEventFees( draft => { Object.assign( draft, { [nm]: prices[nm][val] } ); } );
@@ -85,37 +90,34 @@ const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees} ) => {
   return (
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Choice
-        nm='trekking'
+        nm='room'
         items={YesNo}
-        value={oshimainfo.trekking}
-        label="Mt. Mihara trekking"
-        onChange={onChange('trekking')}
-        price={prices.trekking}
+        value={trekkinginfo.Happoike}
+        label="Happoike"
+        onChange={onChange('Happoike')}
       />
       <Choice
-        nm='bike'
+        nm='room'
         items={YesNo}
-        value={oshimainfo.bike}
-        label="Mountain bike rental"
-        onChange={onChange('bike')}
-        price={prices.bike}
+        value={trekkinginfo.Tsugaike}
+        label="Tsugaike"
+        onChange={onChange('Tsugaike')}
       />
       <Choice
-        nm='helmet'
+        nm='room'
         items={YesNo}
-        value={oshimainfo.helmet}
-        label="Helmet rental"
-        onChange={onChange('helmet')}
-        price={prices.helmet}
+        value={trekkinginfo.Tateyama}
+        label="Tateyama"
+        onChange={onChange('Tateyama')}
       />
       <Room
-        roominfo={oshimainfo}
-        updateRoominfo={updateOshimainfo}
+        roominfo={trekkinginfo}
+        updateRoominfo={updateTrekkinginfo}
         tentOrRoom='Room'
-        roomOpts={roomOptsByEvent.I}
+        roomOpts={roomOptsByEvent.H}
       />
     </div>
   );
 };
 
-export default Oshima;
+export default Trekking;
