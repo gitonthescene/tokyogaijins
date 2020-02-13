@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+//import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem, {NativeContext} from './MenuItem';
 
 import CondDisplay from './CondDisplay';
 
@@ -18,20 +19,21 @@ const Choice = ({nm, label, items, value, price, ...props}) => {
   const prclabel = price ? "* " : "";
   var prices = price && Object.keys(price);
   var pricedisplay = null;
-
+  const prettyMoney = amt => amt.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,');
   if ( prices ) {
     if ( prices.length === 1 ) {
-      pricedisplay = `${price[prices[0]]} yen`;
+      pricedisplay = `${prettyMoney(price[prices[0]])} yen`;
     } else if ( prices.length > 1 ) {
       var samePrice = true;
       prices.forEach( p => { samePrice = samePrice && price[p] === price[prices[0]]; } );
       if ( samePrice ) {
-        pricedisplay = `${price[prices[0]]} yen`;
+        pricedisplay = `${prettyMoney(price[prices[0]])} yen`;
       } else {
-        pricedisplay = prices.filter( k => price[k] !== 0 ).map( k => `${k}: ${price[k]} yen` ).join( ", " );
+        pricedisplay = prices.filter( k => price[k] !== 0 ).map( k => `${k}: ${prettyMoney(price[k])} yen` ).join( ", " );
       };
     };
   };
+  const NATIVE = useContext( NativeContext );
 
   return (
     <>
@@ -43,6 +45,7 @@ const Choice = ({nm, label, items, value, price, ...props}) => {
           </CondDisplay>
         </InputLabel>
         <Select
+          native={NATIVE}
           id={'choice'+nm}
           value={value}
           {...props}

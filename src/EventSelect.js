@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+//import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem, {NativeContext} from './components/MenuItem';
 
 import {baseurl as BASEURL} from './config.json';
 
@@ -14,11 +15,14 @@ const Choice = ({nm, label, items, value, ...props}) => {
       {itm.name} {itm.type}
     </MenuItem>
   ) );
+  listitems.unshift( <MenuItem value='' key=''>&nbsp;</MenuItem> );
+  const NATIVE = useContext( NativeContext );
 
   return (
       <FormControl>
         <InputLabel htmlFor={'choice'+nm}>{label}</InputLabel>
         <Select
+          native={NATIVE}
           id={'choice'+nm}
           value={value}
           {...props}
@@ -42,6 +46,7 @@ const fetchres = ( req ) => {
 const EventSelect = ( {eventinfo, updateEventinfo} ) => {
   const [ events, setEvents ] = useState([]);
   const eventsByID = Object.fromEntries( events.map( itm => [itm.e_id, itm] ) );
+  eventsByID[''] = {e_id:''};
   useEffect( () => {
     fetchres( "/php/fetchevents.php" ).then(
       data => { setEvents( data ); }
@@ -54,7 +59,7 @@ const EventSelect = ( {eventinfo, updateEventinfo} ) => {
         nm='id'
         items={events}
         value={eventinfo.e_id}
-        onChange={e => { updateEventinfo( draft => { Object.assign( draft, eventsByID[ e.target.value ] );  } );}}
+        onChange={e => { const val=e.target.value; updateEventinfo( draft => { Object.assign( draft, eventsByID[ val ] );  } );}}
         label="Event Date and Name"
       />
     </div>

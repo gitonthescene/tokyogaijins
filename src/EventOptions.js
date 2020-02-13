@@ -21,8 +21,13 @@ const resetDraft = (draft, cnt, nm, def) => {
   if ( def ) {
     // Fill array with copies of the return of the default function.
     // See [[https://2ality.com/2013/11/initializing-arrays.html]]
-    const defs = Array.apply( null, Array( cnt ) ).map( (x,i) => [{name:'', idx: i},def()] );
-    const fees = Array.apply( null, Array( cnt ) ).map( (x,i) => {return {};} );
+    const copyXTimes = (f, c) => {
+      const arr = [];
+      for( var i = 0; i < c; ++i ) arr.push(f(i));
+      return arr;
+    };
+    const defs = copyXTimes( i=>[{name:'', idx: i},def()], cnt )
+    const fees = copyXTimes( i=>{return{}}, cnt )
     Object.assign( draft, { [nm]: defs });
     Object.assign( draft.fees, { [nm]: fees });
   }
@@ -78,42 +83,78 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
   };
   
   const createElement = (typ,i) => {
-    var [component, info, updinfo, ky] = [undefined, undefined, undefined, undefined];
-    if ( typ === "C" )
-      [component, info, updinfo, ky] = [Camping,         'campinginfo',    'updateCampinginfo',    'camping'];
-    else if ( typ === "D" )
-      [component, info, updinfo, ky] = [Dolphin,         'dolphininfo',    'updateDolphininfo',    'dolphin'];
-    else if ( typ === "F" )
-      [component, info, updinfo, ky] = [Fuji,            'fujiinfo',       'updateFujiinfo',        'fuji'];
-    else if ( typ === "I" )
-      [component, info, updinfo, ky] = [Oshima,          'oshimainfo',     'updateOshimainfo',     'oshima'];
-    else if ( typ === "M" )
-      [component, info, updinfo, ky] = [SnowMonkey,      'snowmonkeyinfo', 'updateSnowMonkeyinfo', 'snowmonkey'];
-    else if ( typ === "N" )
-      [component, info, updinfo, ky] = [NightStay,       'nightstayinfo',  'updateNightStayinfo',  'nightstay'];
-    else if ( typ === "S" )
-      [component, info, updinfo, ky] = [SkiSnowboarding, 'skisnoinfo',     'updateSkiSnoinfo',     'skisno'];
-    else if ( typ === "H" )
-      [component, info, updinfo, ky] = [Trekking,        'trekkinginfo',   'updateTrekkinginfo',   'trekking'];
-    else if ( typ === "U" )
-      [component, info, updinfo, ky] = [Unryu,           'unryuinfo',      'updateUnryuinfo',      'unryu'];
-    else if ( typ === "Z" )
-      [component, info, updinfo, ky] = [Zao,             'zaoinfo',        'updateZaoinfo',        'zao'];
-    else if ( component === undefined ) return null;
+    var [el,ky] = [null,null];
+    if ( typ === "C" ) {
+      ky = 'camping';
+      el = <Camping
+             campinginfo={eventinfo.camping && eventinfo.camping[i] && eventinfo.camping[i][1]}
+             updateCampinginfo={updateEventInfo('camping', i)}
+             updateEventFees={updateEventFeesI('camping', i)}/>;
+    } else if ( typ === "D" ) {
+      ky = 'dolphin';
+      el = <Dolphin
+             dolphininfo={eventinfo.dolphin && eventinfo.dolphin[i] && eventinfo.dolphin[i][1]}
+             updateDolphininfo={updateEventInfo('dolphin', i)}
+             updateEventFees={updateEventFeesI('dolphin', i)}/>;
+    } else if ( typ === "F" ) {
+      ky = 'fuji';
+      el = <Fuji
+             fujiinfo={eventinfo.fuji && eventinfo.fuji[i] && eventinfo.fuji[i][1]}
+             updateFujiinfo={updateEventInfo('fuji', i)}
+             updateEventFees={updateEventFeesI('fuji', i)}/>;
+    } else if ( typ === "I" ) {
+      ky = 'oshima';
+      el = <Oshima
+             oshimainfo={eventinfo.oshima && eventinfo.oshima[i] && eventinfo.oshima[i][1]}
+             updateOshimainfo={updateEventInfo('oshima', i)}
+             updateEventFees={updateEventFeesI('oshima', i)}/>;
+    } else if ( typ === "M" ) {
+      ky = 'snowmonkey';
+      el = <SnowMonkey
+             snowmonkeyinfo={eventinfo.snowmonkey && eventinfo.snowmonkey[i] && eventinfo.snowmonkey[i][1]}
+             updateSnowMonkeyinfo={updateEventInfo('snowmonkey', i)}
+             updateEventFees={updateEventFeesI('snowmonkey', i)}/>;
+    } else if ( typ === "N" ) {
+      ky = 'nightstay';
+      el = <NightStay
+             nightstayinfo={eventinfo.nightstay && eventinfo.nightstay[i] && eventinfo.nightstay[i][1]}
+             updateNightStayinfo={updateEventInfo('nightstay', i)}
+             updateEventFees={updateEventFeesI('nightstay', i)}/>;
+    } else if ( typ === "S" ) {
+      ky = 'skisno';
+      el = <SkiSnowboarding
+             skisnoinfo={eventinfo.skisno && eventinfo.skisno[i] && eventinfo.skisno[i][1]}
+             updateSkiSnoinfo={updateEventInfo('skisno', i)}
+             updateEventFees={updateEventFeesI('skisno', i)}/>;
+    } else if ( typ === "H" ) {
+      ky = 'trekking';
+      el = <Trekking
+             trekkinginfo={eventinfo.trekking && eventinfo.trekking[i] && eventinfo.trekking[i][1]}
+             updateTrekkinginfo={updateEventInfo('trekking', i)}
+             updateEventFees={updateEventFeesI('trekking', i)}/>;
+    } else if ( typ === "U" ) {
+      ky = 'unryu';
+      el = <Unryu
+             unryuinfo={eventinfo.unryu && eventinfo.unryu[i] && eventinfo.unryu[i][1]}
+             updateUnryuinfo={updateEventInfo('unryu', i)}
+             updateEventFees={updateEventFeesI('unryu', i)}/>;
+    } else if ( typ === "Z" ) {
+      ky = 'zao';
+      el = <Zao
+             zaoinfo={eventinfo.zao && eventinfo.zao[i] && eventinfo.zao[i][1]}
+             updateZaoinfo={updateEventInfo('zao', i)}
+             updateEventFees={updateEventFeesI('zao', i)}/>;
+    } else return null;
 
-    return React.createElement( PersonalizedOption, {
-      personalinfo       : eventinfo[ky] && eventinfo[ky][i] && eventinfo[ky][i][0],
-      updatePersonalinfo : updatePersonalInfo(ky, i),
-      idx: i,
-      key: i
-    }, React.createElement( component, {
-      [info]    : eventinfo[ky] && eventinfo[ky][i] && eventinfo[ky][i][1],
-      [updinfo] : updateEventInfo(ky, i),
-      updateEventFees : updateEventFeesI(ky, i)
-    } ) );
+    return <PersonalizedOption
+             personalinfo={eventinfo[ky] && eventinfo[ky][i] && eventinfo[ky][i][0]}
+             updatePersonalinfo={updatePersonalInfo(ky, i)}
+             idx={i}
+             key={i}>{el}</PersonalizedOption>;
   };
 
-  const cldrn = [];
+  var cldrn = [];
+
   for( var i=0; i< cnt; ++i ) {
     const child = createElement( eventType, i );
     if ( child != null ) cldrn.push( child );

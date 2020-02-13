@@ -16,7 +16,7 @@ body {
 	color: #999;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	background: url(images/main-bg.png) top center no-repeat #a4f0c0 fixed;
+	background: url(/images/main-bg.png) top center no-repeat #a4f0c0 fixed;
 	background-size:cover;
 
 }
@@ -170,7 +170,7 @@ CONTENT STYLES
     margin: 0px auto;
     text-align: center;
 	height:13px;
-    background:url(images/flag-header.jpg) repeat-x top center;
+    background:url(/images/flag-header.jpg) repeat-x top center;
 }.subheader {
     margin: 0px auto;
     text-align: center;
@@ -211,7 +211,7 @@ CONTENT STYLES
 }.header-contact .join-us .form-search {
     border: medium none;
     position: relative;
-    background: #FFF url(images/join-member.png) no-repeat 12px center;
+    background: #FFF url(/images/join-member.png) no-repeat 12px center;
     padding: 0px 0px 0px 40px;
     box-shadow: 1px 6px 16px -3px rgba(0, 0, 0, 0.3) inset;
     width: 100%;
@@ -480,7 +480,7 @@ NewsFeed
 **/
 .news{
 	height:318px;
-        background: #FFF url("images/main-bg.png") repeat-y center bottom / cover;
+        background: #FFF url("/images/main-bg.png") repeat-y center bottom / cover;
 	display:block;
 	font-size:14px;
 	border-radius:5px;
@@ -513,7 +513,7 @@ NewsFeed
 	line-height:1.5em;	
 	margin:0 0 12px 0;
 	padding-left:40px;
-	background:url(images/news-icon.png) no-repeat left top;
+	background:url(/images/news-icon.png) no-repeat left top;
 	text-align:left;
 	color:#333;
 }.news p{
@@ -523,7 +523,7 @@ NewsFeed
 	line-height:1.5em;	
 	margin:0 0 12px 0;
 	padding-left:40px;
-	background:url(images/news-icon.png) no-repeat left top;
+	background:url(/images/news-icon.png) no-repeat left top;
 	text-align:left;
 	color:#333;
 }.news .news-col{
@@ -2090,7 +2090,7 @@ textarea.form-control {
 	background-color:#03559f; 
 	color:#FFF;
 	border:0px solid #0798CF;
-	background-image:url(images/tab_on.jpg);
+	background-image:url(/images/tab_on.jpg);
 	background-repeat:repeat-x;
 	background-position:top;	
 }.tabbed_area ul.tabs li a.active:after {
@@ -2918,7 +2918,7 @@ border: medium none;
 #content .page-content .wear ul li{
 	display:inline; margin:0  0 2px 4px; text-align:left;
 	padding:0 0 0 12px;
-	list-style:circle; list-style-type:circle; font-size:14px; background:url('images/foot-bullets.png') no-repeat left center;
+	list-style:circle; list-style-type:circle; font-size:14px; background:url('/images/foot-bullets.png') no-repeat left center;
 	
 }#content .page-content .usefull-links ul{
 	list-style: outside none none;
@@ -2990,7 +2990,7 @@ height: 300px; display:block; float:right; margin:0 0px 12px 12px;  overflow:hid
     display: block;
     padding: 0px 0px 0px 15px;
     line-height: 1.5em;
-    background: transparent url('images/arrow-right.png') no-repeat scroll 0% 5px;
+    background: transparent url('/images/arrow-right.png') no-repeat scroll 0% 5px;
     font-size: 14px;
     color: #333;
 }#content .page-content h2{
@@ -3014,7 +3014,7 @@ height: 300px; display:block; float:right; margin:0 0px 12px 12px;  overflow:hid
     display: block;
     padding: 0px 0px 0px 15px;
     line-height: 1.5em;
-    background: transparent url('images/arrow-right.png') no-repeat scroll 0% 5px;
+    background: transparent url('/images/arrow-right.png') no-repeat scroll 0% 5px;
     font-size: 14px;
     color: #333;
 	width:30%;
@@ -3095,7 +3095,7 @@ height: 300px; display:block; float:right; margin:0 0px 12px 12px;  overflow:hid
 	border-radius:5px;}
 
 #content .upcom-trip .bg-usa-flag{
-	background:#FFF url('images/bg-usa-flag.png') no-repeat top right !important;
+	background:#FFF url('/images/bg-usa-flag.png') no-repeat top right !important;
         background-size:100%;}
 #content .upcom-trip ul li:last-child{
 	margin-bottom:4px;}
