@@ -17,17 +17,17 @@ import Entry from './components/Entry';
 const optkeys = ['camping', 'dolphin', 'fuji', 'oshima', 'snowmonkey', 'nightstay', 'skisno', 'trekking', 'unryu', 'zao'];
 const resetDraft = (draft, cnt, nm, def) => {
   const kys = optkeys;
+  const count = parseInt( cnt );
   kys.forEach( k => { delete draft[k]; delete draft.fees[k] } );
   if ( def ) {
     // Fill array with copies of the return of the default function.
     // See [[https://2ality.com/2013/11/initializing-arrays.html]]
     const copyXTimes = (f, c) => {
-      const arr = [];
-      for( var i = 0; i < c; ++i ) arr.push(f(i));
+      const arr = Array.apply( null, Array( c ) ).map( (x,i) => f(i) );
       return arr;
     };
-    const defs = copyXTimes( i=>[{name:'', idx: i},def()], cnt )
-    const fees = copyXTimes( i=>{return{}}, cnt )
+    const defs = copyXTimes( i=>[{name:'', idx: i},def()], count )
+    const fees = copyXTimes( i=>{return{}}, count )
     Object.assign( draft, { [nm]: defs });
     Object.assign( draft.fees, { [nm]: fees });
   }
