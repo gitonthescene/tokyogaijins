@@ -22,7 +22,11 @@ export const snowmonkey_def = () => {
 // item must match the nm of the field
 // value must match the value in constants
 export const prices = {
-  lessons: { 'Intermediate snowboarding (90mins)': 9000 }
+  lessons: {
+    'Beginners snowboarding': 0,
+    'Beginners skiing': 0,
+    'Intermediate snowboarding (90mins)': 9000,
+  }
 };
 
 const SnowMonkey = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees}) => {
