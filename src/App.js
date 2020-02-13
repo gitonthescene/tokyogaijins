@@ -24,12 +24,22 @@ function App() {
   const updateContactinfo = useCallback( updateSubField('contact'), [updateSubField] );
   const updateEventFees = useCallback( updateSubField('fees'), [updateSubField] );
 
+  var cost = event.event.price ? parseInt( event.event.price ) : 0;
+  Object.entries( event.fees ).forEach( ([_,fees]) => {
+    fees.forEach(indivFees => {
+      Object.entries(indivFees).forEach( ([_,fee]) => { cost+=fee; } );
+    } );
+  } );
+
   return (
     <div className="App">
       <EventSelect
         eventinfo={event.event}
         updateEventinfo={updateEventinfo}
       />
+      <div style={{display:'flex', flexFlow:'row', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <span style={{margin:'0 10px', fontStyle: 'italic'}}>COST:</span><span>{cost}</span>
+      </div>
       <ContactDetails
         contactinfo={event.contact}
         updateContactinfo={updateContactinfo}

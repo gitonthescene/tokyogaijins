@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import TextField from '@material-ui/core/TextField';
-
 import Camping, { campinginfo_def } from './Camping';
 import Dolphin, { dolphininfo_def } from './Dolphin';
 import SkiSnowboarding, { skisnoinfo_def } from './SkiSnowboarding';
@@ -12,9 +10,11 @@ import Unryu, { unryu_def } from './Unryu';
 import Trekking, { trekking_def } from './Trekking';
 import Oshima, { oshima_def } from './Oshima';
 import Fuji, { fuji_def } from './Fuji';
+import CondDisplay from './components/CondDisplay';
+import Entry from './components/Entry';
 
 // This must contain all the keys in the useEffect function below!!
-const optkeys = ['camping', 'dolphin', 'skisno', 'snowmonkey', 'nightstay', 'zao', 'unryu'];
+const optkeys = ['camping', 'dolphin', 'fuji', 'oshima', 'snowmonkey', 'nightstay', 'skisno', 'trekking', 'unryu', 'zao'];
 const resetDraft = (draft, cnt, nm, def) => {
   const kys = optkeys;
   kys.forEach( k => { delete draft[k]; delete draft.fees[k] } );
@@ -26,21 +26,6 @@ const resetDraft = (draft, cnt, nm, def) => {
     Object.assign( draft, { [nm]: defs });
     Object.assign( draft.fees, { [nm]: fees });
   }
-};
-
-const Entry = ({label,value, ...props}) => {
-  return (
-    <TextField
-      type="text"
-      label={label}
-      value={value}
-      {...props}
-    />
-  );
-};
-
-const CondDisplay = ({showif, children}) => {
-  return showif ? <>{children}</> : null;
 };
 
 const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children}) => {

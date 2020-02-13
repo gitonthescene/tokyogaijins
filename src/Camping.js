@@ -1,34 +1,10 @@
 import React from 'react';
 
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Room, { room_def } from './Room';
+import Choice from './components/Choice';
 
 import { YesNo, roomOptsByEvent } from './constants';
-import Room, { room_def } from './Room';
-
-const Choice = ({nm, label, onChange, items, value, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  return (
-    <FormControl {...props}>
-        <InputLabel htmlFor={'choice'+nm}>{label}</InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          onChange={onChange}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-  );
-};
-
+import { createOnChange } from './utils';
 
 export const campinginfo_def = () => {
   const roominfo = room_def();
@@ -42,11 +18,7 @@ export const campinginfo_def = () => {
 
 const Camping = ( {campinginfo, updateCampinginfo} ) => {
   if (campinginfo === undefined) return null;
-
-  const onChange = nm => e => {
-    const val = e.target.value;
-    updateCampinginfo( draft => { Object.assign( draft, { [nm]: val } );  } );
-  };
+  const onChange = createOnChange( campinginfo, updateCampinginfo );
 
   return (
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>

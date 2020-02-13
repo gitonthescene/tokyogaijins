@@ -1,63 +1,19 @@
 import React from 'react';
 
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Room, { room_def } from './Room';
+import Choice from './components/Choice';
 
 import { YesNo, roomOptsByEvent } from './constants';
-import Room, { room_def } from './Room';
+import { createOnChange } from './utils';
 
 export const oshima_def = () => {
   const room = room_def();
   return {
+  trekking: '',
+  bike: '',
+  helmet: '',
     ...room
   };
-};
-
-const CondDisplay = ({showif, children}) => {
-  return showif ? <>{children}</> : null;
-};
-
-const Choice = ({nm, label, items, value, price, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg} {...props}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  const style = price ? { fontStyle: 'italic' } : {};
-  const prclabel = price ? "* " : "";
-  var prices = price && Object.keys(price);
-  var pricedisplay = null;
-
-  if ( prices ) {
-    if ( prices.length === 1 ) {
-      pricedisplay = `${price[prices[0]]} yen`;
-    } else if ( prices.length > 1 ) {
-      pricedisplay = prices.map( k => `${k}: ${price[k]} yen` ).join( ", " );
-    };
-  };
-
-  return (
-    <>
-      <FormControl>
-        <InputLabel htmlFor={'choice'+nm} style={style}>
-          {prclabel}{label}
-          <CondDisplay showif={price}>
-            <span style={{fontSize:'small', color:'orange', margin:'10px'}}>({pricedisplay})</span>
-          </CondDisplay>
-        </InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          {...props}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-    </>
-  );
 };
 
 const prices = {
@@ -69,18 +25,7 @@ const prices = {
 const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees} ) => {
   if (oshimainfo === undefined) return null;
 
-  const onChange = nm => e => {
-    const val = e.target.value;
-    updateOshimainfo( draft => { Object.assign( draft, { [nm]: val } ); } );
-
-    if ( prices[nm] && prices[nm][val] ) {
-      updateEventFees( draft => { Object.assign( draft, { [nm]: prices[nm][val] } ); } );
-    }
-    else {
-      // if setting val to a non-price, make sure there's no key
-      updateEventFees( draft => { delete draft[nm]; } );
-    }
-  };
+  const onChange = createOnChange( oshimainfo, updateOshimainfo, updateEventFees, prices );
 
   return (
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>

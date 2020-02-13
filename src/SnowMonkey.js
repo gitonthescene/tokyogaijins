@@ -1,13 +1,11 @@
 import React from 'react';
 
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-
-import { YesNo, YesNoMaybe, roomOptsByEvent } from './constants';
 import RentalLessonInfo, { rentallessoninfo_def } from './RentalLessonInfo';
 import Room, { room_def } from './Room';
+import Choice from './components/Choice';
+
+import { YesNo, YesNoMaybe, roomOptsByEvent } from './constants';
+import { createOnChange } from './utils';
 
 export const snowmonkey_def = () => {
   const room = room_def();
@@ -24,37 +22,13 @@ export const snowmonkey_def = () => {
 // item must match the nm of the field
 // value must match the value in constants
 export const prices = {
-  lessons: { 'Intermediate snowboarding lesson (90mins)': 9000 }
+  lessons: { 'Intermediate snowboarding (90mins)': 9000 }
 };
 
-const Choice = ({nm, label, items, value, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg} {...props}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  return (
-      <FormControl>
-        <InputLabel htmlFor={'choice'+nm}>{label}</InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          {...props}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-  );
-};
-
-const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees}) => {
+const SnowMonkey = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees}) => {
   if ( snowmonkeyinfo === undefined ) return null;
 
-  const onChange = nm => e => {
-    const val = e.target.value;
-    updateSnowMonkeyinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
-  };
+  const onChange = createOnChange( snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees );
 
   return (
     <>
@@ -95,4 +69,4 @@ const SnowMonkeyExtras = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees
   );
 }
 
-export default SnowMonkeyExtras;
+export default SnowMonkey;

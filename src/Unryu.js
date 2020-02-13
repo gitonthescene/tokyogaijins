@@ -1,59 +1,11 @@
 import React from 'react';
 
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import CondDisplay from './components/CondDisplay';
+import Entry from './components/Entry';
+import Choice from './components/Choice';
 
 import { NOTNEEDED, YesNo, bootsizeOpts, jacketpantsizeOpts, glovesizeOpts, neededOpts } from './constants';
-
-const Choice = ({nm, label, items, value, price, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg} {...props}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  const style = price ? { fontStyle: 'italic' } : {};
-  const prclabel = price ? "* " : "";
-  var prices = price && Object.keys(price);
-  var pricedisplay = null;
-
-  if ( prices ) {
-    if ( prices.length === 1 ) {
-      pricedisplay = `${price[prices[0]]} yen`;
-    } else if ( prices.length > 1 ) {
-      var samePrice = true;
-      prices.forEach( p => { samePrice = samePrice && price[p] === price[prices[0]]; } );
-      if ( samePrice ) {
-        pricedisplay = `${price[prices[0]]} yen`;
-      } else {
-        pricedisplay = prices.filter( k => price[k] !== 0 ).map( k => `${k}: ${price[k]} yen` ).join( ", " );
-      };
-    };
-  };
-
-  return (
-    <>
-      <FormControl>
-        <InputLabel htmlFor={'choice'+nm} style={style}>
-          {prclabel}{label}
-          <CondDisplay showif={price}>
-            <span style={{fontSize:'small', color:'orange', margin:'10px'}}>({pricedisplay})</span>
-          </CondDisplay>
-        </InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          {...props}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-    </>
-  );
-};
+import { createOnChange } from './utils';
 
 const genPrices = (opts, price) => {
   return Object.fromEntries( opts.filter( k => k !== NOTNEEDED ).map( k => [k,price] ) );
@@ -69,21 +21,6 @@ export const prices = {
   goggles: { 'Yes': 500 },
 };
 
-const Entry = ({label,value, ...props}) => {
-  return (
-    <TextField
-      type="text"
-      label={label}
-      value={value}
-      {...props}
-    />
-  );
-};
-
-const CondDisplay = ({showif, children}) => {
-  return showif ? <>{children}</> : null;
-};
-
 export const unryu_def = () =>{return {
   height: '',
   bootsize: '',
@@ -93,21 +30,10 @@ export const unryu_def = () =>{return {
   goggles: NOTNEEDED,
 }};
 
-const UnryuInfo = ( {eventnm, unryuinfo, updateUnryuinfo, updateEventFees} ) => {
+const Unryu = ( {unryuinfo, updateUnryuinfo, updateEventFees} ) => {
   if ( unryuinfo === undefined ) return null;
 
-  const onChange = nm => e => {
-    const val = e.target.value;
-    updateUnryuinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
-
-    if ( prices[nm] && prices[nm][val] ) {
-      updateEventFees( draft => { Object.assign( draft, { [nm]: prices[nm][val] } ); } );
-    }
-    else {
-      // if setting val to a non-price, make sure there's no key
-      updateEventFees( draft => { delete draft[nm]; } );
-    }
-  };
+  const onChange = createOnChange( unryuinfo, updateUnryuinfo, updateEventFees, prices );
 
   return (
     <>
@@ -163,4 +89,4 @@ const UnryuInfo = ( {eventnm, unryuinfo, updateUnryuinfo, updateEventFees} ) => 
   );
 };
 
-export default UnryuInfo;
+export default Unryu;

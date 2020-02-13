@@ -1,13 +1,9 @@
 import React from 'react';
 
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Entry from './components/Entry';
+import Choice from './components/Choice';
 
 import { sexes, nationalities } from './constants';
-
 
 export const contactDetails_def = () => {return {
   fullname: '',
@@ -17,38 +13,6 @@ export const contactDetails_def = () => {return {
   email: '',
   count: 1,
 }};
-
-const Choice = ({nm, label, items, value, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg} {...props}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  return (
-      <FormControl>
-        <InputLabel htmlFor={'choice'+nm}>{label}</InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          {...props}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-  );
-};
-
-const Entry = ({label,value, ...props}) => {
-  return (
-    <TextField
-      type="text"
-      label={label}
-      value={value}
-      {...props}
-    />
-  );
-};
 
 const ContactDetails = ( {contactinfo, updateContactinfo} ) => {
   const onChange = nm => e => {

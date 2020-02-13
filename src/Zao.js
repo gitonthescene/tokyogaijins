@@ -1,12 +1,10 @@
 import React from 'react';
 
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import RentalLessonInfo, { rentallessoninfo_def } from './RentalLessonInfo';
+import Choice from './components/Choice';
 
 import { YesNo } from './constants';
-import RentalLessonInfo, { rentallessoninfo_def } from './RentalLessonInfo';
+import { createOnChange } from './utils';
 
 export const zao_def = () => {
   const rental = rentallessoninfo_def();
@@ -28,42 +26,9 @@ export const prices = {
   }
 };
 
-const Choice = ({nm, label, items, value, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg} {...props}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  return (
-      <FormControl>
-        <InputLabel htmlFor={'choice'+nm}>{label}</InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          {...props}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-  );
-};
-
-
 const Zao = ( {zaoinfo, updateZaoinfo, updateEventFees} ) => {
   if (zaoinfo === undefined) return null;
-  const onChange = nm => e => {
-    const val = e.target.value;
-    updateZaoinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
-
-    if ( prices[nm] && prices[nm][val] ) {
-      updateEventFees( draft => { Object.assign( draft, { [nm]: prices[nm][val] } ); } );
-    }
-    else {
-      // if setting val to a non-price, make sure there's no key
-      updateEventFees( draft => { delete draft[nm]; } );
-    }
-  };
+  const onChange = createOnChange( zaoinfo, updateZaoinfo, updateEventFees, prices );
 
   return (
     <div  style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
@@ -90,6 +55,6 @@ const Zao = ( {zaoinfo, updateZaoinfo, updateEventFees} ) => {
       />
     </div>
   );
-}
+};
 
 export default Zao;

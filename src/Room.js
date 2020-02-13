@@ -1,36 +1,10 @@
 import React from 'react';
 
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import CondDisplay from './components/CondDisplay';
+import Choice from './components/Choice';
 
 import { YesNo, mealOpts } from './constants';
-
-const Choice = ({nm, label, items, value, ...props}) => {
-  const listitems = items.map( (tg) => (
-    <MenuItem value={tg} key={tg} {...props}>
-      {tg}
-    </MenuItem>
-  ) );
-
-  return (
-      <FormControl>
-        <InputLabel htmlFor={'choice'+nm}>{label}</InputLabel>
-        <Select
-          id={'choice'+nm}
-          value={value}
-          {...props}
-        >
-          {listitems}
-        </Select>
-      </FormControl>
-  );
-};
-
-const CondDisplay = ({showif, children}) => {
-  return showif ? <>{children}</> : null;
-};
+import { createOnChange } from './utils';
 
 export const room_def = () => {return {
   room: undefined,
@@ -49,11 +23,7 @@ export const getSideEffect = (nm, val) => {
 const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts, caveat} ) => {
   if ( roominfo === undefined ) return null;
 
-  const onChange = nm => e => {
-    const val = e.target.value;
-    const sideEffect = getSideEffect( nm, e.target.value );
-    updateRoominfo( draft => { Object.assign( draft, { [nm]: val }, sideEffect ); } );
-  };
+  const onChange = createOnChange( roominfo, updateRoominfo );
 
   const caveatdisp = caveat ? <span>{caveat}</span> : <></>;
 
