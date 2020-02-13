@@ -36,7 +36,7 @@ const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children}) =
   };
 
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'dotted', padding: '5px', margin:'5px'}}>
+    <div style={{display:'flex', flexFlow:'column', padding: '5px', margin:'5px'}}>
       <CondDisplay showif={idx>0}>
         <Entry
           label="Name"
@@ -119,9 +119,14 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
     if ( child != null ) cldrn.push( child );
   };
 
-  return ( <div>
-             {cldrn}
-           </div> );
+  return cldrn.length ? (
+    <>
+      <h3>Extras</h3>
+	  <div className="page-content">
+        {cldrn}
+      </div>
+    </>
+  ) : null;
 };
 
 export default EventOptions;

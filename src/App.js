@@ -25,32 +25,48 @@ function App() {
   const updateEventFees = useCallback( updateSubField('fees'), [updateSubField] );
 
   var cost = event.event.price ? parseInt( event.event.price ) : 0;
+  cost *= event.contact.count;
   Object.entries( event.fees ).forEach( ([_,fees]) => {
     fees.forEach(indivFees => {
-      Object.entries(indivFees).forEach( ([_,fee]) => { cost+=fee; } );
+      Object.entries(indivFees).forEach( ([_,fee]) => { cost += fee; } );
     } );
   } );
 
   return (
     <div className="App">
-      <EventSelect
-        eventinfo={event.event}
-        updateEventinfo={updateEventinfo}
-      />
-      <div style={{display:'flex', flexFlow:'row', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
-    <span style={{margin:'0 10px', fontStyle: 'italic'}}>COST:</span><span>{cost}</span>
+      <div id="content" style={{width:'80%'}}>
+        <h3>COST:</h3>
+	    <div className="page-content">
+          {cost.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
+        </div>
       </div>
-      <ContactDetails
-        contactinfo={event.contact}
-        updateContactinfo={updateContactinfo}
-      />
-      <EventOptions
-        eventType={event.event.type}
-        eventinfo={event}
-        updateEventOptions={updateEvent}
-        updateEventFees={updateEventFees}
-        cnt={event.contact.count}
-      />
+      <div id="content" style={{width:'80%'}}>
+        <h3>Event Details</h3>
+	    <div className="page-content">
+          <EventSelect
+            eventinfo={event.event}
+            updateEventinfo={updateEventinfo}
+          />
+        </div>
+      </div>
+      <div id="content" style={{width:'80%'}}>
+        <h3>Contact Details</h3>
+	    <div className="page-content">
+          <ContactDetails
+            contactinfo={event.contact}
+            updateContactinfo={updateContactinfo}
+          />
+        </div>
+      </div>
+      <div id="content" style={{width:'80%'}}>
+        <EventOptions
+          eventType={event.event.type}
+          eventinfo={event}
+          updateEventOptions={updateEvent}
+          updateEventFees={updateEventFees}
+          cnt={event.contact.count}
+        />
+      </div>
       <Button
         name="display"
         variant='contained'

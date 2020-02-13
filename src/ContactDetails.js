@@ -20,7 +20,7 @@ const ContactDetails = ( {contactinfo, updateContactinfo} ) => {
     updateContactinfo( draft => {Object.assign( draft, { [nm]: val }); } );
   };
   return (
-    <div style={{display:'flex', flexFlow:'column', width:'40%', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <div style={{display:'flex', flexFlow:'column', padding: '5px', margin:'5px'}}>
       <Entry
         label="First and last name"
         value={contactinfo.fullname}

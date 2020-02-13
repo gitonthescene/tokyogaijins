@@ -36,7 +36,7 @@ const Unryu = ( {unryuinfo, updateUnryuinfo, updateEventFees} ) => {
   const onChange = createOnChange( unryuinfo, updateUnryuinfo, updateEventFees, prices );
 
   return (
-    <>
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <Choice
         nm='hikingboots'
         items={YesNo}
@@ -85,7 +85,7 @@ const Unryu = ( {unryuinfo, updateUnryuinfo, updateEventFees} ) => {
         onChange={onChange('goggles')}
         price={prices.goggles}
       />
-    </>
+    </div>
   );
 };
 

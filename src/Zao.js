@@ -31,7 +31,7 @@ const Zao = ( {zaoinfo, updateZaoinfo, updateEventFees} ) => {
   const onChange = createOnChange( zaoinfo, updateZaoinfo, updateEventFees, prices );
 
   return (
-    <div  style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
+    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
       <RentalLessonInfo
         eventType='S'
         rentallessoninfo={zaoinfo}
