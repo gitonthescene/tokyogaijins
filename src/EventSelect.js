@@ -12,7 +12,7 @@ const Choice = ({nm, label, items, value, ...props}) => {
 //  const listitems = items.filter( itm => itm.type === "C"  ).map( itm =>  (
   const listitems = items.map( itm =>  (
     <MenuItem value={itm.e_id} key={itm.e_id} {...props}>
-      {itm.name} {itm.type}
+      {itm.name}
     </MenuItem>
   ) );
   listitems.unshift( <MenuItem value='' key=''>&nbsp;</MenuItem> );
@@ -49,7 +49,7 @@ const EventSelect = ( {eventinfo, updateEventinfo} ) => {
   eventsByID[''] = {e_id:''};
   useEffect( () => {
     fetchres( "/php/fetchevents.php" ).then(
-      data => { setEvents( data ); }
+      data => { setEvents( data ) }
     );
   }, [ setEvents ]);
   

@@ -1,0 +1,212 @@
+#ic_signupform .elcontainer {
+  text-align: left;
+  max-width: 300px;
+  border-radius: 0px;
+  font-size: 12px;
+  color: #226699;
+  font-family: arial;
+}
+#ic_signupform .elcontainer.center-aligned .formEl {
+  margin-right: auto;
+  margin-left: auto;
+}
+#ic_signupform .elcontainer.right-aligned .formEl {
+  margin-left: auto;
+}
+#ic_signupform .form-header {
+  display: none;
+  background: #ffffff;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  margin-bottom: 10px; /* using padding on purpose */
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  border-radius: calc(0px - 1px) calc(0px - 1px) 0 0;
+  text-align: center;
+  font-size: 150%;
+  color: #333333;
+  border-bottom: 1px solid #dddddd;
+}
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-input label,
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-dropdown label,
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-checkbox h3,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-input label,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-dropdown label,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-checkbox h3 {
+  width: 30%;
+}
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-checkbox h3,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-checkbox h3 {
+  line-height: 3em;
+}
+#ic_signupform .elcontainer.tight.inline-label-left .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.tight.inline-label-left .formEl.fieldtype-checkbox h3,
+#ic_signupform .elcontainer.tight.inline-label-right .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.tight.inline-label-right .formEl.fieldtype-checkbox h3 {
+  line-height: 2em;
+}
+#ic_signupform .elcontainer.generous.inline-label-left .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.generous.inline-label-left .formEl.fieldtype-checkbox h3,
+#ic_signupform .elcontainer.generous.inline-label-right .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer.generous.inline-label-right .formEl.fieldtype-checkbox h3 {
+  line-height: 4em;
+}
+#ic_signupform .elcontainer.inline-label-left .formEl input[type="text"],
+#ic_signupform .elcontainer.inline-label-left .formEl select,
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-radio .option-container,
+#ic_signupform .elcontainer.inline-label-left .formEl.fieldtype-checkbox .option-container,
+#ic_signupform .elcontainer.inline-label-right .formEl input[type="text"],
+#ic_signupform .elcontainer.inline-label-right .formEl select,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-radio .option-container,
+#ic_signupform .elcontainer.inline-label-right .formEl.fieldtype-checkbox .option-container {
+  width: 70%;
+}
+#ic_signupform .elcontainer.hidden-label .formEl.required:before {
+  color: #000000;
+}
+#ic_signupform .elcontainer .formEl {
+  border: medium none;
+  box-shadow: 1px 6px 18px -3px rgba(0, 0, 0, 0.3) inset;
+  position: relative;
+  background: #FFF;
+  padding: 0px;
+  width: 100%;
+  border-radius: 4px;
+  display: inline-block;
+  opacity:0.7;
+}
+#ic_signupform .elcontainer .formEl.fieldtype-input label,
+#ic_signupform .elcontainer .formEl.fieldtype-dropdown label,
+#ic_signupform .elcontainer .formEl.fieldtype-radio h3,
+#ic_signupform .elcontainer .formEl.fieldtype-checkbox h3 {
+  font-weight: bold;
+  color: #226699;
+}
+#ic_signupform .elcontainer .formEl.fieldtype-input input[type="text"],
+#ic_signupform .elcontainer .formEl.fieldtype-dropdown select {
+  float: left;
+  display: inline-block;
+  height: 37px;
+  box-sizing: border-box;
+  background: none repeat scroll 0% 0%;
+  box-shadow: none;
+  border: medium none;
+  border-radius: 0px;
+  margin: 0;
+  width: 65%;
+  padding: 5px 6px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #555555;
+}
+#ic_signupform .elcontainer .formEl.fieldtype-input input[type="text"],
+#ic_signupform .elcontainer .formEl.fieldtype-dropdown select,
+#ic_signupform .elcontainer .formEl.fieldtype-radio label,
+#ic_signupform .elcontainer .formEl.fieldtype-checkbox label {
+  font-size: 100%;
+}
+#ic_signupform .elcontainer .formEl input[type="text"]::-moz-placeholder {
+  color: #bdbdbf;
+  font-family: inherit;
+}
+#ic_signupform .elcontainer .formEl input[type="text"]::-webkit-input-placeholder {
+  color: #bdbdbf;
+  font-family: inherit;
+}
+#ic_signupform .elcontainer .formEl input[type="text"]:-ms-input-placeholder {
+  color: #bdbdbf;
+  font-family: inherit;
+}
+#ic_signupform .elcontainer .formEl input[type="text"],
+#ic_signupform .elcontainer .formEl select,
+#ic_signupform .elcontainer .formEl .option-container label {
+  color: #000000;
+  margin: 0;
+  font-family: inherit;
+}
+#ic_signupform .elcontainer.inline-button .submit-container {
+  display: inline-block;
+  box-sizing: border-box;
+  right: -.5em;
+  padding: 0 1em 0 0;
+  position: relative;
+  vertical-align: bottom;
+  margin-bottom: 1em;
+}
+#ic_signupform .elcontainer.inline-button.tight .sortables {
+  margin-bottom: -.5em;
+}
+#ic_signupform .elcontainer.inline-button .sortables {
+  margin-bottom: -1em;
+}
+#ic_signupform .elcontainer.inline-button.generous .sortables {
+  margin-bottom: -1.5em;
+}
+#ic_signupform .elcontainer .submit-container {
+  text-align: center;
+}
+#ic_signupform .elcontainer .submit-container input[type="submit"] {
+  float: right;
+  position: relative;
+  background: transparent linear-gradient(to bottom, #555666 0%, #000 100%) repeat scroll 0% 0% / 100% 200%;
+  padding: 9px 13px 10px;
+  margin:0;
+  width: 35%;
+  border-width: 0px 0px 0px;
+  border-style: none none solid;
+  border-color: -moz-use-text-color -moz-use-text-color #000;
+    -moz-border-top-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+  border-image: none;
+  color: #FFF;
+  text-transform: uppercase;
+  font: 700 14px/18px 'Oswald',Arial, sans-serif;
+  transition: all 0.4s ease 0s;
+  border-radius: 0px 4px 4px 0;
+}
+.footer-border li {
+    list-style: none;
+}
+.second-footer a {
+    text-decoration: none;
+    color: #68C7E6
+}
+
+.second-footer .contact-footer .footer-border ul li a {
+}
+
+.footer-border a {
+}
+
+.footer-border a img {
+    vertical-align: middle;
+}
+.footer-border {
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    vertical-align: top;
+    border-top: 3px solid #FFF;
+    border-right: 3px solid transparent;
+    border-left: 3px solid transparent;
+    content: "";
+}
+.caret {
+    margin-top: 10px;
+    margin-left: 0;
+    opacity: 0.8;
+}

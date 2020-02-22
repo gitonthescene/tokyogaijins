@@ -1,3 +1,5 @@
 {
-    "baseurl": "https://tokyogaijins.com"
+    "baseurl": "https://tokyogaijins.com",
+    "debug": "false",
+    "clientId": "AYfSRIK__d5nLo5mP8E_QsLTqrX40DJFBi7hk1g5-S5ZNpaw0SptlV8wpUDH8blhY6f5OH8P31mM2sBJ"
 }

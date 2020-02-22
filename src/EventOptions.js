@@ -42,7 +42,7 @@ const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children}) =
 
   return (
     <div style={{display:'flex', flexFlow:'column', padding: '5px', margin:'5px'}}>
-      <CondDisplay showif={idx>0}>
+      <CondDisplay showif={true}>
         <Entry
           label="Name"
           value={personalinfo.name}

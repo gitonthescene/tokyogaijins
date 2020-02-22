@@ -1,3 +1,5 @@
 {
-    "baseurl": "http://localhost:3005"
+  "baseurl": "http://localhost:3005",
+  "debug": "true",
+  "clientId": "Ae1NbbnqAWYjlwYI2P_NGNo-1IYUTIJLp2BeN2dDW2amG-kBjw9VfbTMXrauVKLIP9kRzIltFp_lVpvB"
 }
