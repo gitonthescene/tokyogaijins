@@ -1,3 +1,5 @@
+export const COMMENT_MAX_LENGTH = 256;
+
 export const sexes = [
   'Male',
   'Female'

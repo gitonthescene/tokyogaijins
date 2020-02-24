@@ -11,7 +11,15 @@ import Trekking, { trekking_def } from './Trekking';
 import Oshima, { oshima_def } from './Oshima';
 import Fuji, { fuji_def } from './Fuji';
 import CondDisplay from './components/CondDisplay';
-import Entry from './components/Entry';
+import PersonalDetails from './PersonalDetails';
+
+const personalinfo_def = () => {return {
+  name: '',
+  age: '',
+  sex: 'Female',
+  cellphone: '',
+  email: '',
+}};
 
 // This must contain all the keys in the useEffect function below!!
 const optkeys = ['camping', 'dolphin', 'fuji', 'oshima', 'snowmonkey', 'nightstay', 'skisno', 'trekking', 'unryu', 'zao'];
@@ -26,27 +34,24 @@ const resetDraft = (draft, cnt, nm, def) => {
       const arr = Array.apply( null, Array( c ) ).map( (x,i) => f(i) );
       return arr;
     };
-    const defs = copyXTimes( i=>[{name:'', idx: i},def()], count )
+    const defs = copyXTimes( i=>[{...personalinfo_def(), idx: i},def()], count )
     const fees = copyXTimes( i=>{return{}}, count )
     Object.assign( draft, { [nm]: defs });
     Object.assign( draft.fees, { [nm]: fees });
   }
 };
 
-const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children}) => {
+const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children, register, errors}) => {
   if ( personalinfo === undefined ) return null;
-  const onChange = nm => e => {
-    const val = e.target.value;
-    updatePersonalinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
-  };
 
   return (
     <div style={{display:'flex', flexFlow:'column', padding: '5px', margin:'5px'}}>
       <CondDisplay showif={true}>
-        <Entry
-          label="Name"
-          value={personalinfo.name}
-          onChange={onChange('name')}
+        <PersonalDetails
+          personalinfo={personalinfo}
+          updatePersonalinfo={updatePersonalinfo}
+          register={register}
+          errors={errors}
         />
       </CondDisplay>
       {children}
@@ -54,7 +59,7 @@ const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children}) =
   );
 };
 
-const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFees, cnt} ) => {
+const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFees, cnt, register, errors} ) => {
   useEffect( () => {
     if ( eventType === "C" )      updateEventOptions( draft => { resetDraft(draft, cnt, 'camping',    campinginfo_def); } );
     else if ( eventType === "D" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'dolphin',    dolphininfo_def); } );
@@ -150,7 +155,11 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
              personalinfo={eventinfo[ky] && eventinfo[ky][i] && eventinfo[ky][i][0]}
              updatePersonalinfo={updatePersonalInfo(ky, i)}
              idx={i}
-             key={i}>{el}</PersonalizedOption>;
+             key={i}
+             register={register}
+             errors={errors}>
+             {el}
+           </PersonalizedOption>;
   };
 
   var cldrn = [];

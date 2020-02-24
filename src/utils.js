@@ -113,3 +113,24 @@ export const formatMail = state => {
   if ( DEBUG ) console.log( out );
   return marked(out);
 };
+
+export const borderOnErrors = ( nm, errors ) => {
+  if ( errors && errors[nm])
+    var ret = {
+      border:'solid',
+      borderLeftStyle: 'dotted',
+      borderTopStyle: 'none',
+      borderBottomStyle: 'none',
+      borderRightStyle: 'dotted',
+      borderColor: 'red'
+    };
+  else
+    ret = { border: 'none' };
+
+  return ret;
+};
+
+export const requiredLabel = ( label, errors ) => {
+  return label + ((errors && errors.fullname) ? " (required)" : "" );
+};
+

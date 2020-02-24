@@ -1,17 +1,20 @@
 import React from 'react';
 
 import RentalLessonInfo, { rentallessoninfo_def } from './RentalLessonInfo';
+import Room, { room_def } from './Room';
 import Choice from './components/Choice';
 
-import { YesNo } from './constants';
+import { YesNo, roomOptsByEvent } from './constants';
 import { createOnChange } from './utils';
 
 export const zao_def = () => {
+  const room = room_def();
   const rental = rentallessoninfo_def();
   return {
     snowmonster: 'No',
     foxvillage: 'No',
-    ...rental
+    ...rental,
+    ...room,
   };
 };
 
@@ -53,6 +56,14 @@ const Zao = ( {zaoinfo, updateZaoinfo, updateEventFees} ) => {
         label="Fox Village Trip"
         onChange={onChange('foxvillage')}
       />
+      <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+        <Room
+          roominfo={zaoinfo}
+          updateRoominfo={updateZaoinfo}
+          tentOrRoom='Room'
+          roomOpts={roomOptsByEvent.Z}
+        />
+      </div>
     </div>
   );
 };

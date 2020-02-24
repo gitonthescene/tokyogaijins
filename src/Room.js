@@ -1,6 +1,7 @@
 import React from 'react';
 
 import CondDisplay from './components/CondDisplay';
+import Entry from './components/Entry';
 import Choice from './components/Choice';
 
 import { YesNo, mealOpts } from './constants';
@@ -10,6 +11,8 @@ export const room_def = () => {return {
   room: undefined,
   roompref: '',
   mealpref: 'No preference',
+  age: '',
+  address: '',
 }};
 
 // Changes to the general state if one state changes
@@ -57,6 +60,16 @@ const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts, caveat} ) => {
         value={roominfo.mealpref}
         label="Meal preference"
         onChange={onChange('mealpref')}
+      />
+      <Entry
+        label="Age (for emergency and travel insurance purposes)"
+        value={roominfo.age}
+        onChange={onChange('age')}
+      />
+      <Entry
+        label="Address (for emergency and travel insurance purposes)"
+        value={roominfo.address}
+        onChange={onChange('address')}
       />
       {caveatdisp}
     </>
