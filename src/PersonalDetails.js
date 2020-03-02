@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Button from '@material-ui/core/Button';
+
 import CondDisplay from './components/CondDisplay';
 import Entry from './components/Entry';
 import Choice from './components/Choice';
@@ -7,11 +9,23 @@ import Choice from './components/Choice';
 import { sexes } from './constants';
 import { borderOnErrors, requiredLabel } from './utils';
 
-const PersonalDetails = ({personalinfo, updatePersonalinfo, register, errors}) => {
+const PersonalDetails = ({personalinfo, updatePersonalinfo, idx, contact, register, errors}) => {
   if ( personalinfo === undefined ) return null;
+
   const onChange = nm => e => {
     const val = e.target.value;
     updatePersonalinfo( draft => { Object.assign( draft, { [nm]: val } ); } );
+  };
+
+  const copyFromContact = e => {
+    updatePersonalinfo( draft => {
+      Object.assign(draft, {
+        name: contact.fullname,
+        sex: contact.sex,
+        cellphone: contact.cellphone,
+        email: contact.email
+      });
+    });
   };
 
   return (
@@ -57,6 +71,15 @@ const PersonalDetails = ({personalinfo, updatePersonalinfo, register, errors}) =
           inputRef={register({required: true, pattern:/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/, maxLength:128})}
           style={borderOnErrors('personal:email', errors)}
         />
+        <CondDisplay showif={idx===0}>
+        <Button
+          onClick={copyFromContact}
+          size="small"
+          variant="outlined"
+          style={{marginTop:'5px'}}>
+          Copy from Contact Details
+        </Button>
+      </CondDisplay>
       </CondDisplay>
     </div>
   );

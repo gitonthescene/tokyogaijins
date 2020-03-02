@@ -21,8 +21,10 @@ const personalinfo_def = () => {return {
   email: '',
 }};
 
+const null_def = () => { return {}; };
+
 // This must contain all the keys in the useEffect function below!!
-const optkeys = ['camping', 'dolphin', 'fuji', 'oshima', 'snowmonkey', 'nightstay', 'skisno', 'trekking', 'unryu', 'zao'];
+const optkeys = ['camping', 'dolphin', 'fuji', 'oshima', 'snowmonkey', 'nightstay', 'skisno', 'trekking', 'unryu', 'zao', 'null'];
 const resetDraft = (draft, cnt, nm, def) => {
   const kys = optkeys;
   const count = parseInt( cnt );
@@ -41,7 +43,7 @@ const resetDraft = (draft, cnt, nm, def) => {
   }
 };
 
-const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children, register, errors}) => {
+const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children, contact, register, errors}) => {
   if ( personalinfo === undefined ) return null;
 
   return (
@@ -50,6 +52,8 @@ const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children, re
         <PersonalDetails
           personalinfo={personalinfo}
           updatePersonalinfo={updatePersonalinfo}
+          idx={idx}
+          contact={contact}
           register={register}
           errors={errors}
         />
@@ -64,6 +68,7 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
     if ( eventType === "C" )      updateEventOptions( draft => { resetDraft(draft, cnt, 'camping',    campinginfo_def); } );
     else if ( eventType === "D" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'dolphin',    dolphininfo_def); } );
     else if ( eventType === "F" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'fuji',       fuji_def); } );
+    else if ( eventType === "G" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'general',    null_def); } );
     else if ( eventType === "I" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'oshima',     oshima_def); } );
     else if ( eventType === "M" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'snowmonkey', snowmonkey_def); } );
     else if ( eventType === "N" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'nightstay',  nightstay_def); } );
@@ -107,6 +112,9 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
              fujiinfo={eventinfo.fuji && eventinfo.fuji[i] && eventinfo.fuji[i][1]}
              updateFujiinfo={updateEventInfo('fuji', i)}
              updateEventFees={updateEventFeesI('fuji', i)}/>;
+    } else if ( typ === "G" ) {
+      ky = 'general';
+      el = null;
     } else if ( typ === "I" ) {
       ky = 'oshima';
       el = <Oshima
@@ -154,6 +162,7 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
     return <PersonalizedOption
              personalinfo={eventinfo[ky] && eventinfo[ky][i] && eventinfo[ky][i][0]}
              updatePersonalinfo={updatePersonalInfo(ky, i)}
+             contact={eventinfo.contact}
              idx={i}
              key={i}
              register={register}
@@ -171,7 +180,7 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
 
   return cldrn.length ? (
     <>
-      <h3>Extras</h3>
+      <h3>Participant Details</h3>
 	  <div className="page-content">
         {cldrn}
       </div>
