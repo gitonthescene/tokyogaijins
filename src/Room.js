@@ -1,7 +1,6 @@
 import React from 'react';
 
 import CondDisplay from './components/CondDisplay';
-import Entry from './components/Entry';
 import Choice from './components/Choice';
 
 import { YesNo, mealOpts } from './constants';
@@ -11,8 +10,6 @@ export const room_def = () => {return {
   room: undefined,
   roompref: '',
   mealpref: 'No preference',
-  age: '',
-  address: '',
 }};
 
 // Changes to the general state if one state changes
@@ -23,12 +20,10 @@ export const getSideEffect = (nm, val) => {
   return {};
 };
 
-const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts, caveat} ) => {
+const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts} ) => {
   if ( roominfo === undefined ) return null;
 
   const onChange = createOnChange( roominfo, updateRoominfo );
-
-  const caveatdisp = caveat ? <span>{caveat}</span> : <></>;
 
   // Indent room preference if optional
   const margin = roominfo.room === undefined ? '0px' :'10px';
@@ -61,17 +56,6 @@ const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts, caveat} ) => {
         label="Meal preference"
         onChange={onChange('mealpref')}
       />
-      <Entry
-        label="Age (for emergency and travel insurance purposes)"
-        value={roominfo.age}
-        onChange={onChange('age')}
-      />
-      <Entry
-        label="Address (for emergency and travel insurance purposes)"
-        value={roominfo.address}
-        onChange={onChange('address')}
-      />
-      {caveatdisp}
     </>
   );
 };
