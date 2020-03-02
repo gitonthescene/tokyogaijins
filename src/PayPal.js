@@ -3,7 +3,23 @@ import ReactDOM from 'react-dom';
 import scriptLoader from 'react-async-script-loader';
 import { clientId as CLIENTID } from './config.json';
 
-const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, ...props}) => {
+
+const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, cost, ...props}) => {
+
+  const createOrder = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: cost,
+          currency_code: 'JPY'
+        }
+      }],
+      application_context: {
+        shipping_preference: "NO_SHIPPING",
+      }
+    });
+  };
+
   const [ showButton, setShowButton ] = useState( false );
 
   useEffect( () => {
@@ -24,6 +40,7 @@ const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, ...props
     return (
       <PayPalButton
         onInit={onInit}
+        createOrder={createOrder}
         {...props}
       />
     );

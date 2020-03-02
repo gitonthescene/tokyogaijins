@@ -1,5 +1,4 @@
-import {debug as DEBUG} from './config.json';
-import marked from 'marked';
+import { baseurl as BASEURL } from './config.json';
 
 export const createOnChange = ( state, update, updatefees=undefined, prices={}, combo={}, getsideeffect=undefined ) => {
   const { restoreComboElementsAll, clearComboAll } = combo;
@@ -78,42 +77,6 @@ export const mobileAndTabletcheck = () => {
   return check;
 };
 
-export const formatMail = state => {
-  //var out = JSON.stringify(state, undefined, 2) + "\n\n";
-  var out = "# Event\n";
-  out += `***${state.event.name}***\n`;
-  if ( DEBUG ) console.log( state );
-  var headers = Object.keys(state.contact);
-  out += "\n## Contact info\n";
-  out += headers.join(" | ") + "\n";
-  out += headers.map( k => "-".repeat(k.length) ).join(" | ") + "\n";
-  var row = Object.values( state.contact );
-  // Convert to strings first and then check the length for empty strings
-  out += row.map( k => k+'' ).map( k => k.length > 0 ? k : "-" ).join(" | ") + "\n";
-  out += "\n";
-  if ( Object.entries(state.fees).length === 0 ) {
-    if ( DEBUG ) console.log( out );
-    return marked(out);
-  }
-  // There should only be one key under state.fees and it should be
-  // the key of the set of options in state
-  const eventType = Object.keys(state.fees)[0];
-  const optionlst = state[eventType];
-  const opts = Object.keys(optionlst[0][1]);
-  headers = ['nickname', ...opts];
-  out += "\n## Extras\n";
-  out += headers.join(" | ") + "\n";
-  out += headers.map( k => "-".repeat(k.length) ).join(" | ") + "\n";
-  optionlst.forEach( person => {
-    const row = Object.values( person[1] );
-    // Convert to strings first and then check the length for empty strings
-    out += [person[0].name, ...row].map( k => k+'' ).map( k => k.length > 0 ? k : "-" ).join(" | ") + "\n";
-  });
-  out += "\n";
-  if ( DEBUG ) console.log( out );
-  return marked(out);
-};
-
 export const borderOnErrors = ( nm, errors ) => {
   if ( errors && errors[nm])
     var ret = {
@@ -132,5 +95,45 @@ export const borderOnErrors = ( nm, errors ) => {
 
 export const requiredLabel = ( label, errors ) => {
   return label + ((errors && errors.fullname) ? " (required)" : "" );
+};
+
+const postdata = ( url, formData, args ) => {
+  return fetch(url,
+               { method: 'POST',
+                 mode: 'cors',
+                 credentials: 'include',
+                 body: formData,
+                 ...args
+               });
+};
+
+export const logSignup = (state, booked) => {
+  const formData = new FormData();
+
+  formData.append( "e_id", state.event.e_id );
+  formData.append( "wl", booked ? "1" : "0");
+  formData.append( "evtname", state.event.name );
+  formData.append( "fullname", state.contact.fullname );
+  formData.append( "count", state.contact.count );
+  formData.append( "sex", state.contact.sex === 'Male' ? "0" : "1" );
+  formData.append( "comments", state.other.comments );
+  formData.append( "age", "0" );
+  formData.append( "country", state.contact.nationality );
+  formData.append( "email", state.contact.email );
+  formData.append( "cellphone", state.contact.cellphone );
+  formData.append( "japanAddress", "" );
+
+  return postdata( BASEURL+'/php/react-signup.php', formData );
+};
+
+export const postMail = ( state, renderMail ) => {
+  const formData = new FormData();
+
+  formData.append( "body", "<pre>\n"+renderMail( state )+"</pre>" );
+  formData.append( "e_id", state.event.e_id );
+  formData.append( "fullname", state.contact.fullname );
+  formData.append( "email", state.contact.email );
+
+  return postdata( BASEURL+'/php/react-mail.php', formData );
 };
 
