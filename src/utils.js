@@ -137,3 +137,8 @@ export const postMail = ( state, renderMail ) => {
   return postdata( BASEURL+'/php/react-mail.php', formData );
 };
 
+export const isBooked = state => {
+  const countppl = parseInt(state.event.count);
+  const maxppl = parseInt( state.event.max );
+  return ( ! state.event.e_id || ( (maxppl > 0) && (countppl >= maxppl) ) );
+}

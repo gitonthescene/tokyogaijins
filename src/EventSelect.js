@@ -48,11 +48,12 @@ const EventSelect = ( {eventinfo, updateEventinfo} ) => {
   const eventsByID = Object.fromEntries( events.map( itm => [itm.e_id, itm] ) );
   eventsByID[''] = {e_id:''};
   useEffect( () => {
+    console.log( "here1" );
     fetchres( "/php/fetchevents.php" ).then(
       data => { setEvents( data ) }
     );
   }, [ setEvents ]);
-  
+  useEffect( () => { console.log( "here" ); }, [setEvents] );
   return (
     <div style={{display:'flex', flexFlow:'column', padding: '5px', margin:'5px'}}>
       <Choice

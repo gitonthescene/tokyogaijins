@@ -8,18 +8,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { renderMail } from './ConfirmationMail';
 
 import { useImmer } from "use-immer";
 
 import { NativeContext } from './components/MenuItem';
-import { contactDetails_def } from './ContactDetails';
-import { event_def } from './Reservation';
-
+import Reservation, { defaults } from './Reservation';
+import { mobileAndTabletcheck, logSignup, postMail, isBooked } from './utils';
+import Payment from './Payment';
 import Header from './Header.js';
 import Footer from './Footer.js';
-
-import { mobileAndTabletcheck } from './utils';
-import Reservation from './Reservation';
 
 const AlertReservedDialog = ({open, close, message}) => {
   return (
@@ -44,15 +42,8 @@ const AlertReservedDialog = ({open, close, message}) => {
 };
 
 function App() {
-  const defaults = () => {return {
-    event: event_def(),
-    contact: contactDetails_def(),
-    fees: {},
-    other: {comments:'', consent: false, checked: false}
-  };};
-
-  const [event, updateEvent] = useImmer( defaults() );
   const [dstate, updateDstate] = useImmer( { open: false } );
+  const [event, updateEvent] = useImmer( defaults() );
 
   const openDialog = (message, redirect) => {
     updateDstate( draft => { return { open: true, message: message, redirect: redirect }; } );
@@ -63,14 +54,31 @@ function App() {
     if ( dstate.redirect ) window.location = dstate.redirect;
   };
 
+  const onApprove = (data, actions) => {
+    const booked = isBooked( event );
+    return actions.order.capture().then(function(details) {
+      logSignup( event, booked )
+        .then( () => postMail( event, renderMail ) )
+        .then( () => {
+          updateEvent( draft => defaults() );
+          openDialog( "Thank you!" );
+        });
+    });
+  };
+
   const native=mobileAndTabletcheck();
 
   const routes = [
     {
-      path: ["/student/:id", "/student"],
+      path: ["/payment"],
       exact: false,
-      title: () => "Student",
-      main: () => <></>
+      title: () => "Payment",
+      main: () => <Payment
+                    openDialog={openDialog}
+                    onApprove={onApprove}
+                    onInit={undefined}
+                    event={event}
+                  />
     },
     {
       path: "/",
@@ -80,7 +88,7 @@ function App() {
                     openDialog={openDialog}
                     event={event}
                     updateEvent={updateEvent}
-                    defaults={defaults}/>
+                  />
     },
   ];
 
@@ -89,7 +97,7 @@ function App() {
         key={index}
         path={route.path}
         exact={route.exact}
-        component={route.main}
+        children={route.main}
       />
   ));
 

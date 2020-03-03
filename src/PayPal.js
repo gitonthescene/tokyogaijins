@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import scriptLoader from 'react-async-script-loader';
 import { clientId as CLIENTID } from './config.json';
 
-
 const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, cost, ...props}) => {
 
   const createOrder = (data, actions) => {
@@ -30,8 +29,10 @@ const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, cost, ..
 
   const onInit = ( data, actions ) => {
     // Capture actions for manipulation outside of this component
-    actions.disable();
-    if ( setPayPalActions ) setPayPalActions( actions );
+    if ( setPayPalActions ) {
+      setPayPalActions( actions );
+      actions.disable();
+    }
   };
   
   if ( showButton ) {

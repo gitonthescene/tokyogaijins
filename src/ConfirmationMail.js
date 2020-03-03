@@ -2,16 +2,19 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
+const skipKeys = {
+  idx: 1,
+};
+
 const ConfirmationMail = ({state}) => {
 
   const Row = ({name,val}) => <tr key={name}><th>{name}</th><td>{val}</td></tr>;
   const Person = ({person}) => {
     return (
       <>
-        <hr/>
         <table className="confirm">
           <tbody>
-            { Object.entries( person[0] ).map( ([k,v]) => <Row name={k} val={v} key={k}/>) }
+            { Object.entries( person[0] ).filter(([k]) => !skipKeys[k] ).map( ([k,v]) => <Row name={k} val={v} key={k}/>) }
           </tbody>
         </table>
         <table className="confirm">

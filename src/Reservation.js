@@ -4,8 +4,10 @@ import React, {useCallback, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import PayPalButton from './PayPal';
-import { useImmer } from "use-immer";
+
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import json2mq from 'json2mq';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import EventSelect from './EventSelect';
@@ -15,13 +17,12 @@ import CondDisplay from './components/CondDisplay';
 import Entry from './components/Entry';
 import { buttonSize } from './Payment';
 
-import { baseurl as BASEURL, debug as DEBUG } from './config.json';
+import { debug as DEBUG } from './config.json';
 import { COMMENT_MAX_LENGTH } from './constants';
-import { borderOnErrors } from './utils';
 import { renderMail } from './ConfirmationMail';
-import { logSignup, postMail } from './utils';
+import { borderOnErrors, logSignup, postMail, isBooked } from './utils';
 
-export const event_def = () => {return {
+const event_def = () => {return {
   e_id: '',
   count: '0',
   max: '0',
@@ -47,12 +48,21 @@ const ConsentXbox = ({state, toggleCheck, register, errors}) => {
   );
 };
 
-const Reservation = ({openDialog, event, updateEvent, defaults}) => {
+export const defaults = () => {return {
+  event: event_def(),
+  contact: contactDetails_def(),
+  fees: {},
+  other: {comments:'', consent: false}
+};};
+
+
+const Reservation = ({openDialog, event, updateEvent}) => {
+  // const [event, updateEvent] = useImmer( defaults() );
   const { register, handleSubmit, errors, formState } = useForm();
 
-  const countppl = parseInt(event.event.count);
-  const maxppl = parseInt( event.event.max );
-  const booked = ! event.event.e_id || ( (maxppl > 0) && (countppl >= maxppl) );
+  const booked = isBooked(event);
+  const history = useHistory();
+  const matches = useMediaQuery( json2mq({minWidth:750}) );
 
   const updateSubField = useCallback(
     key => cb => { updateEvent( draft => { cb(draft[key]); } ); },
@@ -104,54 +114,15 @@ const Reservation = ({openDialog, event, updateEvent, defaults}) => {
       });
   };
 
-  const bookAndRedirect = (name, redirect) => () => {
-    return logSignup( event, booked )
-      .then( () => postMail( event, renderMail ) )
-      .then( () => {
-        openDialog( "Please follow instructions for payment", redirect );
-      })
-      .catch( e => {
-        console.log( "Trouble with " + name + ":" + e.message );
-      });
-  };
-
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      purchase_units: [{
-        amount: {
-          value: cost,
-          currency_code: 'JPY'
-        }
-      }],
-      application_context: {
-        shipping_preference: "NO_SHIPPING",
-      }
-    });
-  };
-
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then(function(details) {
-      logSignup( event, booked )
-        .then( () => postMail( event, renderMail ) )
-        .then( () => {
-          updateEvent( draft => defaults() );
-          openDialog( "Thank you!" );
-        });
-    });
-  };
-
   const validateForm = () => {
     // Check if validated, if not say so
     // validation should enable paypalactions
     handleSubmit(() => {})();
   };
 
-  const setPayPalActions = actions => {
-    updateOther( draft => { draft.paypalactions = actions; } );
+  const toPayment = () => {
+    history.push( "/payment" );
   };
-
-  const onClickPay = e => { updateOther( draft => { draft.checked = 1; } ); };
-
   return (
     <>
       <div className="App">
@@ -202,7 +173,7 @@ const Reservation = ({openDialog, event, updateEvent, defaults}) => {
                   onClick={handleSubmit(bookIt("waitlist"))}
                   size="large"
                   color="primary"
-                  style={{margin:'5px', width:'50%', ...buttonSize()}}>
+                  style={{margin:'5px', width:'50%', ...buttonSize(matches)}}>
                   Join Wait list
                 </Button>
               </CondDisplay>
@@ -251,40 +222,12 @@ const Reservation = ({openDialog, event, updateEvent, defaults}) => {
                 {cost.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
               </div>
               <CondDisplay showif={cost}>
-                <CondDisplay showif={!event.other.checked || !formState.isValid}>
-                  <Button
-                    name="display"
-                    variant='contained'
-                    onClick={handleSubmit(onClickPay)}>
-                    Pay
-                  </Button>
-                </CondDisplay>
-                <CondDisplay showif={event.other.checked && formState.isValid} hide={true}>
-                  <PayPalButton
-                    createOrder={createOrder}
-                    onApprove={onApprove}
-                    onClick={validateForm}
-                    setPayPalActions={setPayPalActions}
-                  />
-                  <Button
-                    name="display"
-                    variant='contained'
-                    onClick={handleSubmit(bookAndRedirect("waitlist", BASEURL+"/payment.php"))}
-                    size="large"
-                    color="primary"
-                    style={{margin:'5px', width:'50%', ...buttonSize()}}>
-                    Bank transfer
-                  </Button><br/>
-                  <Button
-                    name="display"
-                    variant='contained'
-                    onClick={handleSubmit(bookAndRedirect("waitlist", BASEURL+"/cash-thru-atm.php"))}
-                    size="large"
-                    color="primary"
-                    style={{margin:'5px', width:'50%', ...buttonSize()}}>
-                    ATM payment
-                  </Button>
-                </CondDisplay>
+                <Button
+                  name="display"
+                  variant='contained'
+                  onClick={handleSubmit(toPayment)}>
+                  Pay
+                </Button>
               </CondDisplay>
             </div>
           </div>
