@@ -2,17 +2,40 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  ctable: {
+    marginBbottom:'16px',
+    width: '100%',
+  },
+  cheader: {
+    background: '#BBB',
+    width:'150px'
+  },
+  ccell: {
+    width:'250px'
+  },
+});
+
 const skipKeys = {
   idx: 1,
 };
 
 const ConfirmationMail = ({state}) => {
+  const classes = useStyles();
 
-  const Row = ({name,val}) => <tr key={name}><th>{name}</th><td>{val}</td></tr>;
+  const Row = ({name,val}) => (
+    <tr key={name}>
+      <th className={classes.cheader}>{name}</th>
+      <td className={classes.ccell}>{val}</td>
+    </tr>
+  );
+
   const Person = ({person}) => {
     return (
       <>
-        <table className="confirm">
+        <table className={classes.ctable}>
           <tbody>
             { Object.entries( person[0] ).filter(([k]) => !skipKeys[k] ).map( ([k,v]) => <Row name={k} val={v} key={k}/>) }
           </tbody>
@@ -31,33 +54,26 @@ const ConfirmationMail = ({state}) => {
 
   return (
     <>
-      <table className="confirm">
+      <table className={classes.ctable}>
         <tbody>
           <Row name="Event" val={state.event.name}/>
         </tbody>
       </table>
-      <table className="confirm">
+      <table className={classes.ctable}>
         <tbody>
           <Row name="Full name" val={state.contact.fullname}/>
           <Row name="Sex" val={state.contact.sex}/>
           <Row name="Cell phone" val={state.contact.cellphone}/>
           <Row name="Email" val={state.contact.email}/>
         </tbody>
-        {optionRows}
       </table>
+      {optionRows}
     </>
   );
 };
 
 export const renderMail = (state) => {
-  const style = `
-    <style>
-      .confirm th { background:#EEE;width:150px; }
-      .confirm td { width:250px; }
-      .confirm { margin-bottom:16px; }
-    </style>
-`;
-  return style+renderToStaticMarkup( <ConfirmationMail state={state}/> );
+  return renderToStaticMarkup( <ConfirmationMail state={state}/> );
 };
 
 export default ConfirmationMail;
