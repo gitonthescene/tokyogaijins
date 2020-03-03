@@ -2,7 +2,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   ctable: {
@@ -73,7 +73,10 @@ const ConfirmationMail = ({state}) => {
 };
 
 export const renderMail = (state) => {
-  return renderToStaticMarkup( <ConfirmationMail state={state}/> );
+  const sheets = new ServerStyleSheets();
+  const markup = renderToStaticMarkup( sheets.collect( <ConfirmationMail state={state}/> ) );
+  const css = sheets.toString();
+  return `<style>${css}</style>${markup}`;
 };
 
 export default ConfirmationMail;
