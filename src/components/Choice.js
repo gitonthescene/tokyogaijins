@@ -7,6 +7,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem, {NativeContext} from './MenuItem';
 
 import CondDisplay from './CondDisplay';
+import { prettyMoney } from '../utils';
 
 const Choice = ({nm, label, items, value, price, ...props}) => {
   const listitems = items.map( (tg) => (
@@ -19,7 +20,6 @@ const Choice = ({nm, label, items, value, price, ...props}) => {
   const prclabel = price ? "* " : "";
   var prices = price && Object.keys(price);
   var pricedisplay = null;
-  const prettyMoney = amt => amt.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,');
   if ( prices ) {
     if ( prices.length === 1 ) {
       pricedisplay = `${prettyMoney(price[prices[0]])} yen`;

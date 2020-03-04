@@ -1,5 +1,7 @@
 import { baseurl as BASEURL } from './config.json';
 
+export const prettyMoney = amt => amt.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,');
+
 export const createOnChange = ( state, update, updatefees=undefined, prices={}, combo={}, getsideeffect=undefined ) => {
   const { restoreComboElementsAll, clearComboAll } = combo;
   return nm => e => {

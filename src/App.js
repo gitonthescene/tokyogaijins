@@ -16,6 +16,7 @@ import { NativeContext } from './components/MenuItem';
 import Reservation, { defaults } from './Reservation';
 import { mobileAndTabletcheck, logSignup, postMail, isBooked } from './utils';
 import Payment from './Payment';
+import FreePayment from './FreePayment';
 import Header from './Header.js';
 import Footer from './Footer.js';
 
@@ -69,6 +70,15 @@ function App() {
   const native=mobileAndTabletcheck();
 
   const routes = [
+    {
+      path: ["/freepayment"],
+      exact: false,
+      title: () => "FreePayment",
+      main: () => <FreePayment
+                    openDialog={openDialog}
+                    onInit={undefined}
+                  />
+    },
     {
       path: ["/payment"],
       exact: false,
