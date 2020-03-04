@@ -6,7 +6,7 @@ import Select from '@material-ui/core/Select';
 //import MenuItem from '@material-ui/core/MenuItem';
 import MenuItem, {NativeContext} from './components/MenuItem';
 
-import {baseurl as BASEURL} from './config.json';
+import {fetchres} from './utils';
 
 const Choice = ({nm, label, items, value, ...props}) => {
 //  const listitems = items.filter( itm => itm.type === "C"  ).map( itm =>  (
@@ -31,16 +31,6 @@ const Choice = ({nm, label, items, value, ...props}) => {
         </Select>
       </FormControl>
   );
-};
-
-const fetchres = ( req ) => {
-  return fetch(BASEURL + req, {credentials: 'include'} )
-    .then(
-      (response)=> {
-        if ( response.ok ) return response.json();
-        throw new Error( 'Network response was not ok for '+req+'.' );
-      }
-    );
 };
 
 const EventSelect = ( {eventinfo, updateEventinfo} ) => {

@@ -8,6 +8,7 @@ import PayPalButton from './PayPal';
 import ConfirmationMail, { renderMail } from './ConfirmationMail';
 import { logSignup, postMail, isBooked } from './utils';
 import { baseurl as BASEURL } from './config.json';
+import { calcDiscount } from './Reservation';
 
 const bookAndRedirect = (name, redirect, state, openDialog) => () => {
   const booked = isBooked( state );
@@ -26,8 +27,9 @@ export const buttonSize = matches => matches ? {minWidth:'500px', maxWidth:'750p
 const Payment = ({event, onApprove, openDialog}) => {
   const matches = useMediaQuery( json2mq({minWidth:750}) );
 
-  var cost = event.event.price ? parseInt( event.event.price ) : 0;
-  cost *= event.contact.count;
+  // Calculate the cost based on the event with a function which takes discounts into consideration
+
+  var cost = calcDiscount( event );
 
   return (
     <>

@@ -4,6 +4,8 @@ import React, {useCallback, useEffect} from 'react';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import json2mq from 'json2mq';
@@ -20,7 +22,7 @@ import { buttonSize } from './Payment';
 import { debug as DEBUG } from './config.json';
 import { COMMENT_MAX_LENGTH } from './constants';
 import { renderMail } from './ConfirmationMail';
-import { borderOnErrors, logSignup, postMail, isBooked } from './utils';
+import { borderOnErrors, logSignup, postMail, isBooked, fetchres } from './utils';
 
 const event_def = () => {return {
   e_id: '',
@@ -28,32 +30,88 @@ const event_def = () => {return {
   max: '0',
 }};
 
-const ConsentXbox = ({state, toggleCheck, register, errors}) => {
+const Xbox = ({name, label, state, toggleCheck, errors, ...props}) => {
   return (
-    <div style={borderOnErrors('consent', errors)}>
+    <div style={borderOnErrors(name, errors)}>
     <FormControlLabel
       control={
         <Checkbox
+          name={name}
           checked={state}
           onChange={toggleCheck}
-          value="consent"
-          color="primary"
-          name="consent"
-          inputRef={register({required: true})}
+          {...props}
           />
       }
-      label="I have read and understand the terms and conditions linked above"
+      label={label}
     />
     </div>
   );
 };
 
+const Discounts = ({discount, handleChange, ifavail}) => {
+  const Option = ({value,...props}) => ifavail(value) ? <FormControlLabel value={value} control={<Radio />} {...props}/> : null;
+
+  return (
+    <RadioGroup aria-label="discount" name="discount" value={discount} onChange={handleChange}>
+      <Option value="birthday" label="Birthday" />
+      <Option value="regularmember" label="Regular member" />
+      <Option value="earlybird" label="Early bird" />
+      <Option value="group" label="Group" />
+      <Option value="none" label="None" />
+    </RadioGroup>
+  );
+};
+
+
 export const defaults = () => {return {
   event: event_def(),
   contact: contactDetails_def(),
   fees: {},
-  other: {comments:'', consent: false}
+  other: {comments:'', consent: false, discount: 'none', discountOptions: undefined}
 };};
+
+const availableDiscounts = state => nm => {
+  const {discountOptions} = state.other;
+  const {count} = state.contact;
+  if ( nm==="earlybird" && discountOptions.earlybird) {
+    const {date} = discountOptions.earlybird;
+    const deadline = Date.parse(date);
+    return ( !isNaN( deadline ) && Date.now() < deadline ) ? true : false;
+  }
+  if ( nm==="group" && discountOptions.group) {
+    const {size} = discountOptions.group;
+    return ( count >= size ) ? true : false;
+  }
+  return nm === "none" || discountOptions[nm] !== undefined;
+};
+
+export const calcDiscount = state => {
+  const {price} = state.event;
+  const {count} = state.contact;
+  const {discountOptions, discount} = state.other;
+  const discountAmt = ( discountOptions && discount ) ? discountOptions[discount] : undefined;
+  var cost = 0;
+  if ( discountAmt )
+  {
+    const discountPrice = parseInt( price ) - discountAmt.price;
+    if ( discount === "birthday" )
+      cost = discountPrice + ( parseInt( price ) * (count - 1) );
+    else
+      cost = discountPrice * count;
+  } else if ( price ) {
+    cost = parseInt( price ) * count;
+  } else {
+    cost = 0;
+  }
+
+  Object.entries( state.fees ).forEach( ([_,fees]) => {
+    fees.forEach(indivFees => {
+      Object.entries(indivFees).forEach( ([_,fee]) => { cost += fee; } );
+    } );
+  } );
+
+  return cost;
+};
 
 
 const Reservation = ({openDialog, event, updateEvent}) => {
@@ -81,25 +139,31 @@ const Reservation = ({openDialog, event, updateEvent}) => {
     } else if ( event.other.paypalactions ) {
       event.other.paypalactions && event.other.paypalactions.disable();
     }
-  },[event.other.paypalactions, formState.isValid]);
+  }, [event.other.paypalactions, formState.isValid]);
+
+  useEffect( () => {
+    fetchres( "/discountoffers.php" ).then(
+      data => { updateOther( draft => {draft.discountOptions = data[event.event.e_id];} ); }
+    );
+
+  }, [event.event.e_id, updateOther]);
 
   const updateComments = e => {
     const val = e.target.value;
     updateOther( draft => { if ( val.length < COMMENT_MAX_LENGTH ) draft.comments=val; } );
   };
 
-  const updateConsent = e => {
-    const val = e.target.checked;
-    updateOther( draft => { draft.consent=val; } );
+  const handleUpdate = nm => e => {
+    const val = e.target.value;
+    updateOther( draft => { draft[nm]=val; } );
   };
 
-  var cost = event.event.price ? parseInt( event.event.price ) : 0;
-  cost *= event.contact.count;
-  Object.entries( event.fees ).forEach( ([_,fees]) => {
-    fees.forEach(indivFees => {
-      Object.entries(indivFees).forEach( ([_,fee]) => { cost += fee; } );
-    } );
-  } );
+  const handleChecked = nm => e => {
+    const val = e.target.checked;
+    updateOther( draft => { draft[nm]=val; } );
+  };
+
+  var cost = calcDiscount( event );
 
   const bookIt = name => () => {
     console.log( "Booking" );
@@ -121,6 +185,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
   };
 
   const toPayment = () => {
+    console.log( formState.errors );
     history.push( "/payment" );
   };
   return (
@@ -193,6 +258,23 @@ const Reservation = ({openDialog, event, updateEvent}) => {
               validateForm={validateForm}
             />
           </div>
+          <CondDisplay showif={event.other.discountOptions}>
+            <div id="content" style={{width:'80%'}}>
+              <h3>Discounts</h3>
+	          <div className="page-content">
+                <div style={{display:'flex', flexFlow:'column', padding: '5px', margin:'5px'}}>
+                  <div style={{margin:'0 0 10px 0'}}>
+                    <a href="/discounts.php" target="_blank">Discount policy</a>
+                  </div>
+                  <Discounts
+                    discount={event.other.discount}
+                    handleChange={handleUpdate('discount')}
+                    ifavail={availableDiscounts(event)}
+                  />
+                </div>
+              </div>
+            </div>
+          </CondDisplay>
           <div id="content" style={{width:'80%'}}>
             <h3>Other</h3>
 	        <div className="page-content">
@@ -206,11 +288,15 @@ const Reservation = ({openDialog, event, updateEvent}) => {
                 <div style={{margin:'50px 0 10px 0'}}>
                   <a href="/tour-conditions.php" target="_blank">Tokyo Gaijins' Tour Conditions</a>
                 </div>
-                <ConsentXbox
+                <Xbox
+                  label="I have read and understand the terms and conditions linked above"
                   state={event.other.consent}
-                  toggleCheck={updateConsent}
-                  register={register}
+                  toggleCheck={handleChecked('consent')}
                   errors={errors}
+                  value="consent"
+                  color="primary"
+                  name="consent"
+                  inputRef={register({required: true})}
                 />
               </div>
             </div>

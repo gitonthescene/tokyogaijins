@@ -99,6 +99,16 @@ export const requiredLabel = ( label, errors ) => {
   return label + ((errors && errors.fullname) ? " (required)" : "" );
 };
 
+export const fetchres = ( req ) => {
+  return fetch(BASEURL + req, {credentials: 'include'} )
+    .then(
+      (response)=> {
+        if ( response.ok ) return response.json();
+        throw new Error( 'Network response was not ok for '+req+'.' );
+      }
+    );
+};
+
 const postdata = ( url, formData, args ) => {
   return fetch(url,
                { method: 'POST',

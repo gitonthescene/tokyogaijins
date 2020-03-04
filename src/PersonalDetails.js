@@ -35,9 +35,9 @@ const PersonalDetails = ({personalinfo, updatePersonalinfo, idx, contact, regist
           label={requiredLabel("Name", errors)}
           value={personalinfo.name}
           onChange={onChange('name')}
-          name="personal:name"
+          name={`personal:name-${idx}`}
           inputRef={register({required: true})}
-          style={borderOnErrors('personal:name', errors)}
+          style={borderOnErrors(`personal:name-${idx}`, errors)}
         />
         <Choice
           nm='sex'
@@ -50,26 +50,26 @@ const PersonalDetails = ({personalinfo, updatePersonalinfo, idx, contact, regist
           label={requiredLabel("Age", errors)}
           value={personalinfo.age}
           onChange={onChange('age')}
-          name="personal:age"
+          name={`personal:age-${idx}`}
           type="number"
           inputRef={register({required: true})}
-          style={borderOnErrors('personal:age', errors)}
+          style={borderOnErrors(`personal:age-${idx}`, errors)}
         />
         <Entry
           value={personalinfo.cellphone}
           label={requiredLabel("Cellphone", errors)}
           onChange={onChange('cellphone')}
-          name="personal:cellphone"
+          name={`personal:cellphone-${idx}`}
           inputRef={register({required: true, pattern:/^\d+$/, maxLength:12})}
-          style={borderOnErrors('personal:cellphone', errors)}
+          style={borderOnErrors(`personal:cellphone-${idx}`, errors)}
         />
         <Entry
           value={personalinfo.email}
           label="Email"
           onChange={onChange('email')}
-          name="personal:email"
+          name={`personal:email-${idx}`}
           inputRef={register({required: true, pattern:/^([a-zA-Z0-9_\-.]+)@([a-zA-Z0-9_\-.]+)\.([a-zA-Z]{2,5})$/, maxLength:128})}
-          style={borderOnErrors('personal:email', errors)}
+          style={borderOnErrors(`personal:email-${idx}`, errors)}
         />
         <CondDisplay showif={idx===0}>
         <Button
