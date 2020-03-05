@@ -8,7 +8,7 @@ import PayPalButton from './PayPal';
 import ConfirmationMail, { renderMail } from './ConfirmationMail';
 import { logSignup, postMail, isBooked } from './utils';
 import { baseurl as BASEURL } from './config.json';
-import { calcDiscount } from './Reservation';
+import { calcCost } from './Bill';
 
 const bookAndRedirect = (name, redirect, state, openDialog) => () => {
   const booked = isBooked( state );
@@ -29,7 +29,7 @@ const Payment = ({event, onApprove, openDialog}) => {
 
   // Calculate the cost based on the event with a function which takes discounts into consideration
 
-  var cost = calcDiscount( event );
+  const {total} = calcCost( event );
 
   return (
     <>
@@ -41,7 +41,7 @@ const Payment = ({event, onApprove, openDialog}) => {
           </div>
           <h5>Total:</h5>
           <div style={{border:'solid', margin:'10px'}}>
-            {cost.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
+            {total.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@ const Payment = ({event, onApprove, openDialog}) => {
         <h1>Payment</h1>
 	    <div className="page-content" style={{textAlign:'center'}}>
           <PayPalButton
-            cost={cost}
+            cost={total}
             onApprove={onApprove}
           />
           <Button

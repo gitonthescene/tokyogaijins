@@ -4,6 +4,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { makeStyles, ServerStyleSheets } from '@material-ui/core/styles';
 
+import Bill from './Bill';
+
 const useStyles = makeStyles({
   ctable: {
     marginBbottom:'16px',
@@ -53,7 +55,7 @@ const ConfirmationMail = ({state}) => {
   const optionRows = optionlst.map( person => <Person person={person} key={person[0].name}/> );
 
   return (
-    <>
+    <div style={{display:'flex', flexFlow:'column', alignItems:'center'}}>
       <table className={classes.ctable}>
         <tbody>
           <Row name="Event" val={state.event.name}/>
@@ -68,7 +70,15 @@ const ConfirmationMail = ({state}) => {
         </tbody>
       </table>
       {optionRows}
-    </>
+      <table className={classes.ctable}>
+        <tbody>
+          <Row name="Comments" val={state.other.comments}/>
+        </tbody>
+      </table>
+      <div style={{width:'50%'}}>
+        <Bill state={state}/>
+      </div>
+    </div>
   );
 };
 

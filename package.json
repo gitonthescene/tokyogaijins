@@ -23,6 +23,8 @@
     "prebuild": "cp src/config.json.prod src/config.json",
     "postbuild": "cp src/config.json.dev src/config.json",
     "build": "react-scripts build",
+    "postbuild:dev": "cp src/config.json.dev src/config.json",
+    "build:dev": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "flow": "flow"
@@ -42,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://www.tokyogaijins.com/reservations"
+  "homepage": "/reservations"
 }

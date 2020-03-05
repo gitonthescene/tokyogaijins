@@ -71,8 +71,8 @@ function App() {
 
   const routes = [
     {
-      path: ["/freepayment"],
-      exact: false,
+      path: ["/reservations/freepayment"],
+      exact: true,
       title: () => "FreePayment",
       main: () => <FreePayment
                     openDialog={openDialog}
@@ -80,8 +80,8 @@ function App() {
                   />
     },
     {
-      path: ["/payment"],
-      exact: false,
+      path: ["/reservations/payment"],
+      exact: true,
       title: () => "Payment",
       main: () => <Payment
                     openDialog={openDialog}
@@ -91,7 +91,7 @@ function App() {
                   />
     },
     {
-      path: "/",
+      path: "/reservations",
       exact: true,
       title: () => '',
       main: () => <Reservation

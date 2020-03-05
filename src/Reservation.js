@@ -17,11 +17,12 @@ import EventOptions from './EventOptions';
 import ContactDetails, { contactDetails_def } from './ContactDetails';
 import CondDisplay from './components/CondDisplay';
 import Entry from './components/Entry';
+import { renderMail } from './ConfirmationMail';
 import { buttonSize } from './Payment';
+import { calcCost } from './Bill';
 
 import { debug as DEBUG } from './config.json';
 import { COMMENT_MAX_LENGTH } from './constants';
-import { renderMail } from './ConfirmationMail';
 import { borderOnErrors, logSignup, postMail, isBooked, fetchres } from './utils';
 
 const event_def = () => {return {
@@ -53,6 +54,7 @@ const Discounts = ({discount, handleChange, ifavail}) => {
 
   return (
     <RadioGroup aria-label="discount" name="discount" value={discount} onChange={handleChange}>
+      <Option value="beginner" label="Beginner" />
       <Option value="birthday" label="Birthday" />
       <Option value="regularmember" label="Regular member" />
       <Option value="earlybird" label="Early bird" />
@@ -84,35 +86,6 @@ const availableDiscounts = state => nm => {
   }
   return nm === "none" || discountOptions[nm] !== undefined;
 };
-
-export const calcDiscount = state => {
-  const {price} = state.event;
-  const {count} = state.contact;
-  const {discountOptions, discount} = state.other;
-  const discountAmt = ( discountOptions && discount ) ? discountOptions[discount] : undefined;
-  var cost = 0;
-  if ( discountAmt )
-  {
-    const discountPrice = parseInt( price ) - discountAmt.price;
-    if ( discount === "birthday" )
-      cost = discountPrice + ( parseInt( price ) * (count - 1) );
-    else
-      cost = discountPrice * count;
-  } else if ( price ) {
-    cost = parseInt( price ) * count;
-  } else {
-    cost = 0;
-  }
-
-  Object.entries( state.fees ).forEach( ([_,fees]) => {
-    fees.forEach(indivFees => {
-      Object.entries(indivFees).forEach( ([_,fee]) => { cost += fee; } );
-    } );
-  } );
-
-  return cost;
-};
-
 
 const Reservation = ({openDialog, event, updateEvent}) => {
   // const [event, updateEvent] = useImmer( defaults() );
@@ -163,7 +136,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
     updateOther( draft => { draft[nm]=val; } );
   };
 
-  var cost = calcDiscount( event );
+  const {total} = calcCost( event );
 
   const bookIt = name => () => {
     console.log( "Booking" );
@@ -172,6 +145,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
         postMail( event, renderMail );
         // Clear out event info
         updateEvent( draft => defaults() );
+        openDialog( "Thank you!" );
       })
       .catch( e => {
         console.log( "Trouble with " + name + ":" + e.message );
@@ -186,7 +160,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
 
   const toPayment = () => {
     console.log( formState.errors );
-    history.push( "/payment" );
+    history.push( "/reservations/payment" );
   };
   return (
     <>
@@ -305,14 +279,14 @@ const Reservation = ({openDialog, event, updateEvent}) => {
             <h3>Total:</h3>
 	        <div className="page-content" style={{textAlign:'center'}}>
               <div style={{border:'solid', margin:'10px'}}>
-                {cost.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
+                {total.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
               </div>
-              <CondDisplay showif={cost}>
+              <CondDisplay showif={event.event.e_id}>
                 <Button
                   name="display"
                   variant='contained'
-                  onClick={handleSubmit(toPayment)}>
-                  Pay
+                  onClick={handleSubmit(total ? toPayment : bookIt("reserve"))}>
+                  { total ? "Pay" : "Reserve" }
                 </Button>
               </CondDisplay>
             </div>
@@ -322,7 +296,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
           <Button
             name="display"
             variant='contained'
-            onClick={ e => { console.log( renderMail(event) ); console.log( event ); }}>
+            onClick={ e => { console.log( renderMail(event) ); console.log( JSON.stringify(event) ); }}>
             click me
           </Button>
         </CondDisplay>
