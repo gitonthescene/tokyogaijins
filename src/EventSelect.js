@@ -34,7 +34,7 @@ const Choice = ({nm, label, items, value, ...props}) => {
 };
 
 const EventSelect = ( {eventinfo, updateEventinfo} ) => {
-  const [ events, setEvents ] = useState([]);
+  const [ events, setEvents ] = useState([{e_id:eventinfo.e_id}]);
   const eventsByID = Object.fromEntries( events.map( itm => [itm.e_id, itm] ) );
   eventsByID[''] = {e_id:''};
   useEffect( () => {
