@@ -6,7 +6,7 @@ import json2mq from 'json2mq';
 
 import PayPalButton from './PayPal';
 import ConfirmationMail, { renderMail } from './ConfirmationMail';
-import { logSignup, postMail, isBooked } from './utils';
+import { logSignup, postMail, isBooked, prettyMoney } from './utils';
 import { baseurl as BASEURL } from './config.json';
 import { calcCost } from './Bill';
 
@@ -41,7 +41,7 @@ const Payment = ({event, onApprove, openDialog}) => {
           </div>
           <h5>Total:</h5>
           <div style={{border:'solid', margin:'10px'}}>
-            {total.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
+            {prettyMoney(total)} yen
           </div>
         </div>
       </div>

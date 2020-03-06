@@ -23,7 +23,7 @@ import { calcCost } from './Bill';
 
 import { debug as DEBUG } from './config.json';
 import { COMMENT_MAX_LENGTH } from './constants';
-import { borderOnErrors, logSignup, postMail, isBooked, fetchres } from './utils';
+import { borderOnErrors, logSignup, postMail, isBooked, fetchres, prettyMoney } from './utils';
 
 const event_def = () => {return {
   e_id: '',
@@ -159,7 +159,6 @@ const Reservation = ({openDialog, event, updateEvent}) => {
   };
 
   const toPayment = () => {
-    console.log( formState.errors );
     history.push( "/reservations/payment" );
   };
   return (
@@ -279,7 +278,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
             <h3>Total:</h3>
 	        <div className="page-content" style={{textAlign:'center'}}>
               <div style={{border:'solid', margin:'10px'}}>
-                {total.toFixed(0).replace(/\d(?=(\d{3})+(\.|$))/g, '$&,')} yen
+                {prettyMoney(total)} yen
               </div>
               <CondDisplay showif={event.event.e_id}>
                 <Button
@@ -296,7 +295,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
           <Button
             name="display"
             variant='contained'
-            onClick={ e => { console.log( renderMail(event) ); console.log( JSON.stringify(event) ); }}>
+            onClick={ e => { console.log( renderMail(event) ); console.log( event ); }}>
             click me
           </Button>
         </CondDisplay>
