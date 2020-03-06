@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   btable: {
-    marginBbottom:'16px',
     width: '100%',
   },
   bheader: {
@@ -54,7 +53,7 @@ export const calcCost = state => {
     ];
     eventTtl -= discountAmt.price;
   };
-  
+
   const eventprice = {
     total: eventTtl,
     items: eventItms
@@ -75,6 +74,7 @@ const Bill = ({state}) => {
 
   return (
     <>
+      Event:
       <table className={classes.btable}>
         <tbody>
           { eventprice.items }
@@ -82,6 +82,7 @@ const Bill = ({state}) => {
         </tbody>
       </table>
       <hr/>
+      Extras:
       <table className={classes.btable}>
         <tbody>
           { feeitems.items }

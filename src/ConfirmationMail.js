@@ -8,7 +8,7 @@ import Bill from './Bill';
 
 const useStyles = makeStyles({
   ctable: {
-    marginBbottom:'16px',
+    marginBottom:'16px',
     width: '100%',
   },
   cheader: {
@@ -42,7 +42,7 @@ const ConfirmationMail = ({state}) => {
             { Object.entries( person[0] ).filter(([k]) => !skipKeys[k] ).map( ([k,v]) => <Row name={k} val={v} key={k}/>) }
           </tbody>
         </table>
-        <table className="confirm">
+        <table className={classes.ctable}>
           <tbody>
             { Object.entries( person[1] ).map( ([k,v]) => <Row name={k} val={v} key={k}/>) }
           </tbody>
@@ -75,7 +75,7 @@ const ConfirmationMail = ({state}) => {
           <Row name="Comments" val={state.other.comments}/>
         </tbody>
       </table>
-      <div style={{width:'50%'}}>
+      <div style={{width:'50%', margin:'50px'}}>
         <Bill state={state}/>
       </div>
     </div>
