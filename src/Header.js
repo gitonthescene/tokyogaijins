@@ -29,6 +29,7 @@ const Header = () => {
   return (
     <>
     <div className="top-header-flag"></div>
+      <div style={{width:"80%", marginLeft:"auto", marginRight:"auto"}}>
       <div id="topmenu" className="navbar navbar-fixed-top">
         <div className="container">
 
@@ -118,7 +119,8 @@ const Header = () => {
             </div>
           </div>
         </div>
-      </section>
+    </section>
+    </div>
     </>
 
   );

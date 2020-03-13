@@ -113,9 +113,7 @@ function App() {
 
   return (
     <>
-      <div style={{width:"80%", marginLeft:"auto", marginRight:"auto"}}>
-        <Header/>
-      </div>
+      <Header/>
       <div style={{display:'flex', flexFlow:'column', justifyContent: "space-between", width:"100%"}}>
         <NativeContext.Provider value={native}>
           <Router>
