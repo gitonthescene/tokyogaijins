@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "cp src/config.json.prod src/config.json",
+    "prebuild": "cp src/config.json.prod src/config.json; rm -rf build",
     "postbuild": "cp src/config.json.dev src/config.json",
     "build": "react-scripts build",
     "postbuild:dev": "cp src/config.json.dev src/config.json",
@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "/reservations"
+  "homepage": "."
 }
