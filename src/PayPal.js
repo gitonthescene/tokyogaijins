@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import scriptLoader from 'react-async-script-loader';
 import { clientId as CLIENTID } from './config.json';
 
-const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, cost, ...props}) => {
+const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, cost, description, ...props}) => {
 
   const createOrder = (data, actions) => {
     return actions.order.create({
@@ -11,7 +11,8 @@ const PayPal = ({isScriptLoaded, isScriptLoadSucceed, setPayPalActions, cost, ..
         amount: {
           value: cost,
           currency_code: 'JPY'
-        }
+        },
+        description: description
       }],
       application_context: {
         shipping_preference: "NO_SHIPPING",

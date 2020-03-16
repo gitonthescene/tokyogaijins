@@ -13,12 +13,13 @@ export const campinginfo_def = () => {
     mat: '',
     sleepingbag: '',
     bunkbed: '',
+    bicycle: '',
     ...roominfo
 }};
 
-const Camping = ( {campinginfo, updateCampinginfo} ) => {
+const Camping = ( {campinginfo, updateCampinginfo, updateEventFees, prices} ) => {
   if (campinginfo === undefined) return null;
-  const onChange = createOnChange( campinginfo, updateCampinginfo );
+  const onChange = createOnChange( campinginfo, updateCampinginfo, updateEventFees, prices );
 
   return (
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
@@ -27,6 +28,7 @@ const Camping = ( {campinginfo, updateCampinginfo} ) => {
         updateRoominfo={updateCampinginfo}
         tentOrRoom='Tent'
         roomOpts={roomOptsByEvent.C}
+        prices={prices}
       />
       <Choice
         nm='mat'
@@ -34,6 +36,7 @@ const Camping = ( {campinginfo, updateCampinginfo} ) => {
         value={campinginfo.mat}
         label="Mat rental"
         onChange={onChange('mat')}
+        price={prices.mat}
       />
       <Choice
         nm='sleepingbag'
@@ -41,6 +44,7 @@ const Camping = ( {campinginfo, updateCampinginfo} ) => {
         value={campinginfo.sleepingbag}
         label="Sleeping bag rental"
         onChange={onChange('sleepingbag')}
+        price={prices.sleepingbag}
       />
       <Choice
         nm='bunkbed'
@@ -48,6 +52,15 @@ const Camping = ( {campinginfo, updateCampinginfo} ) => {
         value={campinginfo.bunkbed}
         label="Bunk bed"
         onChange={onChange('bunkbed')}
+        price={prices.bunkbed}
+      />
+      <Choice
+        nm='bicycle'
+        items={YesNo}
+        value={campinginfo.bicycle}
+        label="Bicycle rental"
+        onChange={onChange('bicycle')}
+        price={prices.bicycle}
       />
     </div>
   );

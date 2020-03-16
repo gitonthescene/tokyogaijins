@@ -7,6 +7,12 @@ import Select from '@material-ui/core/Select';
 import MenuItem, {NativeContext} from './components/MenuItem';
 
 import {fetchres} from './utils';
+export const event_def = () => {return {
+  e_id: '',
+  count: '0',
+  max: '0',
+}};
+
 
 const Choice = ({nm, label, items, value, ...props}) => {
 //  const listitems = items.filter( itm => itm.type === "C"  ).map( itm =>  (

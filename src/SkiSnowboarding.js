@@ -14,18 +14,7 @@ export const skisnoinfo_def = () => {
   };
 };
 
-// item: { value: price }
-// item must match the nm of the field
-// value must match the value in constants
-export const prices = {
-  lessons: {
-    'Beginners snowboarding': 0,
-    'Beginners skiing': 0,
-    'Intermediate snowboarding (90mins)': 9000,
-  }
-};
-
-const SkiSnowboarding = ( {skisnoinfo, updateSkiSnoinfo, updateEventFees} ) => {
+const SkiSnowboarding = ( {skisnoinfo, updateSkiSnoinfo, updateEventFees, prices} ) => {
   if (skisnoinfo === undefined) return null;
 
   return (
@@ -45,6 +34,7 @@ const SkiSnowboarding = ( {skisnoinfo, updateSkiSnoinfo, updateEventFees} ) => {
           updateRoominfo={updateSkiSnoinfo}
           tentOrRoom='Room'
           roomOpts={roomOptsByEvent.Z}
+          prices={prices}
         />
       </div>
     </>

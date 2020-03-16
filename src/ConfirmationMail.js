@@ -73,6 +73,7 @@ const ConfirmationMail = ({state}) => {
       <table className={classes.ctable}>
         <tbody>
           <Row name="Comments" val={state.other.comments}/>
+          <Row name="Discount" val={state.other.discount}/>
         </tbody>
       </table>
       <div style={{width:'50%', margin:'50px'}}>

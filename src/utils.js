@@ -119,34 +119,62 @@ const postdata = ( url, formData, args ) => {
                });
 };
 
-export const logSignup = (state, booked) => {
-  const formData = new FormData();
+const calcNonDefault = ( state, optdefaults ) => {
+  const kys = Object.keys( optdefaults ).filter( k => state[k] !== undefined );
+  // Expect length of kys to be 0 or 1.  I.e. only one set of options/extras.
+  // Could be a race while event is being changed, though.
+  // 0 leaves nothing to diff, so return undefined then too
+  
+  if ( kys.length !== 1 ) return undefined;
+  const options = state[kys[0]];
+  const defs = optdefaults[kys[0]]();
+  const ret = options.map( prsonopts => [prsonopts[0],Object.fromEntries( Object.entries( prsonopts[1] ).filter( ([k,v]) => v !== defs[k] ) )] );
+  console.log( ret );
+  return ret;
+};
 
-  formData.append( "e_id", state.event.e_id );
-  formData.append( "wl", booked ? "1" : "0");
-  formData.append( "evtname", state.event.name );
-  formData.append( "fullname", state.contact.fullname );
-  formData.append( "count", state.contact.count );
-  formData.append( "sex", state.contact.sex === 'Male' ? "0" : "1" );
-  formData.append( "comments", state.other.comments );
-  formData.append( "age", "0" );
-  formData.append( "country", state.contact.nationality );
-  formData.append( "email", state.contact.email );
-  formData.append( "cellphone", state.contact.cellphone );
-  formData.append( "japanAddress", "" );
+export const logSignup = (state, optdefaults) => {
+  const booked = isBooked( state );
+  const formData = {
+    e_id: state.event.e_id,
+    wl: booked ? "1" : "0",
+    evtname: state.event.name,
+    fullname: state.contact.fullname,
+    cnt: state.contact.count,
+    sex: state.contact.sex === 'Male' ? "0" : "1",
+    comments: state.other.comments,
+    age: "0",
+    country: state.contact.nationality,
+    email: state.contact.email,
+    cellphone: state.contact.cellphone,
+    japanAddress: "",
+  };
+  
+  const args = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
 
-  return postdata( BASEURL+'/php/react-signup.php', formData );
+  // fees should only have one key
+  return postdata( BASEURL+'/php/react-signup.php', JSON.stringify([formData, calcNonDefault(state, optdefaults)]), args );
 };
 
 export const postMail = ( state, renderMail ) => {
-  const formData = new FormData();
+  const formData = {
+    body: "<pre>\n"+renderMail( state )+"</pre>",
+    e_id: state.event.e_id,
+    fullname: state.contact.fullname,
+    email: state.contact.email,
+  };
+  
+  const args = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
 
-  formData.append( "body", "<pre>\n"+renderMail( state )+"</pre>" );
-  formData.append( "e_id", state.event.e_id );
-  formData.append( "fullname", state.contact.fullname );
-  formData.append( "email", state.contact.email );
-
-  return postdata( BASEURL+'/php/react-mail.php', formData );
+  return postdata( BASEURL+'/php/react-mail.php', JSON.stringify(formData), args );
 };
 
 export const isBooked = state => {

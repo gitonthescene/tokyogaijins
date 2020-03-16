@@ -44,8 +44,8 @@ export const calcCost = state => {
   );
   var eventTtl = count*discountPrice;
 
-  // For birthday, the discount is taken after multiplying out
-  if ( discountAmt && discount === "birthday" ) {
+  // For birthday and beginner, the discount is taken after multiplying out
+  if ( discountAmt && (discount === "birthday" || discount === "beginner") ) {
     eventTtl = count*price;
     eventItms = [
       <Line tag="event price" amt={prettyMoney(price)} key="baseprice"/>,

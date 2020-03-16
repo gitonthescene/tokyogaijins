@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import json2mq from 'json2mq';
+import { useImmer } from "use-immer";
 
+import EventSelect, { event_def } from './EventSelect';
 import PayPalButton from './PayPal';
 import { buttonSize } from './Payment';
 import Entry from './components/Entry';
@@ -13,11 +15,16 @@ import { baseurl as BASEURL } from './config.json';
 
 const FreePayment = () => {
   const [cost, setCost] = useState(0);
-
+  const [event, updateEvent] = useImmer(event_def());
   const matches = useMediaQuery( json2mq({minWidth:750}) );
 
   // What to do when payment is successful
-  const onApprove = () => {};
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(function(details) {
+      window.location = BASEURL+'/reservation-acknowledgement.php';
+    });
+    
+  };
   const redirect = url => e => { window.location = url; };
 
   const onChange = e => {
@@ -31,6 +38,10 @@ const FreePayment = () => {
     <div id="content" style={{width:'80%', marginTop:'20px'}}>
       <h1>Amount</h1>
 	  <div className="page-content" style={{textAlign:'center'}}>
+        <EventSelect
+          eventinfo={event}
+          updateEventinfo={updateEvent}
+        />
         <Entry
           label="amount in yen"
           onChange={onChange}
@@ -41,6 +52,7 @@ const FreePayment = () => {
 	  <div className="page-content" style={{textAlign:'center'}}>
         <PayPalButton
           cost={cost}
+          description={event.name || "no description"}
           onApprove={onApprove}
         />
         <Button

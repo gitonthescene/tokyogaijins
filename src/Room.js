@@ -20,10 +20,10 @@ export const getSideEffect = (nm, val) => {
   return {};
 };
 
-const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts} ) => {
+const Room = ( {roominfo, updateRoominfo, updateEventFees, prices, tentOrRoom, roomOpts} ) => {
   if ( roominfo === undefined ) return null;
 
-  const onChange = createOnChange( roominfo, updateRoominfo );
+  const onChange = createOnChange( roominfo, updateRoominfo, updateEventFees, prices );
 
   // Indent room preference if optional
   const margin = roominfo.room === undefined ? '0px' :'10px';
@@ -36,6 +36,7 @@ const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts} ) => {
           value={roominfo.room}
           label={tentOrRoom+" rental"}
           onChange={onChange('room')}
+          price={prices.room}
         />
       </CondDisplay>
       <CondDisplay showif={roominfo.room === undefined || roominfo.room === 'Yes'}>
@@ -46,6 +47,7 @@ const Room = ( {roominfo, updateRoominfo, tentOrRoom, roomOpts} ) => {
             value={roominfo.roompref}
             label={tentOrRoom+" preference"}
             onChange={onChange('roompref')}
+            price={prices.roompref}
           />
         </div>
       </CondDisplay>

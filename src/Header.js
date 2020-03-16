@@ -1,28 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 //import {baseurl as BASEURL} from './config.json';
 
 const Header = () => {
-  const [email, setEmail] = useState( "" );
 
-  const onChange = e => {
-    const val = e.target.value;
-    setEmail( val );
-  };
-
-// FIXME!!!  This for the mailing list once we understand how it's supposed to work.
-//  const defaults = {
-//    redirect: BASEURL+"/maillists-confirmation.php",
-//    errorredirect: "https://www.icontact.com/www/signup/error.html",
-//    listid: "236",
-//    'specialid:236': "E1U3",
-//    clientid: "188281",
-//    formid: "176",
-//    reallistid: "1",
-//    doubleopt: "1",
-//  };
-
-  const handleSubmit = () => {
-  };
   // Sadly browser specific logic
   const isFirefox = typeof InstallTrigger !== 'undefined';
   const maxWidth = isFirefox ? "-moz-available" : "-webkit-fill-available";
@@ -34,39 +14,6 @@ const Header = () => {
         <div className="container">
 
           <a className="brand" href="../index.php"><img src="/images/logo.png" alt="Tokyo Gaijins" style={{maxWidth:maxWidth}} /></a>
-          <div className="span6 pull-right">
-            <div className="header-contact pull-right">
-
-              <div className="join-us">
-
-
-                <div className="join-us">
-                  <div id="subscribe">
-                    <form captcha-key="6LeCZCcUAAAAALhxcQ5fN80W6Wa2K3GqRQK6WRjA" captcha-theme="light" new-captcha="true" method="post" action="https://app.icontact.com/icp/core/mycontacts/signup/designer/form/?id=176&cid=188281&lid=236" name="icpsignup" id="ic_signupform" className="form-inline form-search pull-right" acceptCharset="UTF-8">
-                      <input id="eEmail" className="member" type="text" name="fields_email" placeholder="Enter email here" value={email} onChange={onChange}></input>
-                      <button className="join-button" type="submit" onClick={handleSubmit}>JOIN</button>
-                      <div className="clear">
-                      </div>
-                    </form>
-
-
-
-                    <script type="text/javascript" src="//app.icontact.com/icp/static/form/javascripts/validation-captcha.js"></script>
-
-                    <script type="text/javascript" src="//app.icontact.com/icp/static/form/javascripts/tracking.js"></script>
-
-
-                  </div>
-
-
-
-                </div>
-
-
-
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <section>

@@ -17,30 +17,8 @@ export const fuji_def = () => {return {
   gaiters: 'No',
 };};
 
-const prices = {
-  fullset: { 'Yes': 9500 },
-  rainjacketpants: { 'Yes': 3500 },
-  hikingshoes: { 'Yes': 3500 },
-  backpackcover: { 'Yes': 3500 },
-  hikingpoles: { 'Yes': 2500 },
-  headlamp: { 'Yes': 1000 },
-  gaiters: { 'Yes': 1000 },
-};
-
 const hikingClearCombo = clearCombo( 'fullset', [ 'rainjacketpants', 'backpackcover', 'gaiters', 'hikingshoes', 'hikingpoles', 'headlamp' ] );
-const hikingRestoreCombo = restoreComboElements( 'fullset', [ 'rainjacketpants', 'backpackcover', 'gaiters', 'hikingshoes', 'hikingpoles', 'headlamp' ], prices );
 const getHikingSideEffect = calcComboSideEffect( 'fullset', [ 'rainjacketpants', 'backpackcover', 'gaiters', 'hikingshoes', 'hikingpoles', 'headlamp' ] );
-
-const combo = {
-  clearComboAll: draft => {
-    hikingClearCombo( draft );
-  },
-
-  restoreComboElementsAll: (state, sideEffect) => {
-    const hikingPrcUpd = hikingRestoreCombo( state, sideEffect );
-    return hikingPrcUpd;
-  }
-};
 
 // Changes to the general state if one state changes
 export const getSideEffect = (nm, val, state) => {
@@ -48,8 +26,21 @@ export const getSideEffect = (nm, val, state) => {
   return hikingSideEffect;
 };
 
-const Fuji = ( {fujiinfo, updateFujiinfo, updateEventFees} ) => {
+const Fuji = ( {fujiinfo, updateFujiinfo, updateEventFees, prices} ) => {
   if (fujiinfo === undefined) return null;
+
+  const hikingRestoreCombo = restoreComboElements( 'fullset', [ 'rainjacketpants', 'backpackcover', 'gaiters', 'hikingshoes', 'hikingpoles', 'headlamp' ], prices );
+  
+  const combo = {
+    clearComboAll: draft => {
+      hikingClearCombo( draft );
+    },
+
+    restoreComboElementsAll: (state, sideEffect) => {
+      const hikingPrcUpd = hikingRestoreCombo( state, sideEffect );
+      return hikingPrcUpd;
+    }
+  };
 
   const onChange = createOnChange( fujiinfo, updateFujiinfo, updateEventFees, prices, combo, getSideEffect );
 

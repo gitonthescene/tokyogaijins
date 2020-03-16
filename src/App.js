@@ -8,13 +8,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { renderMail } from './ConfirmationMail';
 
 import { useImmer } from "use-immer";
 
+import { renderMail } from './ConfirmationMail';
 import { NativeContext } from './components/MenuItem';
 import Reservation, { defaults } from './Reservation';
-import { mobileAndTabletcheck, logSignup, postMail, isBooked } from './utils';
+import { mobileAndTabletcheck, logSignup, postMail } from './utils';
+import { optdefaults } from './EventOptions';
 import Payment from './Payment';
 import FreePayment from './FreePayment';
 import Header from './Header.js';
@@ -56,9 +57,8 @@ function App() {
   };
 
   const onApprove = (data, actions) => {
-    const booked = isBooked( event );
     return actions.order.capture().then(function(details) {
-      logSignup( event, booked )
+      logSignup( event, optdefaults )
         .then( () => postMail( event, renderMail ) )
         .then( () => {
           updateEvent( draft => defaults() );
@@ -71,7 +71,7 @@ function App() {
 
   const routes = [
     {
-      path: ["/reservations/freepayment"],
+      path: ["/freepayment"],
       exact: true,
       title: () => "FreePayment",
       main: () => <FreePayment

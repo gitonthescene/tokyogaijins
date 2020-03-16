@@ -16,13 +16,7 @@ export const oshima_def = () => {
   };
 };
 
-const prices = {
-  trekking: { 'Yes': 2500 },
-  bike: { 'Yes': 2000 },
-  helmet: { 'Yes': 500 },
-};
-
-const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees} ) => {
+const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees, prices} ) => {
   if (oshimainfo === undefined) return null;
 
   const onChange = createOnChange( oshimainfo, updateOshimainfo, updateEventFees, prices );
@@ -58,6 +52,7 @@ const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees} ) => {
         updateRoominfo={updateOshimainfo}
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.I}
+        prices={prices}
       />
     </div>
   );

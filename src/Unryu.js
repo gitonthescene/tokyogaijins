@@ -7,20 +7,6 @@ import Choice from './components/Choice';
 import { NOTNEEDED, YesNo, bootsizeOpts, jacketpantsizeOpts, glovesizeOpts, neededOpts } from './constants';
 import { createOnChange } from './utils';
 
-const genPrices = (opts, price) => {
-  return Object.fromEntries( opts.filter( k => k !== NOTNEEDED ).map( k => [k,price] ) );
-};
-
-// item: { value: price }
-// item must match the nm of the field
-// value must match the value in constants
-export const prices = {
-  hikingboots: { 'Yes': 1000 },
-  jacketpantsize: genPrices( jacketpantsizeOpts, 2000 ),
-  glovesize: genPrices( glovesizeOpts, 500 ),
-  goggles: { 'Yes': 500 },
-};
-
 export const unryu_def = () =>{return {
   height: '',
   bootsize: '',
@@ -30,7 +16,7 @@ export const unryu_def = () =>{return {
   goggles: NOTNEEDED,
 }};
 
-const Unryu = ( {unryuinfo, updateUnryuinfo, updateEventFees} ) => {
+const Unryu = ( {unryuinfo, updateUnryuinfo, updateEventFees, prices} ) => {
   if ( unryuinfo === undefined ) return null;
 
   const onChange = createOnChange( unryuinfo, updateUnryuinfo, updateEventFees, prices );

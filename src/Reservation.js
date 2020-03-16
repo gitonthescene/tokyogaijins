@@ -12,7 +12,7 @@ import json2mq from 'json2mq';
 import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-import EventSelect from './EventSelect';
+import EventSelect, { event_def } from './EventSelect';
 import EventOptions from './EventOptions';
 import ContactDetails, { contactDetails_def } from './ContactDetails';
 import CondDisplay from './components/CondDisplay';
@@ -24,12 +24,7 @@ import { calcCost } from './Bill';
 import { debug as DEBUG } from './config.json';
 import { COMMENT_MAX_LENGTH } from './constants';
 import { borderOnErrors, logSignup, postMail, isBooked, fetchres, prettyMoney } from './utils';
-
-const event_def = () => {return {
-  e_id: '',
-  count: '0',
-  max: '0',
-}};
+import { optdefaults } from './EventOptions';
 
 const Xbox = ({name, label, state, toggleCheck, errors, ...props}) => {
   return (
@@ -69,7 +64,7 @@ export const defaults = () => {return {
   event: event_def(),
   contact: contactDetails_def(),
   fees: {},
-  other: {comments:'', consent: false, discount: 'none', discountOptions: undefined}
+  other: {comments:'', consent: false, discount: 'none', discountOptions: undefined, prices: undefined}
 };};
 
 const availableDiscounts = state => nm => {
@@ -88,7 +83,6 @@ const availableDiscounts = state => nm => {
 };
 
 const Reservation = ({openDialog, event, updateEvent}) => {
-  // const [event, updateEvent] = useImmer( defaults() );
   const { register, handleSubmit, errors, formState } = useForm();
 
   const booked = isBooked(event);
@@ -118,6 +112,9 @@ const Reservation = ({openDialog, event, updateEvent}) => {
     fetchres( "/discountoffers.php" ).then(
       data => { updateOther( draft => {draft.discountOptions = data[event.event.e_id];} ); }
     );
+    fetchres( "/prices.php" ).then(
+      data => { updateOther( draft => {draft.prices = data;} ); }
+    );
 
   }, [event.event.e_id, updateOther]);
 
@@ -140,7 +137,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
 
   const bookIt = name => () => {
     console.log( "Booking" );
-    return logSignup( event, booked )
+    return logSignup( event, optdefaults )
       .then( () => {
         postMail( event, renderMail );
         // Clear out event info

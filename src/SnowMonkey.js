@@ -18,18 +18,7 @@ export const snowmonkey_def = () => {
   };
 };
 
-// item: { value: price }
-// item must match the nm of the field
-// value must match the value in constants
-export const prices = {
-  lessons: {
-    'Beginners snowboarding': 0,
-    'Beginners skiing': 0,
-    'Intermediate snowboarding (90mins)': 9000,
-  }
-};
-
-const SnowMonkey = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees}) => {
+const SnowMonkey = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees, prices}) => {
   if ( snowmonkeyinfo === undefined ) return null;
 
   const onChange = createOnChange( snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees );
@@ -51,6 +40,7 @@ const SnowMonkey = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees}) => 
         updateRoominfo={updateSnowMonkeyinfo}
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.M}
+        prices={prices}
       />
     </div>
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>

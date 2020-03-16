@@ -24,9 +24,22 @@ const personalinfo_def = () => {return {
 const null_def = () => { return {}; };
 
 // This must contain all the keys in the useEffect function below!!
-const optkeys = ['camping', 'dolphin', 'fuji', 'oshima', 'snowmonkey', 'nightstay', 'skisno', 'trekking', 'unryu', 'zao', 'null'];
+export const optdefaults = {
+  camping:    campinginfo_def,
+  dolphin:    dolphininfo_def,
+  fuji:       fuji_def,
+  general:    null_def,
+  oshima:     oshima_def,
+  snowmonkey: snowmonkey_def,
+  nightstay:  nightstay_def,
+  skisno:     skisnoinfo_def,
+  trekking:   trekking_def,
+  unryu:      unryu_def,
+  zao:        zao_def,
+};
+
 const resetDraft = (draft, cnt, nm, def) => {
-  const kys = optkeys;
+  const kys = Object.keys( optdefaults );
   const count = parseInt( cnt );
   kys.forEach( k => { delete draft[k]; delete draft.fees[k] } );
   if ( def ) {
@@ -65,17 +78,17 @@ const PersonalizedOption = ({personalinfo, updatePersonalinfo, idx, children, co
 
 const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFees, cnt, register, errors} ) => {
   useEffect( () => {
-    if ( eventType === "C" )      updateEventOptions( draft => { resetDraft(draft, cnt, 'camping',    campinginfo_def); } );
-    else if ( eventType === "D" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'dolphin',    dolphininfo_def); } );
-    else if ( eventType === "F" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'fuji',       fuji_def); } );
-    else if ( eventType === "G" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'general',    null_def); } );
-    else if ( eventType === "I" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'oshima',     oshima_def); } );
-    else if ( eventType === "M" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'snowmonkey', snowmonkey_def); } );
-    else if ( eventType === "N" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'nightstay',  nightstay_def); } );
-    else if ( eventType === "S" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'skisno',     skisnoinfo_def); } );
-    else if ( eventType === "H" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'trekking',   trekking_def); } );
-    else if ( eventType === "U" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'unryu',      unryu_def); } );
-    else if ( eventType === "Z" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'zao',        zao_def); } );
+    if ( eventType === "C" )      updateEventOptions( draft => { resetDraft(draft, cnt, 'camping',    optdefaults.camping); } );
+    else if ( eventType === "D" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'dolphin',    optdefaults.dolphin); } );
+    else if ( eventType === "F" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'fuji',       optdefaults.fuji); } );
+    else if ( eventType === "G" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'general',    optdefaults.general); } );
+    else if ( eventType === "I" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'oshima',     optdefaults.oshima); } );
+    else if ( eventType === "M" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'snowmonkey', optdefaults.snowmonkey); } );
+    else if ( eventType === "N" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'nightstay',  optdefaults.nightstay); } );
+    else if ( eventType === "S" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'skisno',     optdefaults.skisno); } );
+    else if ( eventType === "H" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'trekking',   optdefaults.trekking); } );
+    else if ( eventType === "U" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'unryu',      optdefaults.unryu); } );
+    else if ( eventType === "Z" ) updateEventOptions( draft => { resetDraft(draft, cnt, 'zao',        optdefaults.zao); } );
     // .. else just wipe out the optkeys
     else updateEventOptions( draft => { resetDraft( draft ); } );    
   }, [ eventType, updateEventOptions, cnt ] );
@@ -92,26 +105,29 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
     updateEventOptions( draft => { cb(draft[typ][i][0]); } );
   };
   
-  const createElement = (typ,i) => {
+  const createElement = (typ,i,prices) => {
     var [el,ky] = [null,null];
     if ( typ === "C" ) {
       ky = 'camping';
       el = <Camping
              campinginfo={eventinfo.camping && eventinfo.camping[i] && eventinfo.camping[i][1]}
              updateCampinginfo={updateEventInfo('camping', i)}
-             updateEventFees={updateEventFeesI('camping', i)}/>;
+             updateEventFees={updateEventFeesI('camping', i)}
+             prices={prices}/>;
     } else if ( typ === "D" ) {
       ky = 'dolphin';
       el = <Dolphin
              dolphininfo={eventinfo.dolphin && eventinfo.dolphin[i] && eventinfo.dolphin[i][1]}
              updateDolphininfo={updateEventInfo('dolphin', i)}
-             updateEventFees={updateEventFeesI('dolphin', i)}/>;
+             updateEventFees={updateEventFeesI('dolphin', i)}
+             prices={prices}/>;
     } else if ( typ === "F" ) {
       ky = 'fuji';
       el = <Fuji
              fujiinfo={eventinfo.fuji && eventinfo.fuji[i] && eventinfo.fuji[i][1]}
              updateFujiinfo={updateEventInfo('fuji', i)}
-             updateEventFees={updateEventFeesI('fuji', i)}/>;
+             updateEventFees={updateEventFeesI('fuji', i)}
+             prices={prices}/>;
     } else if ( typ === "G" ) {
       ky = 'general';
       el = null;
@@ -120,43 +136,50 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
       el = <Oshima
              oshimainfo={eventinfo.oshima && eventinfo.oshima[i] && eventinfo.oshima[i][1]}
              updateOshimainfo={updateEventInfo('oshima', i)}
-             updateEventFees={updateEventFeesI('oshima', i)}/>;
+             updateEventFees={updateEventFeesI('oshima', i)}
+             prices={prices}/>;
     } else if ( typ === "M" ) {
       ky = 'snowmonkey';
       el = <SnowMonkey
              snowmonkeyinfo={eventinfo.snowmonkey && eventinfo.snowmonkey[i] && eventinfo.snowmonkey[i][1]}
              updateSnowMonkeyinfo={updateEventInfo('snowmonkey', i)}
-             updateEventFees={updateEventFeesI('snowmonkey', i)}/>;
+             updateEventFees={updateEventFeesI('snowmonkey', i)}
+             prices={prices}/>;
     } else if ( typ === "N" ) {
       ky = 'nightstay';
       el = <NightStay
              nightstayinfo={eventinfo.nightstay && eventinfo.nightstay[i] && eventinfo.nightstay[i][1]}
              updateNightStayinfo={updateEventInfo('nightstay', i)}
-             updateEventFees={updateEventFeesI('nightstay', i)}/>;
+             updateEventFees={updateEventFeesI('nightstay', i)}
+             prices={prices}/>;
     } else if ( typ === "S" ) {
       ky = 'skisno';
       el = <SkiSnowboarding
              skisnoinfo={eventinfo.skisno && eventinfo.skisno[i] && eventinfo.skisno[i][1]}
              updateSkiSnoinfo={updateEventInfo('skisno', i)}
-             updateEventFees={updateEventFeesI('skisno', i)}/>;
+             updateEventFees={updateEventFeesI('skisno', i)}
+             prices={prices}/>;
     } else if ( typ === "H" ) {
       ky = 'trekking';
       el = <Trekking
              trekkinginfo={eventinfo.trekking && eventinfo.trekking[i] && eventinfo.trekking[i][1]}
              updateTrekkinginfo={updateEventInfo('trekking', i)}
-             updateEventFees={updateEventFeesI('trekking', i)}/>;
+             updateEventFees={updateEventFeesI('trekking', i)}
+             prices={prices}/>;
     } else if ( typ === "U" ) {
       ky = 'unryu';
       el = <Unryu
              unryuinfo={eventinfo.unryu && eventinfo.unryu[i] && eventinfo.unryu[i][1]}
              updateUnryuinfo={updateEventInfo('unryu', i)}
-             updateEventFees={updateEventFeesI('unryu', i)}/>;
+             updateEventFees={updateEventFeesI('unryu', i)}
+             prices={prices}/>;
     } else if ( typ === "Z" ) {
       ky = 'zao';
       el = <Zao
              zaoinfo={eventinfo.zao && eventinfo.zao[i] && eventinfo.zao[i][1]}
              updateZaoinfo={updateEventInfo('zao', i)}
-             updateEventFees={updateEventFeesI('zao', i)}/>;
+             updateEventFees={updateEventFeesI('zao', i)}
+             prices={prices}/>;
     } else return null;
 
     return <PersonalizedOption
@@ -171,10 +194,15 @@ const EventOptions = ( {eventType, eventinfo, updateEventOptions, updateEventFee
            </PersonalizedOption>;
   };
 
-  var cldrn = [];
+  // Default prices overriden by event specific prices
+  const prices = eventinfo.other.prices ? {
+    ...eventinfo.other.prices.bytype[eventType],
+    ...eventinfo.other.prices.byevent[eventinfo.event.e_id]
+  } : {};
 
+  var cldrn = [];
   for( var i=0; i< cnt; ++i ) {
-    const child = createElement( eventType, i );
+    const child = createElement( eventType, i, prices );
     if ( child != null ) cldrn.push( child );
   };
 

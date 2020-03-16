@@ -25,23 +25,6 @@ export const dolphininfo_def = () => {return {
   scuba: '',
 }};
 
-// item: { value: price }
-// item must match the nm of the field
-// value must match the value in constants.js
-export const prices = {
-  wetsuit: { 'S': 2000, 'M': 2000, 'L': 3000, 'XL': 3000 },
-  snorkelkit: { 'Yes': 1400 },
-  snorkelmask: { 'Yes': 700 },
-  fins: { 'Yes': 350 },
-  boots: { 'Yes': 350 },
-  tent: { 'Yes': 2500 },
-  sleepmat: { 'Yes': 500 },
-  sleepbag: { 'Yes': 1000 },
-  snorkellesson: { 'Yes': 4400 },
-  sightseeing: { 'Yes': 3000 },
-  scuba: { 'Yes': 10800 },
-};
-
 const snorkelClearCombo = clearCombo( 'snorkelkit', [ 'snorkelmask', 'fins', 'boots' ] );
 const snorkelRestoreCombo = restoreComboElements( 'snorkelkit', [ 'snorkelmask', 'fins', 'boots' ] );
 const getSnorkelSideEffect = calcComboSideEffect( 'snorkelkit', [ 'snorkelmask', 'fins', 'boots' ] );
@@ -63,7 +46,7 @@ export const getSideEffect = (nm, val, state) => {
   return snorkelSideEffect;
 };
 
-const Dolphin = ( {dolphininfo, updateDolphininfo, updateEventFees} ) => {
+const Dolphin = ( {dolphininfo, updateDolphininfo, updateEventFees, prices} ) => {
   if (dolphininfo === undefined) return null;
 
   const onChange = createOnChange( dolphininfo, updateDolphininfo, updateEventFees, prices, combo, getSideEffect );

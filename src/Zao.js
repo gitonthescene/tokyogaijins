@@ -62,6 +62,7 @@ const Zao = ( {zaoinfo, updateZaoinfo, updateEventFees} ) => {
           updateRoominfo={updateZaoinfo}
           tentOrRoom='Room'
           roomOpts={roomOptsByEvent.Z}
+          prices={prices}
         />
       </div>
     </div>
