@@ -246,7 +246,7 @@ export const YesNoMaybe = [
 
 export const lessonOpts = [
   NOTNEEDED,
-  'Beginners snowboarding ',
+  'Beginners snowboarding',
   'Beginners skiing',
   'Intermediate snowboarding (90mins)'
 ];

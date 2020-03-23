@@ -6,14 +6,12 @@ import json2mq from 'json2mq';
 
 import PayPalButton from './PayPal';
 import ConfirmationMail, { renderMail } from './ConfirmationMail';
-import { logSignup, postMail, prettyMoney } from './utils';
-import { optdefaults } from './EventOptions';
+import { postMail, prettyMoney } from './utils';
 import { baseurl as BASEURL } from './config.json';
 import { calcCost } from './Bill';
 
 const bookAndRedirect = (name, redirect, state, openDialog) => () => {
-  return logSignup( state, optdefaults )
-    .then( () => postMail( state, renderMail ) )
+  return postMail( state, renderMail, name )
     .then( () => {
       openDialog( "Please follow instructions for payment", redirect );
     })

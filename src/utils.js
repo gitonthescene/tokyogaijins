@@ -129,11 +129,10 @@ const calcNonDefault = ( state, optdefaults ) => {
   const options = state[kys[0]];
   const defs = optdefaults[kys[0]]();
   const ret = options.map( prsonopts => [prsonopts[0],Object.fromEntries( Object.entries( prsonopts[1] ).filter( ([k,v]) => v !== defs[k] ) )] );
-  console.log( ret );
   return ret;
 };
 
-export const logSignup = (state, optdefaults) => {
+export const logSignup = (state, optdefaults, total=0) => {
   const booked = isBooked( state );
   const formData = {
     e_id: state.event.e_id,
@@ -143,11 +142,13 @@ export const logSignup = (state, optdefaults) => {
     cnt: state.contact.count,
     sex: state.contact.sex === 'Male' ? "0" : "1",
     comments: state.other.comments,
+    discount: state.other.discount,
     age: "0",
     country: state.contact.nationality,
     email: state.contact.email,
     cellphone: state.contact.cellphone,
     japanAddress: "",
+    total: total,
   };
   
   const args = {
@@ -160,7 +161,7 @@ export const logSignup = (state, optdefaults) => {
   return postdata( BASEURL+'/php/react-signup.php', JSON.stringify([formData, calcNonDefault(state, optdefaults)]), args );
 };
 
-export const postMail = ( state, renderMail ) => {
+export const postMail = ( state, renderMail, paytype=undefined ) => {
   const formData = {
     body: "<pre>\n"+renderMail( state )+"</pre>",
     e_id: state.event.e_id,

@@ -139,7 +139,7 @@ const Reservation = ({openDialog, event, updateEvent}) => {
     console.log( "Booking" );
     return logSignup( event, optdefaults )
       .then( () => {
-        postMail( event, renderMail );
+        postMail( event, renderMail, "wait list" );
         // Clear out event info
         updateEvent( draft => defaults() );
         openDialog( "Thank you!" );
@@ -156,7 +156,10 @@ const Reservation = ({openDialog, event, updateEvent}) => {
   };
 
   const toPayment = () => {
-    history.push( "/reservations/payment" );
+    return logSignup( event, optdefaults, total )
+      .then( () => {
+        history.push( "/reservations/payment" );
+      } );
   };
   return (
     <>

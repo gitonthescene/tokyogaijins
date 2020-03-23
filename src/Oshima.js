@@ -53,6 +53,7 @@ const Oshima = ( {oshimainfo, updateOshimainfo, updateEventFees, prices} ) => {
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.I}
         prices={prices}
+        updateEventFees={updateEventFees}
       />
     </div>
   );

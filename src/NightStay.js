@@ -10,7 +10,7 @@ export const nightstay_def = () => {
   };
 };
 
-const NightStay = ( {nightstayinfo, updateNightStayinfo, prices} ) => {
+const NightStay = ( {nightstayinfo, updateNightStayinfo, updateEventFees, prices} ) => {
   if (nightstayinfo === undefined) return null;
 
   return (
@@ -21,6 +21,7 @@ const NightStay = ( {nightstayinfo, updateNightStayinfo, prices} ) => {
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.N}
         prices={prices}
+        updateEventFees={updateEventFees}
       />
     </div>
   );

@@ -14,12 +14,9 @@ import { useImmer } from "use-immer";
 import { renderMail } from './ConfirmationMail';
 import { NativeContext } from './components/MenuItem';
 import Reservation, { defaults } from './Reservation';
-import { mobileAndTabletcheck, logSignup, postMail } from './utils';
-import { optdefaults } from './EventOptions';
+import { mobileAndTabletcheck, postMail } from './utils';
 import Payment from './Payment';
 import FreePayment from './FreePayment';
-import Header from './Header.js';
-import Footer from './Footer.js';
 
 const AlertReservedDialog = ({open, close, message}) => {
   return (
@@ -58,8 +55,7 @@ function App() {
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then(function(details) {
-      logSignup( event, optdefaults )
-        .then( () => postMail( event, renderMail ) )
+      postMail( event, renderMail, "paypal" )
         .then( () => {
           updateEvent( draft => defaults() );
           openDialog( "Thank you!" );
@@ -113,7 +109,6 @@ function App() {
 
   return (
     <>
-      <Header/>
       <div style={{display:'flex', flexFlow:'column', justifyContent: "space-between", width:"100%"}}>
         <NativeContext.Provider value={native}>
           <Router>
@@ -123,7 +118,6 @@ function App() {
           </Router>
         </NativeContext.Provider>
       </div>
-      <Footer/>
 
       <AlertReservedDialog open={dstate.open} close={closeDialog} message={dstate.message}/>
     </>

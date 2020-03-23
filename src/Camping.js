@@ -29,6 +29,7 @@ const Camping = ( {campinginfo, updateCampinginfo, updateEventFees, prices} ) =>
         tentOrRoom='Tent'
         roomOpts={roomOptsByEvent.C}
         prices={prices}
+        updateEventFees={updateEventFees}
       />
       <Choice
         nm='mat'

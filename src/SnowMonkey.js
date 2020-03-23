@@ -41,6 +41,7 @@ const SnowMonkey = ({snowmonkeyinfo, updateSnowMonkeyinfo, updateEventFees, pric
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.M}
         prices={prices}
+        updateEventFees={updateEventFees}
       />
     </div>
     <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>

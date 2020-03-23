@@ -16,7 +16,7 @@ export const trekking_def = () => {
   };
 };
 
-const Trekking = ( {trekkinginfo, updateTrekkinginfo, prices} ) => {
+const Trekking = ( {trekkinginfo, updateTrekkinginfo, updateEventFees, prices} ) => {
   if (trekkinginfo === undefined) return null;
 
   const onChange = createOnChange( trekkinginfo, updateTrekkinginfo );
@@ -50,6 +50,7 @@ const Trekking = ( {trekkinginfo, updateTrekkinginfo, prices} ) => {
         tentOrRoom='Room'
         roomOpts={roomOptsByEvent.H}
         prices={prices}
+        updateEventFees={updateEventFees}
       />
     </div>
   );

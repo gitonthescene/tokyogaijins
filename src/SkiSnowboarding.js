@@ -35,6 +35,7 @@ const SkiSnowboarding = ( {skisnoinfo, updateSkiSnoinfo, updateEventFees, prices
           tentOrRoom='Room'
           roomOpts={roomOptsByEvent.Z}
           prices={prices}
+          updateEventFees={updateEventFees}
         />
       </div>
     </>
