@@ -18,7 +18,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/font-awesome.css" rel="stylesheet">
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <link href="/style.css" rel="stylesheet">
 <!-- script src="main-slider/js/modernizr.js"></script -->
 <script src="lib/jquery.js"></script>
@@ -137,9 +137,14 @@
   
   $doc = new DOMDocument();
   $doc->loadHTMLFile( 'index.html' );
+//  $body = $doc->getElementsByTagName( 'body' );
+//  foreach ( $body[0]->childNodes as $child ) {
+//     echo $doc->saveHTML( $child );
+//  }
   $body = $doc->getElementsByTagName( 'body' );
-  foreach ( $body[0]->childNodes as $child ) {
-     echo $doc->saveHTML( $child );
+  $chldrn = $body->item(0)->childNodes;
+  for ( $i = 0; $i < $chldrn->length; $i++ ) {
+     echo $doc->saveHTML( $chldrn->item($i) );
   }
   include(ROOT_PATH.'/footer.php');  
  ?>
