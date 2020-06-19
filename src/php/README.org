@@ -1,0 +1,5 @@
+This is a minimal [[https://www.php.net/manual/en/install.php][php]] backend for the front end that is the focus of this project.  You can [[https://www.php.net/manual/en/features.commandline.webserver.php][run a local php server]] as follows:
+
+#+BEGIN_SRC sh
+php -S localhost:3005
+#+END_SRC

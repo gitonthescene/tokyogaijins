@@ -1,0 +1,18 @@
+This project implements a registraction system for the event booking site [[https://tokyogaijins.com][tokyogaijins.com]].  You can
+run this component independent of that site.
+
+* Running
+  There are two parts to this component
+  - A front end written in React
+  - A backend written in php
+
+  This project contains a fully functioning front end, but only a [[file:src/php/README.org][stub]] for the backend.  The front
+  end was written with [[https://reactjs.org/docs/create-a-new-react-app.html][create-react-app]] and is started [[file:create-react-app.md][just like any other]].  Running =yarn start=
+  should automatically open up a page in your browser at =localhost:3000=.  The component however is
+  served from =localhost:3000/reservations=, since it's meant to be embedded in the existing
+  tokyogaijins.com site.
+
+  The last thing you'll need to do is to copy =src/config.json.dev= to =src/config.json=.  This is
+  to support running different configurations between development and production.
+
+

@@ -1,6 +1,6 @@
 {
   "baseurl": "http://localhost:3005",
   "debug": "true",
-  "clientId": "Ae1NbbnqAWYjlwYI2P_NGNo-1IYUTIJLp2BeN2dDW2amG-kBjw9VfbTMXrauVKLIP9kRzIltFp_lVpvB",
-  "publishableKey": "pk_test_U0xNpHZCe7WiJF0s1zP4TKmp00c0JFEjW3"
+  "clientId": "STRIPE_CLIENT_ID",
+  "publishableKey": "STRIPE_PUBLISH_KEY"
 }

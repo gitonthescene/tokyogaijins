@@ -1,0 +1,21 @@
+{
+  "342": {
+    "earlybird": {
+      "date": "2020-02-14",
+      "price": 1500
+    },
+    "beginner": {
+      "price": 3000
+    },
+    "birthday": {
+      "price": 3000
+    },
+    "group": {
+      "size": 4,
+      "price": 1000
+    },
+    "regularmember": {
+      "price": 1000
+    }
+  }
+}

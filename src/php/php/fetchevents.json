@@ -1,0 +1,47 @@
+[
+  {
+    "date": "2020-06-20",
+    "name": "Jun 20 River Kayaking [or SUP Boarding] and Sake Tasting Trip",
+    "type": "G",
+    "e_id": "248",
+    "price": "6900",
+    "count": "3",
+    "max": "20"
+  },
+  {
+    "date": "2020-06-21",
+    "name": "Jun 21 Whitewater Rafting Trip",
+    "type": "G",
+    "e_id": "314",
+    "price": "8000",
+    "count": "2",
+    "max": "18"
+  },
+  {
+    "date": "2020-09-08",
+    "name": "Mt. Fuji Hike Tours",
+    "type": "G",
+    "e_id": "379",
+    "price": "16800",
+    "count": "39",
+    "max": "2000"
+  },
+  {
+    "date": "2021-03-29",
+    "name": "Skiing Snowboarding Season 2019-2020",
+    "type": "G",
+    "e_id": "337",
+    "price": "7000",
+    "count": "26",
+    "max": "45"
+  },
+  {
+    "date": "2021-12-31",
+    "name": "Other Events and Miscellaneous Fees",
+    "type": "G",
+    "e_id": "345",
+    "price": "4000",
+    "count": "25",
+    "max": "200"
+  }
+]

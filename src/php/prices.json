@@ -1,0 +1,99 @@
+{
+    "bytype" : {
+       "N" : {
+         "roompref" : {
+           "No preference": 0,
+           "Male or female only": 0,
+           "Male or female only shared rental tent": 0,
+           "Group of friends": 0,
+           "Private room/tent for 2 persons": 0,
+           "Private room for 2 persons": 2000,
+           "Bringing own tent": 0,
+           "Will share rental tent with group of friends": 0,
+           "Sharing a 2 persons tent with a friend or partner": 0,
+           "With snoring people": 0,
+           "Coed room ok": 0,
+           "Private room for 3 persons": 0
+         }
+       },
+       "D" : {
+         "wetsuit": {
+           "S": 2000,
+           "M": 2000,
+           "L": 3000,
+           "XL": 3000
+         },
+         "snorkelkit": { "Yes": 1400 },
+         "snorkelmask": { "Yes": 700 },
+         "fins": { "Yes": 350 },
+         "boots": { "Yes": 350 },
+         "tent": { "Yes": 2500 },
+         "sleepmat": { "Yes": 500 },
+         "sleepbag": { "Yes": 1000 },
+         "snorkellesson": { "Yes": 4400 },
+         "sightseeing": { "Yes": 3000 },
+         "scuba": { "Yes": 10800 }
+       },
+       "F" : {
+         "fullset": { "Yes": 9500 },
+         "rainjacketpants": { "Yes": 3500 },
+         "hikingshoes": { "Yes": 3500 },
+         "backpackcover": { "Yes": 3500 },
+         "hikingpoles": { "Yes": 2500 },
+         "headlamp": { "Yes": 1000 },
+         "gaiters": { "Yes": 1000 }
+       },
+       "I" : {
+         "trekking": { "Yes": 2500 },
+         "bike": { "Yes": 2000 },
+         "helmet": { "Yes": 500 }
+       },
+       "S" : {
+         "lessons": {
+           "Beginners snowboarding": 0,
+           "Beginners skiing": 0,
+           "Intermediate snowboarding (90mins)": 9000
+         }
+       },
+       "M" : {
+         "lessons": {
+           "Beginners snowboarding": 0,
+           "Beginners skiing": 0,
+           "Intermediate snowboarding (90mins)": 9000
+         }
+       },
+       "U" : {
+         "hikingboots": { "Yes": 1000 },
+         "jacketpantsize": {
+           "XS": 2000,
+           "S": 2000,
+           "M": 2000,
+           "L": 2000,
+           "XL": 2000
+         },
+         "glovesize": {
+           "S": 500,
+           "M": 500,
+           "L": 500,
+           "XL": 500
+         },
+         "goggles": { "Yes": 500 }
+       },
+       "Z" : {
+         "lessons": {
+           "Beginners snowboarding": 0,
+           "Beginners skiing": 0,
+           "Intermediate snowboarding (90mins)": 9000
+         }
+       }
+    },
+    "byevent" : {
+      "350" : {
+         "mat" : { "Yes": 500 },
+         "sleepingbag": { "Yes" : 1000 },
+         "bunkbed": { "Yes" : 3500 },
+         "room" : { "Yes": 3000 },
+         "bicycle" : { "Yes": 3000 }
+      }
+    }
+}
