@@ -85,7 +85,7 @@ export const calcCost = (state) => {
         <Line
           tag={`${feenm} (${state[nm][parseInt(i)][0].name})`}
           amt={prettyMoney(fee)}
-          key={i}
+          key={`${feenm}${i}`}
         />,
       ])
     )

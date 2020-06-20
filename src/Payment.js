@@ -1,15 +1,18 @@
+//@flow
 import React from "react";
 
 import Button from "@material-ui/core/Button";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useLocation } from "react-router-dom";
 import json2mq from "json2mq";
 
-import PayPalButton from "./PayPal";
+import Stripe from "./Stripe";
 import ConfirmationMail, { renderMail } from "./ConfirmationMail";
 import { postMail, prettyMoney } from "./utils";
 import { baseurl as BASEURL } from "./config.json";
 import { calcCost } from "./Bill";
 
+const PayPalButton = () => null;
 const bookAndRedirect = (name, redirect, state, openDialog) => () => {
   return postMail(state, renderMail, name)
     .then(() => {
@@ -25,9 +28,14 @@ export const buttonSize = (matches) =>
     ? { minWidth: "500px", maxWidth: "750px" }
     : { minWidth: "200px", maxWidth: "750px" };
 
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const Payment = ({ event, onApprove, openDialog }) => {
   const matches = useMediaQuery(json2mq({ minWidth: 750 }));
-
+  let query = useQuery();
+  const u_id = query.get("u_id");
   // Calculate the cost based on the event with a function which takes discounts into consideration
 
   const { total } = calcCost(event);
@@ -50,6 +58,7 @@ const Payment = ({ event, onApprove, openDialog }) => {
       <div id="content" style={{ width: "80%", marginTop: "20px" }}>
         <h1>Payment</h1>
         <div className="page-content" style={{ textAlign: "center" }}>
+          <Stripe u_id={u_id} />
           <PayPalButton
             cost={total}
             description={event.event.name}

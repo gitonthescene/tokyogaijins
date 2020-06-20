@@ -195,9 +195,15 @@ const Reservation = ({ openDialog, event, updateEvent }) => {
   };
 
   const toPayment = () => {
-    return logSignup(event, optdefaults, total).then(() => {
-      history.push("/reservations/payment");
-    });
+    return logSignup(event, optdefaults, total)
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error("Unable to log payment request");
+      })
+      .then((data) => {
+        if (data.ok) history.push(`/reservations/payment?u_id=${data.u_id}`);
+        else throw new Error("Trouble processing log payment request");
+      });
   };
   return (
     <>

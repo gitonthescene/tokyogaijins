@@ -219,6 +219,24 @@ export const postMail = (state, renderMail, paytype = undefined) => {
   );
 };
 
+export const fetchPaymentIntent = (u_id) => {
+  const formData = {
+    u_id: u_id,
+  };
+
+  const args = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  return postdata(
+    BASEURL + "/php/react-stripe.php",
+    JSON.stringify(formData),
+    args
+  );
+};
+
 export const isBooked = (state) => {
   const countppl = parseInt(state.event.count);
   const maxppl = parseInt(state.event.max);
