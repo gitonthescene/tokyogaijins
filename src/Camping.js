@@ -16,7 +16,7 @@ type CampingInfo = {
   bicycle: string,
 };
 
-type CampingPriceInfo = {
+export type CampingPriceInfo = {
   mat: any,
   sleepingbag: any,
   bunkbed: any,

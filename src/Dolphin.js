@@ -38,7 +38,7 @@ type DolphinInfo = {
   scuba: string,
 };
 
-type DolphinPriceInfo = {
+export type DolphinPriceInfo = {
   wetsuit: any,
   snorkelkit: any,
   snorkelmask: any,

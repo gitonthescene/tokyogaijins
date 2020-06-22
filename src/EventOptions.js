@@ -1,17 +1,59 @@
+// @flow
 import React, { useEffect } from "react";
-
+import type { Node } from "react";
 import Camping, { campinginfo_def } from "./Camping";
+import type { CampingPriceInfo } from "./Camping";
 import Dolphin, { dolphininfo_def } from "./Dolphin";
+import type { DolphinPriceInfo } from "./Dolphin";
 import SkiSnowboarding, { skisnoinfo_def } from "./SkiSnowboarding";
+import type { SkiSnowboardingPriceInfo } from "./SkiSnowboarding";
 import SnowMonkey, { snowmonkey_def } from "./SnowMonkey";
+import type { SnowMonkeyPriceInfo } from "./SnowMonkey";
 import NightStay, { nightstay_def } from "./NightStay";
+import type { NightStayPriceInfo } from "./NightStay";
 import Zao, { zao_def } from "./Zao";
+import type { ZaoPriceInfo } from "./Zao";
 import Unryu, { unryu_def } from "./Unryu";
+import type { UnryuPriceInfo } from "./Unryu";
 import Trekking, { trekking_def } from "./Trekking";
+import type { TrekkingPriceInfo } from "./Trekking";
 import Oshima, { oshima_def } from "./Oshima";
+import type { OshimaPriceInfo } from "./Oshima";
 import Fuji, { fuji_def } from "./Fuji";
+import type { FujiPriceInfo } from "./Fuji";
 import CondDisplay from "./components/CondDisplay";
 import PersonalDetails from "./PersonalDetails";
+import type { EventOptionsType, ContactInfoType } from "./types";
+
+type EventKeys =
+  | "camping"
+  | "dolphin"
+  | "fuji"
+  | "general"
+  | "oshima"
+  | "snowmonkey"
+  | "nightstay"
+  | "skisno"
+  | "trekking"
+  | "unryu"
+  | "zao";
+
+type Options = {
+  camping?: any,
+  dolphin?: any,
+  fuji?: any,
+  general?: any,
+  oshima?: any,
+  snowmonkey?: any,
+  nightstay?: any,
+  skisno?: any,
+  trekking?: any,
+  unryu?: any,
+  zao?: any,
+  contact: ContactInfoType,
+  other: any,
+  event: any,
+};
 
 const personalinfo_def = () => {
   return {
@@ -42,30 +84,37 @@ export const optdefaults = {
   zao: zao_def,
 };
 
-const resetDraft = (draft, cnt, nm, def) => {
+const resetDraft = (draft) => {
   const kys = Object.keys(optdefaults);
-  const count = parseInt(cnt);
   kys.forEach((k) => {
     delete draft[k];
     delete draft.fees[k];
   });
-  if (def) {
-    // Fill array with copies of the return of the default function.
-    // See [[https://2ality.com/2013/11/initializing-arrays.html]]
-    const copyXTimes = (f, c) => {
-      const arr = Array.apply(null, Array(c)).map((x, i) => f(i));
-      return arr;
-    };
-    const defs = copyXTimes(
-      (i) => [{ ...personalinfo_def(), idx: i }, def()],
-      count
-    );
-    const fees = copyXTimes((i) => {
-      return {};
-    }, count);
-    Object.assign(draft, { [nm]: defs });
-    Object.assign(draft.fees, { [nm]: fees });
-  }
+};
+
+const initDraft = (draft, cnt, nm: EventKeys, def) => {
+  resetDraft(draft);
+  const count = parseInt(cnt);
+  // Fill array with copies of the return of the default function.
+  // See [[https://2ality.com/2013/11/initializing-arrays.html]]
+  const copyXTimes = (f, c) => {
+    const arr = Array.apply(null, Array(c)).map((x, i) => f(i));
+    return arr;
+  };
+  const defs = copyXTimes(
+    (i) => [{ ...personalinfo_def(), idx: i }, def()],
+    count
+  );
+  const fees = copyXTimes((i) => {
+    return {};
+  }, count);
+
+  const draftSet: Options = {};
+  draftSet[nm] = defs;
+  Object.assign(draft, draftSet);
+
+  draftSet[nm] = fees;
+  Object.assign(draft.fees, draftSet);
 };
 
 const PersonalizedOption = ({
@@ -111,51 +160,51 @@ const EventOptions = ({
   cnt,
   register,
   errors,
-}) => {
+}: EventOptionsType<Options>): Node => {
   useEffect(() => {
     if (eventType === "C")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "camping", optdefaults.camping);
+        initDraft(draft, cnt, "camping", optdefaults.camping);
       });
     else if (eventType === "D")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "dolphin", optdefaults.dolphin);
+        initDraft(draft, cnt, "dolphin", optdefaults.dolphin);
       });
     else if (eventType === "F")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "fuji", optdefaults.fuji);
+        initDraft(draft, cnt, "fuji", optdefaults.fuji);
       });
     else if (eventType === "G")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "general", optdefaults.general);
+        initDraft(draft, cnt, "general", optdefaults.general);
       });
     else if (eventType === "I")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "oshima", optdefaults.oshima);
+        initDraft(draft, cnt, "oshima", optdefaults.oshima);
       });
     else if (eventType === "M")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "snowmonkey", optdefaults.snowmonkey);
+        initDraft(draft, cnt, "snowmonkey", optdefaults.snowmonkey);
       });
     else if (eventType === "N")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "nightstay", optdefaults.nightstay);
+        initDraft(draft, cnt, "nightstay", optdefaults.nightstay);
       });
     else if (eventType === "S")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "skisno", optdefaults.skisno);
+        initDraft(draft, cnt, "skisno", optdefaults.skisno);
       });
     else if (eventType === "H")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "trekking", optdefaults.trekking);
+        initDraft(draft, cnt, "trekking", optdefaults.trekking);
       });
     else if (eventType === "U")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "unryu", optdefaults.unryu);
+        initDraft(draft, cnt, "unryu", optdefaults.unryu);
       });
     else if (eventType === "Z")
       updateEventOptions((draft) => {
-        resetDraft(draft, cnt, "zao", optdefaults.zao);
+        initDraft(draft, cnt, "zao", optdefaults.zao);
       });
     // .. else just wipe out the optkeys
     else
@@ -193,7 +242,7 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("camping", i)}
           updateEventFees={updateEventFeesI("camping", i)}
-          prices={prices}
+          prices={(prices: CampingPriceInfo)}
         />
       );
     } else if (typ === "D") {
@@ -205,17 +254,17 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("dolphin", i)}
           updateEventFees={updateEventFeesI("dolphin", i)}
-          prices={prices}
+          prices={(prices: DolphinPriceInfo)}
         />
       );
     } else if (typ === "F") {
       ky = "fuji";
       el = (
         <Fuji
-          fujiinfo={eventinfo.fuji && eventinfo.fuji[i] && eventinfo.fuji[i][1]}
-          updateFujiinfo={updateEventInfo("fuji", i)}
+          info={eventinfo.fuji && eventinfo.fuji[i] && eventinfo.fuji[i][1]}
+          updateInfo={updateEventInfo("fuji", i)}
           updateEventFees={updateEventFeesI("fuji", i)}
-          prices={prices}
+          prices={(prices: FujiPriceInfo)}
         />
       );
     } else if (typ === "G") {
@@ -230,7 +279,7 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("oshima", i)}
           updateEventFees={updateEventFeesI("oshima", i)}
-          prices={prices}
+          prices={(prices: OshimaPriceInfo)}
         />
       );
     } else if (typ === "M") {
@@ -244,7 +293,7 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("snowmonkey", i)}
           updateEventFees={updateEventFeesI("snowmonkey", i)}
-          prices={prices}
+          prices={(prices: SnowMonkeyPriceInfo)}
         />
       );
     } else if (typ === "N") {
@@ -258,7 +307,7 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("nightstay", i)}
           updateEventFees={updateEventFeesI("nightstay", i)}
-          prices={prices}
+          prices={(prices: NightStayPriceInfo)}
         />
       );
     } else if (typ === "S") {
@@ -270,7 +319,7 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("skisno", i)}
           updateEventFees={updateEventFeesI("skisno", i)}
-          prices={prices}
+          prices={(prices: SkiSnowboardingPriceInfo)}
         />
       );
     } else if (typ === "H") {
@@ -284,7 +333,7 @@ const EventOptions = ({
           }
           updateInfo={updateEventInfo("trekking", i)}
           updateEventFees={updateEventFeesI("trekking", i)}
-          prices={prices}
+          prices={(prices: TrekkingPriceInfo)}
         />
       );
     } else if (typ === "U") {
@@ -294,7 +343,7 @@ const EventOptions = ({
           info={eventinfo.unryu && eventinfo.unryu[i] && eventinfo.unryu[i][1]}
           updateInfo={updateEventInfo("unryu", i)}
           updateEventFees={updateEventFeesI("unryu", i)}
-          prices={prices}
+          prices={(prices: UnryuPriceInfo)}
         />
       );
     } else if (typ === "Z") {
@@ -304,7 +353,7 @@ const EventOptions = ({
           info={eventinfo.zao && eventinfo.zao[i] && eventinfo.zao[i][1]}
           updateInfo={updateEventInfo("zao", i)}
           updateEventFees={updateEventFeesI("zao", i)}
-          prices={prices}
+          prices={(prices: ZaoPriceInfo)}
         />
       );
     } else return null;

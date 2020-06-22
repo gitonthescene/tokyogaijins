@@ -1,10 +1,14 @@
 // @flow
 import React from "react";
-
+import type { Node } from "react";
 import RentalLessonInfo, { rentallessoninfo_def } from "./RentalLessonInfo";
 import Room, { room_def } from "./Room";
 
 import { roomOptsByEvent } from "./constants";
+import type { EventInfoType } from "./types";
+
+type SkiSnowboardingInfo = {};
+export type SkiSnowboardingPriceInfo = {};
 
 export const skisnoinfo_def = () => {
   const room = room_def();

@@ -25,7 +25,7 @@ type UnryuInfo = {
   goggles: string,
 };
 
-type UnryuPriceInfo = {
+export type UnryuPriceInfo = {
   hikingboots: any,
   jacketpantsize: any,
   glovesize: any,

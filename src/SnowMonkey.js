@@ -15,7 +15,7 @@ type SnowMonkeyInfo = {
   sundaylift: string,
 };
 
-type SnowMonkeyPriceInfo = {};
+export type SnowMonkeyPriceInfo = {};
 
 export const snowmonkey_def = () => {
   const room = room_def();

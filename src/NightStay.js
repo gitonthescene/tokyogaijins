@@ -8,7 +8,7 @@ import type { EventInfoType } from "./types";
 
 type NightStayInfo = {};
 
-type NightStayPriceInfo = {};
+export type NightStayPriceInfo = {};
 
 export const nightstay_def = () => {
   const room = room_def();

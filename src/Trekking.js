@@ -15,7 +15,7 @@ type TrekkingInfo = {
   Tateyama: string,
 };
 
-type TrekkingPriceInfo = {};
+export type TrekkingPriceInfo = {};
 
 export const trekking_def = () => {
   const room = room_def();

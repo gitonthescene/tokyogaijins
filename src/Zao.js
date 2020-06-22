@@ -15,7 +15,7 @@ type ZaoInfo = {
   foxvillage: string,
 };
 
-type ZaoPriceInfo = {
+export type ZaoPriceInfo = {
   lessons: any,
 };
 

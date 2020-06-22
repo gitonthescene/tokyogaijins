@@ -15,7 +15,7 @@ type OshimaInfo = {
   helmet: string,
 };
 
-type OshimaPriceInfo = {
+export type OshimaPriceInfo = {
   trekking: any,
   bike: any,
   helmet: any,

@@ -25,7 +25,7 @@ type FujiInfo = {
   gaiters: string,
 };
 
-type FujiPriceInfo = {
+export type FujiPriceInfo = {
   guide_hike: any,
   fullset: any,
   rainjacketpants: any,
