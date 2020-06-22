@@ -1,181 +1,267 @@
-import React from 'react';
+// @flow
+import React from "react";
+import type { Node } from "react";
 
-import CondDisplay from './components/CondDisplay';
-import Entry from './components/Entry';
-import Choice from './components/Choice';
+import CondDisplay from "./components/CondDisplay";
+import Entry from "./components/Entry";
+import Choice from "./components/Choice";
+import type { EventInfoType } from "./types";
 
-import { YesNo, swimmingskillOpts, bodysizeOpts, shoesizeOpts } from './constants';
-import { createOnChange, clearCombo, restoreComboElements, calcComboSideEffect } from './utils';
+import {
+  YesNo,
+  swimmingskillOpts,
+  bodysizeOpts,
+  shoesizeOpts,
+} from "./constants";
+import {
+  createOnChange,
+  clearCombo,
+  restoreComboElements,
+  calcComboSideEffect,
+} from "./utils";
 
-export const dolphininfo_def = () => {return {
-  swimming: '',
-  height: '',
-  weight: '',
-  shoesize: '',
-  wetsuit: 'No',
-  snorkelkit: 'No',
-  snorkelmask: '',
-  fins: '',
-  boots: '',
-  tent: '',
-  sleepmat: '',
-  sleepbag: '',
-  snorkellesson: '',
-  sightseeing: '',
-  scuba: '',
-}};
+type DolphinInfo = {
+  swimming: string,
+  height: string,
+  weight: string,
+  shoesize: string,
+  wetsuit: string,
+  snorkelkit: string,
+  snorkelmask: string,
+  fins: string,
+  boots: string,
+  tent: string,
+  sleepmat: string,
+  sleepbag: string,
+  snorkellesson: string,
+  sightseeing: string,
+  scuba: string,
+};
 
-const snorkelClearCombo = clearCombo( 'snorkelkit', [ 'snorkelmask', 'fins', 'boots' ] );
-const snorkelRestoreCombo = restoreComboElements( 'snorkelkit', [ 'snorkelmask', 'fins', 'boots' ] );
-const getSnorkelSideEffect = calcComboSideEffect( 'snorkelkit', [ 'snorkelmask', 'fins', 'boots' ] );
+type DolphinPriceInfo = {
+  wetsuit: any,
+  snorkelkit: any,
+  snorkelmask: any,
+  fins: any,
+  boots: any,
+  tent: any,
+  sleepmat: any,
+  sleepbag: any,
+  snorkellesson: any,
+  sightseeing: any,
+  scuba: any,
+};
+
+export const dolphininfo_def = () => {
+  return {
+    swimming: "",
+    height: "",
+    weight: "",
+    shoesize: "",
+    wetsuit: "No",
+    snorkelkit: "No",
+    snorkelmask: "",
+    fins: "",
+    boots: "",
+    tent: "",
+    sleepmat: "",
+    sleepbag: "",
+    snorkellesson: "",
+    sightseeing: "",
+    scuba: "",
+  };
+};
+
+const snorkelClearCombo = clearCombo("snorkelkit", [
+  "snorkelmask",
+  "fins",
+  "boots",
+]);
+const snorkelRestoreCombo = restoreComboElements("snorkelkit", [
+  "snorkelmask",
+  "fins",
+  "boots",
+]);
+const getSnorkelSideEffect = calcComboSideEffect("snorkelkit", [
+  "snorkelmask",
+  "fins",
+  "boots",
+]);
 
 const combo = {
-  clearComboAll: draft => {
-    snorkelClearCombo( draft );
+  clearComboAll: (draft) => {
+    snorkelClearCombo(draft);
   },
 
   restoreComboElementsAll: (state, sideEffect) => {
-  const snorkelPrcUpd = snorkelRestoreCombo( state, sideEffect );
-  return snorkelPrcUpd;
-  }
+    const snorkelPrcUpd = snorkelRestoreCombo(state, sideEffect);
+    return snorkelPrcUpd;
+  },
 };
 
 // Changes to the general state if one state changes
 export const getSideEffect = (nm, val, state) => {
-  const snorkelSideEffect = getSnorkelSideEffect( nm, val, state );
+  const snorkelSideEffect = getSnorkelSideEffect(nm, val, state);
   return snorkelSideEffect;
 };
 
-const Dolphin = ( {dolphininfo, updateDolphininfo, updateEventFees, prices} ) => {
+const Dolphin = ({
+  info,
+  updateInfo,
+  updateEventFees,
+  prices,
+}: EventInfoType<DolphinInfo, DolphinPriceInfo>): Node => {
+  let dolphininfo = info;
+  let updateDolphininfo = updateInfo;
   if (dolphininfo === undefined) return null;
 
-  const onChange = createOnChange( dolphininfo, updateDolphininfo, updateEventFees, prices, combo, getSideEffect );
+  const onChange = createOnChange(
+    dolphininfo,
+    updateDolphininfo,
+    updateEventFees,
+    prices,
+    combo,
+    getSideEffect
+  );
 
   return (
-    <div style={{display:'flex', flexFlow:'column', borderStyle:'solid', padding: '5px', margin:'5px'}}>
+    <div
+      style={{
+        display: "flex",
+        flexFlow: "column",
+        borderStyle: "solid",
+        padding: "5px",
+        margin: "5px",
+      }}
+    >
       <Choice
-        nm='swimming'
+        nm="swimming"
         items={swimmingskillOpts}
         value={dolphininfo.swimming}
         label="How would you describe your swimming ability?"
-        onChange={onChange('swimming')}
+        onChange={onChange("swimming")}
       />
       <Choice
-        nm='wetsuit'
+        nm="wetsuit"
         items={bodysizeOpts}
         value={dolphininfo.wetsuit}
         label="Wetsuit"
         comment="How does this work?  Does it use body size above?"
-        onChange={onChange('wetsuit')}
+        onChange={onChange("wetsuit")}
         price={prices.wetsuit}
       />
-      <CondDisplay showif={dolphininfo.wetsuit !== 'No'}>
-        <div style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
+      <CondDisplay showif={dolphininfo.wetsuit !== "No"}>
+        <div
+          style={{ display: "flex", flexFlow: "column", marginLeft: "10px" }}
+        >
           <Entry
             label="Your Height (in cm)"
             value={dolphininfo.height}
-            onChange={onChange('height')}
+            onChange={onChange("height")}
           />
           <Entry
             label="Your Weight (in kgs)"
             value={dolphininfo.weight}
-            onChange={onChange('weight')}
+            onChange={onChange("weight")}
           />
           <Choice
-            nm='shoesize'
+            nm="shoesize"
             items={shoesizeOpts}
             value={dolphininfo.shoesize}
             label="Shoe size (in JPN)"
-            onChange={onChange('shoesize')}
+            onChange={onChange("shoesize")}
           />
         </div>
       </CondDisplay>
       <Choice
-        nm='snorkelkit'
+        nm="snorkelkit"
         items={YesNo}
         value={dolphininfo.snorkelkit}
         label="Snorkelling kit set [Snorkel & mask, Fins & Boots]"
         comment="This should select the two choices below"
-        onChange={onChange('snorkelkit')}
+        onChange={onChange("snorkelkit")}
         price={prices.snorkelkit}
       />
       <CondDisplay
-        showif={dolphininfo.snorkelkit==='No'}
-        comment="If using CondDisplay, then you can't unchoose after selecting all">
-        <div style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
+        showif={dolphininfo.snorkelkit === "No"}
+        comment="If using CondDisplay, then you can't unchoose after selecting all"
+      >
+        <div
+          style={{ display: "flex", flexFlow: "column", marginLeft: "10px" }}
+        >
           <Choice
-            nm='snorkelmask'
+            nm="snorkelmask"
             items={YesNo}
             value={dolphininfo.snorkelmask}
             label="Snorkel and mask only"
-            onChange={onChange('snorkelmask')}
+            onChange={onChange("snorkelmask")}
             price={prices.snorkelmask}
           />
           <Choice
-            nm='fins'
+            nm="fins"
             items={YesNo}
             value={dolphininfo.fins}
             label="Fins only"
-            onChange={onChange('fins')}
+            onChange={onChange("fins")}
             price={prices.fins}
           />
           <Choice
-            nm='boots'
+            nm="boots"
             items={YesNo}
             value={dolphininfo.boots}
             label="Boots only"
             comment="FIXME What does this have to do with the shoesize above?"
-            onChange={onChange('boots')}
+            onChange={onChange("boots")}
             price={prices.boots}
           />
         </div>
       </CondDisplay>
       <Choice
-        nm='tent'
+        nm="tent"
         items={YesNo}
         value={dolphininfo.tent}
         label="Tent"
-        onChange={onChange('tent')}
+        onChange={onChange("tent")}
         price={prices.tent}
       />
       <Choice
-        nm='sleepmat'
+        nm="sleepmat"
         items={YesNo}
         value={dolphininfo.sleepmat}
         label="Sleeping mat"
-        onChange={onChange('sleepmat')}
+        onChange={onChange("sleepmat")}
         price={prices.sleepmat}
       />
       <Choice
-        nm='sleepbag'
+        nm="sleepbag"
         items={YesNo}
         value={dolphininfo.sleepbag}
         label="Sleeping bag"
-        onChange={onChange('sleepbag')}
+        onChange={onChange("sleepbag")}
         price={prices.sleepbag}
       />
       <Choice
-        nm='snorkellesson'
+        nm="snorkellesson"
         items={YesNo}
         value={dolphininfo.snorkellesson}
         label="Snorkeling lesson"
-        onChange={onChange('snorkellesson')}
+        onChange={onChange("snorkellesson")}
         price={prices.snorkellesson}
       />
       <Choice
-        nm='sightseeing'
+        nm="sightseeing"
         items={YesNo}
         value={dolphininfo.sightseeing}
         label="Sightseeing"
-        onChange={onChange('sightseeing')}
+        onChange={onChange("sightseeing")}
         price={prices.sightseeing}
       />
       <Choice
-        nm='scuba'
+        nm="scuba"
         items={YesNo}
         value={dolphininfo.scuba}
         label="Scuba Dive Option"
-        onChange={onChange('scuba')}
+        onChange={onChange("scuba")}
         price={prices.scuba}
       />
     </div>

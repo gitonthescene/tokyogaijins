@@ -1,89 +1,112 @@
-import React from 'react';
+// @flow
+import React from "react";
 
-import CondDisplay from './components/CondDisplay';
-import Entry from './components/Entry';
-import Choice from './components/Choice';
+import CondDisplay from "./components/CondDisplay";
+import Entry from "./components/Entry";
+import Choice from "./components/Choice";
+import type { EventInfoType } from "./types";
 
-import { NOTNEEDED, equipmentOpts, bootsizeOpts, jacketpantsizeOpts, glovesizeOpts, neededOpts, lessonOpts } from './constants';
-import { createOnChange } from './utils';
+import {
+  NOTNEEDED,
+  equipmentOpts,
+  bootsizeOpts,
+  jacketpantsizeOpts,
+  glovesizeOpts,
+  neededOpts,
+  lessonOpts,
+} from "./constants";
+import { createOnChange } from "./utils";
 
-export const rentallessoninfo_def = () =>{return {
-  equipment: NOTNEEDED,
-  height: '',
-  bootsize: '',
-  hikingboots: 'No',
-  jacketpantsize: NOTNEEDED,
-  glovesize: NOTNEEDED,
-  goggles: NOTNEEDED,
-  helmet: NOTNEEDED,
-  lessons: NOTNEEDED,
+export const rentallessoninfo_def = () => {
+  return {
+    equipment: NOTNEEDED,
+    height: "",
+    bootsize: "",
+    hikingboots: "No",
+    jacketpantsize: NOTNEEDED,
+    glovesize: NOTNEEDED,
+    goggles: NOTNEEDED,
+    helmet: NOTNEEDED,
+    lessons: NOTNEEDED,
+  };
+};
 
-}};
+const RentalLessonInfo = ({
+  rentallessoninfo,
+  updateRentallessoninfo,
+  prices,
+  updateEventFees,
+}) => {
+  if (rentallessoninfo === undefined) return null;
 
-const RentalLessonInfo = ( {rentallessoninfo, updateRentallessoninfo, prices, updateEventFees} ) => {
-  if ( rentallessoninfo === undefined ) return null;
-
-  const onChange = createOnChange( rentallessoninfo, updateRentallessoninfo, updateEventFees, prices );
+  const onChange = createOnChange(
+    rentallessoninfo,
+    updateRentallessoninfo,
+    updateEventFees,
+    prices
+  );
 
   return (
     <>
       <Choice
-        nm='equipment'
+        nm="equipment"
         items={equipmentOpts}
         value={rentallessoninfo.equipment}
         label="Ski/snowboard equipment"
-        onChange={onChange('equipment')}
+        onChange={onChange("equipment")}
       />
       <CondDisplay showif={rentallessoninfo.equipment !== NOTNEEDED}>
-        <div  style={{display:'flex', flexFlow:'column', marginLeft: '10px'}}>
+        <div
+          style={{ display: "flex", flexFlow: "column", marginLeft: "10px" }}
+        >
           <Entry
             label="Your Height (in cm)"
             value={rentallessoninfo.height}
-            onChange={onChange('height')}
+            onChange={onChange("height")}
           />
           <Choice
-            nm='bootsize'
+            nm="bootsize"
             items={bootsizeOpts}
             value={rentallessoninfo.bootsize}
             label="Boot size (in Japanese)"
-            onChange={onChange('bootsize')}
+            onChange={onChange("bootsize")}
           />
         </div>
       </CondDisplay>
       <Choice
-        nm='jacketpantsize'
+        nm="jacketpantsize"
         items={jacketpantsizeOpts}
         value={rentallessoninfo.jacketpantsize}
         label="Jacket and pants"
-        onChange={onChange('jacketpantsize')}
+        onChange={onChange("jacketpantsize")}
       />
       <Choice
-        nm='glovesize'
+        nm="glovesize"
         items={glovesizeOpts}
         value={rentallessoninfo.glovesize}
         label="Gloves"
-        onChange={onChange('glovesize')}
+        onChange={onChange("glovesize")}
       />
       <Choice
-        nm='goggles'
+        nm="goggles"
         items={neededOpts}
         value={rentallessoninfo.goggles}
         label="Goggles"
-        onChange={onChange('goggles')}
+        onChange={onChange("goggles")}
       />
       <Choice
-        nm='helmet'
+        nm="helmet"
         items={neededOpts}
         value={rentallessoninfo.helmet}
         label="Helmet"
-        onChange={onChange('helmet')}
+        onChange={onChange("helmet")}
       />
       <Choice
-        nm='lessons'
+        nm="lessons"
         items={lessonOpts}
         value={rentallessoninfo.lessons}
         label="Ski/snowboard lesson"
-        onChange={onChange('lessons')}
+        onChange={onChange("lessons")}
         price={prices.lessons}
       />
     </>
