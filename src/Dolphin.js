@@ -20,7 +20,7 @@ import {
   calcComboSideEffect,
 } from "./utils";
 
-type DolphinInfo = {
+export type DolphinInfo = {
   swimming: string,
   height: string,
   weight: string,
@@ -52,7 +52,7 @@ export type DolphinPriceInfo = {
   scuba: any,
 };
 
-export const dolphininfo_def = () => {
+export const dolphininfo_def = (): DolphinInfo => {
   return {
     swimming: "",
     height: "",

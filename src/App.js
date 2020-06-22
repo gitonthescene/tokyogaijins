@@ -17,6 +17,8 @@ import Reservation, { defaults } from "./Reservation";
 import { mobileAndTabletcheck, postMail } from "./utils";
 import Payment from "./Payment";
 import FreePayment from "./FreePayment";
+import type { Options as OptionsType } from "./EventOptions";
+import type { EventStateType, useImmerType } from "./types";
 
 const AlertReservedDialog = ({ open, close, message }) => {
   return (
@@ -41,8 +43,18 @@ const AlertReservedDialog = ({ open, close, message }) => {
   );
 };
 
+type DialogState = {
+  open: boolean,
+  message?: string,
+  redirect?: string,
+};
+
 function App() {
-  const [dstate, updateDstate] = useImmer({ open: false });
+  const [dstate, updateDstate] = useImmer<DialogState>({
+    open: false,
+    message: "",
+    redirect: undefined,
+  });
   const [event, updateEvent] = useImmer(defaults());
 
   const openDialog = (message, redirect) => {

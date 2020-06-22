@@ -9,7 +9,7 @@ import { YesNo, roomOptsByEvent } from "./constants";
 import { createOnChange } from "./utils";
 import type { EventInfoType } from "./types";
 
-type OshimaInfo = {
+export type OshimaInfo = {
   trekking: string,
   bike: string,
   helmet: string,
@@ -21,7 +21,7 @@ export type OshimaPriceInfo = {
   helmet: any,
 };
 
-export const oshima_def = () => {
+export const oshima_def = (): OshimaInfo => {
   const room = room_def();
   return {
     trekking: "",

@@ -10,7 +10,7 @@ import { YesNo, roomOptsByEvent } from "./constants";
 import { createOnChange } from "./utils";
 import type { EventInfoType } from "./types";
 
-type ZaoInfo = {
+export type ZaoInfo = {
   snowmonster: string,
   foxvillage: string,
 };
@@ -19,7 +19,7 @@ export type ZaoPriceInfo = {
   lessons: any,
 };
 
-export const zao_def = () => {
+export const zao_def = (): ZaoInfo => {
   const room = room_def();
   const rental = rentallessoninfo_def();
   return {

@@ -9,7 +9,7 @@ import { YesNo, roomOptsByEvent } from "./constants";
 import { createOnChange } from "./utils";
 import type { EventInfoType } from "./types";
 
-type CampingInfo = {
+export type CampingInfo = {
   mat: string,
   sleepingbag: string,
   bunkbed: string,
@@ -23,7 +23,7 @@ export type CampingPriceInfo = {
   bicycle: any,
 };
 
-export const campinginfo_def = () => {
+export const campinginfo_def = (): CampingInfo => {
   const roominfo = room_def();
   roominfo.room = "No";
   return {

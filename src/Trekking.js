@@ -9,7 +9,7 @@ import { roomOptsByEvent, YesNo } from "./constants";
 import { createOnChange } from "./utils";
 import type { EventInfoType } from "./types";
 
-type TrekkingInfo = {
+export type TrekkingInfo = {
   Happoike: string,
   Tsugaike: string,
   Tateyama: string,
@@ -17,7 +17,7 @@ type TrekkingInfo = {
 
 export type TrekkingPriceInfo = {};
 
-export const trekking_def = () => {
+export const trekking_def = (): TrekkingInfo => {
   const room = room_def();
   return {
     Happoike: "No",

@@ -16,7 +16,7 @@ import {
 } from "./constants";
 import { createOnChange } from "./utils";
 
-type UnryuInfo = {
+export type UnryuInfo = {
   height: string,
   bootsize: string,
   hikingboots: string,
@@ -32,7 +32,7 @@ export type UnryuPriceInfo = {
   goggles: any,
 };
 
-export const unryu_def = () => {
+export const unryu_def = (): UnryuInfo => {
   return {
     height: "",
     bootsize: "",

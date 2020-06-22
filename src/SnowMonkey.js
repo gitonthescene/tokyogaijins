@@ -10,14 +10,14 @@ import { YesNo, YesNoMaybe, roomOptsByEvent } from "./constants";
 import { createOnChange } from "./utils";
 import type { EventInfoType } from "./types";
 
-type SnowMonkeyInfo = {
+export type SnowMonkeyInfo = {
   monkeyfest: string,
   sundaylift: string,
 };
 
 export type SnowMonkeyPriceInfo = {};
 
-export const snowmonkey_def = () => {
+export const snowmonkey_def = (): SnowMonkeyInfo => {
   const room = room_def();
   const rental = rentallessoninfo_def();
   return {

@@ -15,14 +15,14 @@ import { useForm } from "react-hook-form";
 
 import EventSelect, { event_def } from "./EventSelect";
 import EventOptions from "./EventOptions";
-import type { OptionsType } from "./EventOptions";
 import ContactDetails, { contactDetails_def } from "./ContactDetails";
 import CondDisplay from "./components/CondDisplay";
 import Entry from "./components/Entry";
 import { renderMail } from "./ConfirmationMail";
 import { buttonSize } from "./Payment";
 import { calcCost } from "./Bill";
-import type { OpenDialogType } from "./types";
+import type { ReservationInfoType } from "./types";
+import type { Options as OptionsType } from "./EventOptions";
 
 import { debug as DEBUG } from "./config.json";
 import { COMMENT_MAX_LENGTH } from "./constants";
@@ -77,28 +77,6 @@ const Discounts = ({ discount, handleChange, ifavail }) => {
   );
 };
 
-type OtherInfoType = {
-  comments: string,
-  consent: boolean,
-  discount: string,
-  discountOptions?: any,
-  prices?: any,
-};
-
-type EventStateType = {
-  event: any,
-  contact: any,
-  fees: OptionsType,
-  other: OtherInfoType,
-  ...OptionsType,
-};
-
-type ReservationInfoType = {
-  openDialog: OpenDialogType,
-  event: EventStateType,
-  updateEvent: any,
-};
-
 export const defaults = () => {
   return {
     event: event_def(),
@@ -135,7 +113,7 @@ const Reservation = ({
   openDialog,
   event,
   updateEvent,
-}: ReservationInfoType): Node => {
+}: ReservationInfoType<OptionsType>): Node => {
   const { register, handleSubmit, errors } = useForm();
 
   const booked = isBooked(event);

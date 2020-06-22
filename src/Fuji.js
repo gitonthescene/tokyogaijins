@@ -14,7 +14,7 @@ import {
   calcComboSideEffect,
 } from "./utils";
 
-type FujiInfo = {
+export type FujiInfo = {
   guide_hike: string,
   fullset: string,
   rainjacketpants: string,
@@ -36,7 +36,7 @@ export type FujiPriceInfo = {
   gaiters: any,
 };
 
-export const fuji_def = () => {
+export const fuji_def = (): FujiInfo => {
   return {
     guide_hike: "No (hike at your own risk)",
     fullset: "No",

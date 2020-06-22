@@ -6,11 +6,11 @@ import { roomOptsByEvent } from "./constants";
 import Room, { room_def } from "./Room";
 import type { EventInfoType } from "./types";
 
-type NightStayInfo = {};
+export type NightStayInfo = {};
 
 export type NightStayPriceInfo = {};
 
-export const nightstay_def = () => {
+export const nightstay_def = (): NightStayInfo => {
   const room = room_def();
   return {
     ...room,

@@ -1,6 +1,9 @@
-import React from "react";
+// @flow
+import * as React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { prettyMoney } from "./utils";
+import type { EventStateType } from "./types";
 
 const useStyles = makeStyles({
   btable: {
@@ -20,7 +23,8 @@ const useStyles = makeStyles({
   },
 });
 
-const Line = ({ tag, amt }) => {
+type LineInfo = { tag: string, amt: string };
+const Line = ({ tag, amt }: LineInfo): React.Node => {
   const classes = useStyles();
   return (
     <tr>
@@ -30,7 +34,7 @@ const Line = ({ tag, amt }) => {
   );
 };
 
-export const calcCost = (state) => {
+export const calcCost = (state: EventStateType) => {
   var { price } = state.event;
   price = parseInt(price);
   const { count } = state.contact;
@@ -44,13 +48,17 @@ export const calcCost = (state) => {
         <Line
           tag={`discount (${discount})`}
           amt={prettyMoney(-discountAmt.price)}
-          key="discountAmt"
+          key={discountAmt}
         />,
-        <Line tag="" amt={discountPrice} key="prettyMoney(discountPrice)" />,
+        <Line
+          tag=""
+          amt={prettyMoney(discountPrice)}
+          key={prettyMoney(discountPrice)}
+        />,
       ]
     : [];
 
-  var eventItms = [
+  var eventItms: React.Element<typeof Line>[] = [
     <Line tag="event price" amt={prettyMoney(price || 0)} key="baseprice" />,
   ]
     .concat(discountItems)
@@ -78,8 +86,8 @@ export const calcCost = (state) => {
     items: eventItms,
   };
 
-  const feebreakdown = Object.entries(fees).map(([nm, feeitems]) =>
-    feeitems.map((indivFees, i) =>
+  const feebreakdown = Object.entries(fees).map(([nm, people]) =>
+    people.map((indivFees, i) =>
       Object.entries(indivFees).map(([feenm, fee]) => [
         fee,
         <Line
@@ -100,7 +108,8 @@ export const calcCost = (state) => {
             .reduce((ttl, v) => ttl + v, 0),
           items: feebreakdown[0].flat().map(([_, lineitem]) => lineitem),
         }
-      : { total: 0 };
+      : { total: 0, items: [] };
+
   return {
     eventprice: eventprice,
     feeitems: feeitems,
@@ -108,7 +117,8 @@ export const calcCost = (state) => {
   };
 };
 
-const Bill = ({ state }) => {
+type BillInfoType = { state: EventStateType };
+const Bill = ({ state }: BillInfoType): React.Node => {
   const classes = useStyles();
   const { eventprice, feeitems, total } = calcCost(state);
 

@@ -2,74 +2,71 @@
 import React, { useEffect } from "react";
 import type { Node } from "react";
 import Camping, { campinginfo_def } from "./Camping";
-import type { CampingPriceInfo } from "./Camping";
+import type { CampingInfo, CampingPriceInfo } from "./Camping";
 import Dolphin, { dolphininfo_def } from "./Dolphin";
-import type { DolphinPriceInfo } from "./Dolphin";
+import type { DolphinInfo, DolphinPriceInfo } from "./Dolphin";
 import SkiSnowboarding, { skisnoinfo_def } from "./SkiSnowboarding";
-import type { SkiSnowboardingPriceInfo } from "./SkiSnowboarding";
+import type {
+  SkiSnowboardingInfo,
+  SkiSnowboardingPriceInfo,
+} from "./SkiSnowboarding";
 import SnowMonkey, { snowmonkey_def } from "./SnowMonkey";
-import type { SnowMonkeyPriceInfo } from "./SnowMonkey";
+import type { SnowMonkeyInfo, SnowMonkeyPriceInfo } from "./SnowMonkey";
 import NightStay, { nightstay_def } from "./NightStay";
-import type { NightStayPriceInfo } from "./NightStay";
+import type { NightStayInfo, NightStayPriceInfo } from "./NightStay";
 import Zao, { zao_def } from "./Zao";
-import type { ZaoPriceInfo } from "./Zao";
+import type { ZaoInfo, ZaoPriceInfo } from "./Zao";
 import Unryu, { unryu_def } from "./Unryu";
-import type { UnryuPriceInfo } from "./Unryu";
+import type { UnryuInfo, UnryuPriceInfo } from "./Unryu";
 import Trekking, { trekking_def } from "./Trekking";
-import type { TrekkingPriceInfo } from "./Trekking";
+import type { TrekkingInfo, TrekkingPriceInfo } from "./Trekking";
 import Oshima, { oshima_def } from "./Oshima";
-import type { OshimaPriceInfo } from "./Oshima";
+import type { OshimaInfo, OshimaPriceInfo } from "./Oshima";
 import Fuji, { fuji_def } from "./Fuji";
-import type { FujiPriceInfo } from "./Fuji";
+import type { FujiInfo, FujiPriceInfo } from "./Fuji";
 import CondDisplay from "./components/CondDisplay";
 import PersonalDetails from "./PersonalDetails";
-import type { EventOptionsType, ContactInfoType } from "./types";
+import type { EventOptionsType, EventStateType, OptionsType } from "./types";
 
-type EventKeys =
-  | "camping"
-  | "dolphin"
-  | "fuji"
-  | "general"
-  | "oshima"
-  | "snowmonkey"
-  | "nightstay"
-  | "skisno"
-  | "trekking"
-  | "unryu"
-  | "zao";
-
-export type OptionsType = {|
-  camping?: any,
-  dolphin?: any,
-  fuji?: any,
-  general?: any,
-  oshima?: any,
-  snowmonkey?: any,
-  nightstay?: any,
-  skisno?: any,
-  trekking?: any,
-  unryu?: any,
-  zao?: any,
-|};
-
-type Options = {
-  ...OptionsType,
-  contact: ContactInfoType,
-  other: any,
-  event: any,
+type PersonalInfoType = {
+  name: string,
+  age: string,
+  sex: string,
+  cellphone: string,
+  email: string,
+  idx: number,
 };
 
-const personalinfo_def = () => {
+type OptionCatalog = {|
+  camping: CampingInfo,
+  dolphin: DolphinInfo,
+  fuji: FujiInfo,
+  general: any,
+  oshima: OshimaInfo,
+  snowmonkey: SnowMonkeyInfo,
+  nightstay: NightStayInfo,
+  skisno: SkiSnowboardingInfo,
+  trekking: TrekkingInfo,
+  unryu: UnryuInfo,
+  zao: ZaoInfo,
+|};
+
+export type Options = OptionsType<PersonalInfoType, OptionCatalog>;
+
+type EventKeys = $Keys<OptionCatalog>;
+
+const personalinfo_def = (): PersonalInfoType => {
   return {
     name: "",
     age: "",
     sex: "Female",
     cellphone: "",
     email: "",
+    idx: -1,
   };
 };
 
-const null_def = () => {
+const null_def = (): any => {
   return {};
 };
 
@@ -88,32 +85,37 @@ export const optdefaults = {
   zao: zao_def,
 };
 
-const resetDraft = (draft) => {
+const resetDraft = (draft: EventStateType<Options>): void => {
   const kys = Object.keys(optdefaults);
-  kys.forEach((k) => {
+  kys.forEach((k: EventKeys): void => {
     delete draft[k];
     delete draft.fees[k];
   });
 };
 
-const initDraft = (draft, cnt, nm: EventKeys, def) => {
+const initDraft = <Opt>(
+  draft: any,
+  count: number,
+  nm: EventKeys,
+  def: () => Opt
+): void => {
   resetDraft(draft);
-  const count = parseInt(cnt);
+  //const count = parseInt(cnt);
   // Fill array with copies of the return of the default function.
   // See [[https://2ality.com/2013/11/initializing-arrays.html]]
-  const copyXTimes = (f, c) => {
+  const copyXTimes = <Return>(f: (number) => Return, c: number): Return[] => {
     const arr = Array.apply(null, Array(c)).map((x, i) => f(i));
     return arr;
   };
-  const defs = copyXTimes(
+  const defs = copyXTimes<[PersonalInfoType, Opt]>(
     (i) => [{ ...personalinfo_def(), idx: i }, def()],
     count
   );
-  const fees = copyXTimes((i) => {
+  const fees = copyXTimes<any>((i) => {
     return {};
   }, count);
 
-  const draftSet: Options = {};
+  const draftSet = {};
   draftSet[nm] = defs;
   Object.assign(draft, draftSet);
 
@@ -129,7 +131,7 @@ const PersonalizedOption = ({
   contact,
   register,
   errors,
-}) => {
+}): Node => {
   if (personalinfo === undefined) return null;
 
   return (
@@ -164,8 +166,8 @@ const EventOptions = ({
   cnt,
   register,
   errors,
-}: EventOptionsType<Options>): Node => {
-  useEffect(() => {
+}: EventOptionsType<EventStateType<Options>>): Node => {
+  useEffect((): void => {
     if (eventType === "C")
       updateEventOptions((draft) => {
         initDraft(draft, cnt, "camping", optdefaults.camping);
@@ -224,18 +226,18 @@ const EventOptions = ({
   };
 
   const updateEventInfo = (typ, i) => (cb) => {
-    updateEventOptions((draft) => {
-      cb(draft[typ][i][1]);
+    updateEventOptions((draft: any) => {
+      if (draft[typ]) cb(draft[typ][i][1]);
     });
   };
 
   const updatePersonalInfo = (typ, i) => (cb) => {
     updateEventOptions((draft) => {
-      cb(draft[typ][i][0]);
+      if (draft[typ]) cb(draft[typ][i][0]);
     });
   };
 
-  const createElement = (typ, i, prices) => {
+  const createElement = (typ, i, prices): Node => {
     var [el, ky] = [null, null];
     if (typ === "C") {
       ky = "camping";
