@@ -4,7 +4,6 @@ import React from "react";
 import CondDisplay from "./components/CondDisplay";
 import Entry from "./components/Entry";
 import Choice from "./components/Choice";
-import type { EventInfoType } from "./types";
 
 import {
   NOTNEEDED,

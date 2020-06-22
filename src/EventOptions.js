@@ -38,7 +38,7 @@ type EventKeys =
   | "unryu"
   | "zao";
 
-type Options = {
+export type OptionsType = {|
   camping?: any,
   dolphin?: any,
   fuji?: any,
@@ -50,6 +50,10 @@ type Options = {
   trekking?: any,
   unryu?: any,
   zao?: any,
+|};
+
+type Options = {
+  ...OptionsType,
   contact: ContactInfoType,
   other: any,
   event: any,

@@ -1,5 +1,6 @@
 // @flow
 import React, { useCallback, useEffect } from "react";
+import type { Node } from "react";
 
 import Button from "@material-ui/core/Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -14,12 +15,14 @@ import { useForm } from "react-hook-form";
 
 import EventSelect, { event_def } from "./EventSelect";
 import EventOptions from "./EventOptions";
+import type { OptionsType } from "./EventOptions";
 import ContactDetails, { contactDetails_def } from "./ContactDetails";
 import CondDisplay from "./components/CondDisplay";
 import Entry from "./components/Entry";
 import { renderMail } from "./ConfirmationMail";
 import { buttonSize } from "./Payment";
 import { calcCost } from "./Bill";
+import type { OpenDialogType } from "./types";
 
 import { debug as DEBUG } from "./config.json";
 import { COMMENT_MAX_LENGTH } from "./constants";
@@ -74,6 +77,28 @@ const Discounts = ({ discount, handleChange, ifavail }) => {
   );
 };
 
+type OtherInfoType = {
+  comments: string,
+  consent: boolean,
+  discount: string,
+  discountOptions?: any,
+  prices?: any,
+};
+
+type EventStateType = {
+  event: any,
+  contact: any,
+  fees: OptionsType,
+  other: OtherInfoType,
+  ...OptionsType,
+};
+
+type ReservationInfoType = {
+  openDialog: OpenDialogType,
+  event: EventStateType,
+  updateEvent: any,
+};
+
 export const defaults = () => {
   return {
     event: event_def(),
@@ -92,6 +117,8 @@ export const defaults = () => {
 const availableDiscounts = (state) => (nm) => {
   const { discountOptions } = state.other;
   const { count } = state.contact;
+  if (!discountOptions) return undefined;
+
   if (nm === "earlybird" && discountOptions.earlybird) {
     const { date } = discountOptions.earlybird;
     const deadline = Date.parse(date);
@@ -104,8 +131,12 @@ const availableDiscounts = (state) => (nm) => {
   return nm === "none" || discountOptions[nm] !== undefined;
 };
 
-const Reservation = ({ openDialog, event, updateEvent }) => {
-  const { register, handleSubmit, errors, formState } = useForm();
+const Reservation = ({
+  openDialog,
+  event,
+  updateEvent,
+}: ReservationInfoType): Node => {
+  const { register, handleSubmit, errors } = useForm();
 
   const booked = isBooked(event);
   const history = useHistory();
@@ -130,13 +161,14 @@ const Reservation = ({ openDialog, event, updateEvent }) => {
   const updateEventFees = useCallback(updateSubField("fees"), [updateSubField]);
   const updateOther = useCallback(updateSubField("other"), [updateSubField]);
 
-  useEffect(() => {
-    if (formState.isValid) {
-      event.other.paypalactions && event.other.paypalactions.enable();
-    } else if (event.other.paypalactions) {
-      event.other.paypalactions && event.other.paypalactions.disable();
-    }
-  }, [event.other.paypalactions, formState.isValid]);
+  //  @FIX no paypal support any more
+  //  useEffect(() => {
+  //    if (formState.isValid) {
+  //      event.other.paypalactions && event.other.paypalactions.enable();
+  //    } else if (event.other.paypalactions) {
+  //      event.other.paypalactions && event.other.paypalactions.disable();
+  //    }
+  //  }, [event.other.paypalactions, formState.isValid]);
 
   useEffect(() => {
     fetchres("/discountoffers.php").then((data) => {

@@ -19,7 +19,12 @@ export const skisnoinfo_def = () => {
   };
 };
 
-const SkiSnowboarding = ({ info, updateInfo, updateEventFees, prices }) => {
+const SkiSnowboarding = ({
+  info,
+  updateInfo,
+  updateEventFees,
+  prices,
+}: EventInfoType<SkiSnowboardingInfo, SkiSnowboardingPriceInfo>): Node => {
   let skisnoinfo = info;
   let updateSkiSnoinfo = updateInfo;
   if (skisnoinfo === undefined) return null;
